@@ -1366,6 +1366,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bf151400ff0baff5465007dd2f3e717f3fe502074ca563069ce3a6629d07b289"
 
 [[package]]
+name = "health_app"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "binary_serde",
+ "crossbeam-channel",
+ "env_logger 0.11.7",
+ "futures",
+ "machine-info",
+ "num-derive",
+ "num-traits",
+ "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "satrs",
+ "spacepackets 0.12.0",
+ "tokio",
+]
+
+[[package]]
 name = "heck"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1819,6 +1839,16 @@ checksum = "c19937216e9d3aa9956d9bb8dfc0b0c8beb6058fc4f7a4dc4d850edf86a237d6"
 
 [[package]]
 name = "libloading"
+version = "0.7.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b67380fd3b2fbe7527a606e18729d21c6f3951633d0500574c4dc22d2d638b9f"
+dependencies = [
+ "cfg-if",
+ "winapi",
+]
+
+[[package]]
+name = "libloading"
 version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc2f4eb4bc735547cfed7c0a4922cbd04a4655978c09b54f1f7b228750664c34"
@@ -1908,6 +1938,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19b955cdeb2a02b9117f121ce63aa52d08ade45de53e48fe6a38b39c10f6f709"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "machine-info"
+version = "1.0.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d0bcde250f7927612edb0807ada4ad1d92915d9632d917df9bf696e74095dce"
+dependencies = [
+ "anyhow",
+ "log",
+ "nvml-wrapper",
+ "serde",
+ "sysinfo",
 ]
 
 [[package]]
@@ -2076,6 +2119,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ntapi"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8a3895c6391c39d7fe7ebc444a87eb2991b2a0bc718fdabd071eec617fc68e4"
+dependencies = [
+ "winapi",
+]
+
+[[package]]
 name = "nu-ansi-term"
 version = "0.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2188,6 +2240,29 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.100",
+]
+
+[[package]]
+name = "nvml-wrapper"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "288bd66a5a56d8c97b178412b328419b3fdec261c0cbc4628ddc49cc16db8fc6"
+dependencies = [
+ "bitflags 1.3.2",
+ "libloading 0.7.4",
+ "nvml-wrapper-sys",
+ "static_assertions",
+ "thiserror 1.0.69",
+ "wrapcenum-derive",
+]
+
+[[package]]
+name = "nvml-wrapper-sys"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3d606d4edf766969f16828ec047ca9aa96652a17bd353dc0613bfaca49b61d6"
+dependencies = [
+ "libloading 0.7.4",
 ]
 
 [[package]]
@@ -2691,7 +2766,7 @@ dependencies = [
 [[package]]
 name = "rccn_usr"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#eaf6cdbb059c2da261882c925894d2bd2b6873c0"
+source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#b3a26dd11950b13214f963fa7dd8967a38af0ae0"
 dependencies = [
  "async-std",
  "async-trait",
@@ -2724,7 +2799,7 @@ dependencies = [
 [[package]]
 name = "rccn_usr_bitstruct_derive"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#eaf6cdbb059c2da261882c925894d2bd2b6873c0"
+source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#b3a26dd11950b13214f963fa7dd8967a38af0ae0"
 dependencies = [
  "num-derive",
  "num-traits",
@@ -2792,7 +2867,7 @@ dependencies = [
 [[package]]
 name = "rccn_usr_pus_macros"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#eaf6cdbb059c2da261882c925894d2bd2b6873c0"
+source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#b3a26dd11950b13214f963fa7dd8967a38af0ae0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3577,6 +3652,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8808c55bc926565c62ef7838bcaa8add51585236803e2bdfa1472e3a3ab5e17"
 dependencies = [
  "nix 0.23.2",
+]
+
+[[package]]
+name = "sysinfo"
+version = "0.26.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c18a6156d1f27a9592ee18c1a846ca8dd5c258b7179fc193ae87c74ebb666f5"
+dependencies = [
+ "cfg-if",
+ "core-foundation-sys",
+ "libc",
+ "ntapi",
+ "once_cell",
+ "winapi",
 ]
 
 [[package]]
@@ -4523,6 +4612,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "wrapcenum-derive"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a76ff259533532054cfbaefb115c613203c73707017459206380f03b3b3f266e"
+dependencies = [
+ "darling",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.100",
+]
+
+[[package]]
 name = "write16"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4947,7 +5048,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37c3ba0baafda26cbec7ba3ce6e795ca0a28b3529ff0d79deebfde73777f9d5c"
 dependencies = [
  "git-version",
- "libloading",
+ "libloading 0.8.6",
  "serde",
  "tracing",
  "zenoh-config",
@@ -5071,7 +5172,7 @@ dependencies = [
  "humantime",
  "lazy_static",
  "libc",
- "libloading",
+ "libloading 0.8.6",
  "pnet_datalink",
  "serde",
  "serde_json",

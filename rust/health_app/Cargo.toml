@@ -1,0 +1,20 @@
+[package]
+name = "health_app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.91"
+env_logger = { version = "0.11.7", default-features = false, features = ["color", "humantime"] }
+binary_serde = "1.0.24"
+crossbeam-channel = "0.5.13"
+futures = "0.3.31"
+rccn_usr = { workspace = true }
+rccn_usr_bitstruct_derive = { workspace = true }
+rccn_usr_pus_macros = { workspace = true }
+satrs = "0.2.1"
+spacepackets = "0.12.0"
+tokio = "1.41.1"
+num-derive = "0.4"
+num-traits = "0.2"
+machine-info = "1.0.6"
