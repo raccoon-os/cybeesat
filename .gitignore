@@ -3,3 +3,5 @@ install/usr/bin
 src/ # Yocto layers
 install/**.toml
 install/**.json
+.rccn_snapshots/
+.rccn_diffs/

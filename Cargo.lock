@@ -443,9 +443,9 @@ dependencies = [
  "env_logger 0.11.7",
  "num-derive",
  "num-traits",
- "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
- "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
- "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
+ "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
  "satrs",
 ]
 
@@ -866,9 +866,9 @@ dependencies = [
  "env_logger 0.11.7",
  "num-derive",
  "num-traits",
- "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
- "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
- "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
+ "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
  "satrs",
 ]
 
@@ -927,9 +927,9 @@ dependencies = [
  "i2cdev",
  "num-derive",
  "num-traits",
- "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
- "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
- "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
+ "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_bitstruct_derive 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
+ "rccn_usr_pus_macros 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
  "satrs",
 ]
 
@@ -2691,7 +2691,7 @@ dependencies = [
 [[package]]
 name = "rccn_usr"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo#781fb30486081cec8de6a7364525eb9f60d29aa5"
+source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#eaf6cdbb059c2da261882c925894d2bd2b6873c0"
 dependencies = [
  "async-std",
  "async-trait",
@@ -2724,13 +2724,13 @@ dependencies = [
 [[package]]
 name = "rccn_usr_bitstruct_derive"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo#781fb30486081cec8de6a7364525eb9f60d29aa5"
+source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#eaf6cdbb059c2da261882c925894d2bd2b6873c0"
 dependencies = [
  "num-derive",
  "num-traits",
  "proc-macro2",
  "quote",
- "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo)",
+ "rccn_usr 0.1.0 (git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment)",
  "syn 2.0.100",
 ]
 
@@ -2743,7 +2743,6 @@ dependencies = [
  "async-trait",
  "ccsds_protocols",
  "crossbeam-channel",
- "env_logger 0.11.7",
  "futures",
  "rccn_usr 0.1.0",
  "serde",
@@ -2793,7 +2792,7 @@ dependencies = [
 [[package]]
 name = "rccn_usr_pus_macros"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=demo#781fb30486081cec8de6a7364525eb9f60d29aa5"
+source = "git+https://gitlab.com/rccn/rccn-userspace-ws?branch=branch_realignment#eaf6cdbb059c2da261882c925894d2bd2b6873c0"
 dependencies = [
  "proc-macro2",
  "quote",

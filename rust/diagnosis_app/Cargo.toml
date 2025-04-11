@@ -9,7 +9,7 @@ env_logger = { version = "0.11.7", default-features = false, features = ["color"
 i2cdev = "0.6.1"
 num-derive = "0.4.2"
 num-traits = "0.2.19"
-rccn_usr = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "demo", version = "0.1.0" }
-rccn_usr_bitstruct_derive = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "demo", version = "0.1.0" }
-rccn_usr_pus_macros = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "demo", version = "0.1.0" }
+rccn_usr = { workspace = true }
+rccn_usr_bitstruct_derive = { workspace = true }
+rccn_usr_pus_macros = { workspace = true }
 satrs = "0.2.1"
