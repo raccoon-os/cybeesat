@@ -1,0 +1,3 @@
+[submodule "rust/rccn-usr"]
+	path = rust/rccn-usr
+	url = git@gitlab.com:rccn/rccn-userspace-ws.git
