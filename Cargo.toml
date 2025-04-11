@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+edition = 2024
+
+members = [
+    "rust/serial_bridge", 
+    "rust/rccn-usr/src/rccn_usr_comm", 
+    "rust/rccn-usr/src/rccn_usr_example_app",
+    "rust/boot_app"
+, "rust/deploy_app", "rust/diagnosis_app", "rust/vcom_interface"]

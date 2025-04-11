@@ -1,0 +1,33 @@
+header:
+  version: 13
+  includes:
+    - file: kas/preset/atsama5d27.yml
+      repo: src/raccoon
+repos:
+  src/raccoon:
+    url: https://gitlab.com/raccoon-os/raccoon-os
+    branch: cybee
+
+  src/meta-rust:
+    url: https://github.com/meta-rust/meta-rust
+    branch: master
+
+local_conf_header:
+  test-tools: |
+    IMAGE_INSTALL:append = " i2c-tools spidev-test python3-spidev python3-smbus libgpiod libgpiod-tools python3-gpiod"
+    IMAGE_INSTALL:append = " kernel-module-usb-f-acm"
+
+  no-ros: |
+    BBMASK += "ros-rust-example*"
+    BBMASK += "raccoon-ws*"
+    BBMASK += "raccoon-ros2-sdk*"
+    BBMASK += "colcon*"
+    BBMASK += "cargo-ament*"
+
+  infra-workaround: |
+    BB_HASHSERVE_UPSTREAM:forcevariable = ""
+
+  meta-rust: |
+    RUST_VERSION = "1.82.0"
+    BBMASK += "poky/meta/recipes-devtools/rust"
+    BBMASK += "meta-rust/recipes-devtools/rust/.*1.75.0.*"

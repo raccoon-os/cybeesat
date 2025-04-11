@@ -1,0 +1,5 @@
+target/
+install/usr/bin
+src/ # Yocto layers
+install/**.toml
+install/**.json

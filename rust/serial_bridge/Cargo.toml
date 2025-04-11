@@ -1,0 +1,12 @@
+[package]
+name = "serial_bridge"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.97"
+clap = { version = "4.5.32", features = ["derive"] }
+env_logger = "0.11.7"
+tokio = { version = "1.44.1", features = ["tokio-macros", "rt"] }
+tokio-serial = "5.4.5"
+zenoh = "1.3.0"

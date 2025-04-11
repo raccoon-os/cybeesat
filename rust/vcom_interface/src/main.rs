@@ -1,0 +1,150 @@
+use std::{sync::{Arc, Mutex}, thread, time::Duration};
+
+use constants::RANDOM_DATA;
+use linux_embedded_hal::{
+    gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags}, spidev::SpidevOptions, CdevPin, Delay, SpidevDevice
+};
+use rf4463::Rf4463;
+mod constants;
+
+fn irq_handler(irq: Line, irq_occurred: Arc<Mutex<bool>>) {
+    for ev in irq.events(LineRequestFlags::INPUT, EventRequestFlags::RISING_EDGE, "vcom-irq").unwrap() {
+        println!("interrupt! {:?}", ev.unwrap());
+        *irq_occurred.lock().unwrap() = true;
+    }
+}
+
+fn hex(data: &[u8]) -> String {
+    data.iter()
+    .map(|byte| format!("{:02X}", byte))
+    .collect::<Vec<String>>()
+    .join(" ")
+}
+
+fn main() {
+    let mut chip = Chip::new("/dev/gpiochip0").unwrap();
+    let irq = chip.get_line(73).unwrap(); // PC9
+
+    let irq_occurred = Arc::new(Mutex::new(false));
+    let irq_occurred_clone = irq_occurred.clone();
+
+    thread::spawn(move || {
+        irq_handler(irq, irq_occurred_clone);
+    });
+
+    let mut spi_dev = SpidevDevice::open("/dev/spidev1.0").unwrap();
+    spi_dev.configure(&SpidevOptions::new().max_speed_hz(500_000).build()).unwrap();
+
+    let mut config = [
+        constants::GPIO_PIN_CFG_DIV,
+        constants::SET_PROPERTY_00,
+        constants::SET_PROPERTY_01,
+        constants::SET_PROPERTY_10,
+        constants::SET_PROPERTY_11,
+        constants::SET_PROPERTY_22,
+        constants::SET_PROPERTY_23,
+        constants::SET_PROPERTY_30,
+        constants::SET_FREQ,
+        constants::SET_PROPERTY_20a,
+        constants::SET_PROPERTY_20b,
+        constants::SET_PROPERTY_20c,
+        constants::SET_PROPERTY_20d,
+        constants::SET_PROPERTY_20e,
+        constants::SET_PROPERTY_20f,
+        constants::SET_PROPERTY_20g,
+        constants::SET_PROPERTY_20h,
+        constants::SET_PROPERTY_20i,
+        constants::SET_PROPERTY_20j,
+        constants::SET_PROPERTY_20k,
+        constants::SET_PROPERTY_21a,
+        constants::SET_PROPERTY_21b,
+        constants::SET_PROPERTY_21c,
+        //constants::SET_PROPERTY_40,
+        constants::SET_SYNC_WORD,
+        //constants::SET_FREQ,
+        constants::CHANGE_STATE_READY
+    ];
+
+    let mut init = [7, 0x02, 0x01, 0x01, 0x01, 0x8c, 0xba, 0x80];
+
+
+    let vxco_freq = 26_000_000;
+
+    let mut radio = Rf4463::new(spi_dev, None::<CdevPin>, Delay {}, &mut init, vxco_freq).unwrap();
+    thread::sleep(Duration::from_secs(1));
+
+    for cfg in config {
+        let mut cfg = cfg.to_vec();
+        radio.radio.send_command::<0>(&mut cfg).unwrap();
+    }
+    
+    
+    println!("radio temp {:?}", radio.get_temp());
+    println!("radio rssi {:?}", radio.get_rssi());
+    println!("radio state {:?}", radio.get_radio_state());
+    //radio.set_frequency(145925000).unwrap();
+    let out = radio.radio.send_command::<9>(&mut [0x01]).unwrap();
+    println!("chip info: {:?}", out);
+
+    radio.start_rx(Some(100), false).unwrap();
+    //radio.radio.send_command::<0>(&mut [0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]).unwrap();
+    println!("receiving");
+
+    let mut rx_buf = [0u8; 500];
+    let mut tx_buf = RANDOM_DATA;
+
+    radio.start_tx(tx_buf).unwrap();
+
+    loop {
+        {
+            /*
+            let mut irq = irq_occurred.lock().unwrap();
+            match *irq {
+                true => {
+                    println!("Executing radio.interrupt()");
+                    radio.interrupt(Some(&mut rx_buf), None).unwrap();
+
+                    *irq = false;
+                },
+                false => {
+                } 
+            }
+            */
+            radio.interrupt(Some(&mut rx_buf), Some(&tx_buf)).unwrap();
+            //radio.interrupt(Some(&mut rx_buf), Some(&tx_buf)).unwrap();
+        }
+
+        match radio.finish_rx(&mut rx_buf).unwrap() {
+            Some(pkt) => {
+                let len = pkt.data().len(); 
+                println!("pkt {:?}, {}", hex(&rx_buf[0..20]), len);
+                rx_buf = [0u8; 500];
+                radio.start_rx(Some(100), false).unwrap();
+            }
+            None => {
+                //println!("buf {}", hex(&rx_buf[0..20]));
+            }
+        }
+
+        if radio.is_idle() {
+            thread::sleep(Duration::from_millis(1000));
+            radio.start_tx(tx_buf).unwrap();
+            println!("transmitting!");
+        }
+
+        thread::sleep(Duration::from_millis(100));
+    }
+
+    /*
+    loop {
+        //radio.sleep().unwrap();
+        //println!("sleeping...");
+        //println!("radio state {:?}", radio.get_radio_state());
+        //thread::sleep(Duration::from_secs(10));
+        radio.start_rx(None, true).unwrap();
+        println!("receiving");
+        println!("radio state {:?}", radio.get_radio_state());
+        thread::sleep(Duration::from_secs(10));
+    }
+    */
+}
