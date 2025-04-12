@@ -1,0 +1,161 @@
+<?xml version="1.0" ?>
+<!--
+This file was automatically generated with Yamcs PyMDB.
+See https://github.com/yamcs/pymdb
+-->
+<SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" name="RACCOON_SVC">
+  <TelemetryMetaData>
+    <ParameterTypeSet>
+      <EnumeratedParameterType name="PcuState">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        <EnumerationList>
+          <Enumeration value="0" label="ON"/>
+          <Enumeration value="1" label="OFF"/>
+          <Enumeration value="2" label="FAULT"/>
+        </EnumerationList>
+      </EnumeratedParameterType>
+      <ArrayParameterType name="Voltages" arrayTypeRef="Voltages__el">
+        <DimensionList>
+          <Dimension>
+            <StartingIndex>
+              <FixedValue>0</FixedValue>
+            </StartingIndex>
+            <EndingIndex>
+              <FixedValue>4</FixedValue>
+            </EndingIndex>
+          </Dimension>
+        </DimensionList>
+      </ArrayParameterType>
+      <IntegerParameterType name="Voltages__el" signed="true" sizeInBits="16"/>
+    </ParameterTypeSet>
+    <ParameterSet>
+      <Parameter name="PcuState" parameterTypeRef="PcuState">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+      <Parameter name="Voltages" parameterTypeRef="Voltages">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+    </ParameterSet>
+    <ContainerSet>
+      <SequenceContainer name="PCUTelemetry" abstract="false">
+        <EntryList>
+          <ParameterRefEntry parameterRef="Voltages">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+          <ParameterRefEntry parameterRef="PcuState">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+        </EntryList>
+        <BaseContainer containerRef="/PUS/pus-tm">
+          <RestrictionCriteria>
+            <BooleanExpression>
+              <ANDedConditions>
+                <Condition>
+                  <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                  <ComparisonOperator>==</ComparisonOperator>
+                  <Value>130</Value>
+                </Condition>
+                <Condition>
+                  <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                  <ComparisonOperator>==</ComparisonOperator>
+                  <Value>1</Value>
+                </Condition>
+              </ANDedConditions>
+            </BooleanExpression>
+          </RestrictionCriteria>
+        </BaseContainer>
+      </SequenceContainer>
+    </ContainerSet>
+  </TelemetryMetaData>
+  <CommandMetaData>
+    <ArgumentTypeSet>
+      <IntegerArgumentType name="GeneratedCommandTest__BatteryNum" signed="false" sizeInBits="32">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        <ValidRangeSet validRangeAppliesToCalibrated="true">
+          <ValidRange minInclusive="1" maxInclusive="3"/>
+        </ValidRangeSet>
+      </IntegerArgumentType>
+      <IntegerArgumentType name="GeneratedCommandTest__CustomLength" signed="false" sizeInBits="32">
+        <IntegerDataEncoding sizeInBits="5" encoding="unsigned"/>
+        <ValidRangeSet validRangeAppliesToCalibrated="true">
+          <ValidRange minInclusive="0" maxInclusive="244"/>
+        </ValidRangeSet>
+      </IntegerArgumentType>
+      <EnumeratedArgumentType name="GeneratedCommandTest__EnumArg">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        <EnumerationList>
+          <Enumeration value="0" label="OFF"/>
+          <Enumeration value="1" label="ON"/>
+          <Enumeration value="2" label="EXPLODE"/>
+        </EnumerationList>
+      </EnumeratedArgumentType>
+      <EnumeratedArgumentType name="GeneratedCommandTest__EnumeratedArgCustomType">
+        <IntegerDataEncoding sizeInBits="4" encoding="unsigned"/>
+        <EnumerationList>
+          <Enumeration value="0" label="AUS"/>
+          <Enumeration value="1" label="EIN"/>
+          <Enumeration value="2" label="JA"/>
+        </EnumerationList>
+      </EnumeratedArgumentType>
+    </ArgumentTypeSet>
+    <MetaCommandSet>
+      <MetaCommand name="GeneratedCommandTest" abstract="false">
+        <BaseMetaCommand metaCommandRef="RACCOON_SVC-tc">
+          <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="1"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="BatteryNum" argumentTypeRef="GeneratedCommandTest__BatteryNum"/>
+          <Argument name="CustomLength" argumentTypeRef="GeneratedCommandTest__CustomLength"/>
+          <Argument name="EnumArg" argumentTypeRef="GeneratedCommandTest__EnumArg"/>
+          <Argument name="EnumeratedArgCustomType" argumentTypeRef="GeneratedCommandTest__EnumeratedArgCustomType"/>
+        </ArgumentList>
+        <CommandContainer name="GeneratedCommandTest">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="BatteryNum">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+            <ArgumentRefEntry argumentRef="CustomLength">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+            <ArgumentRefEntry argumentRef="EnumArg">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+            <ArgumentRefEntry argumentRef="EnumeratedArgCustomType">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="RACCOON_SVC-tc"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="RACCOON_SVC-tc" abstract="true">
+        <BaseMetaCommand metaCommandRef="/PUS/pus-tc">
+          <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="type" argumentValue="130"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <CommandContainer name="RACCOON_SVC-tc">
+          <EntryList/>
+          <BaseContainer containerRef="/PUS/pus-tc"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+    </MetaCommandSet>
+  </CommandMetaData>
+</SpaceSystem>
