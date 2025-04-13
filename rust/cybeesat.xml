@@ -6,10 +6,41 @@ See https://github.com/yamcs/pymdb
 <SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" name="Controll_App">
   <TelemetryMetaData/>
   <CommandMetaData/>
-  <SpaceSystem name="Controll">
+  <SpaceSystem name="EPS_Controll">
     <TelemetryMetaData/>
     <CommandMetaData>
+      <ArgumentTypeSet>
+        <BooleanArgumentType name="POWER_ANT_DEPLOY__Power_ANT_DEPLOY_ARG" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
+        <BooleanArgumentType name="POWER_PL_APRS__POWER_PL_APRS_ARGS" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
+      </ArgumentTypeSet>
       <MetaCommandSet>
+        <MetaCommand name="POWER_ANT_DEPLOY" abstract="false" shortDescription="Power Deploy Antenna Mechanism">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="2"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Power_ANT_DEPLOY_ARG" argumentTypeRef="POWER_ANT_DEPLOY__Power_ANT_DEPLOY_ARG"/>
+          </ArgumentList>
+          <CommandContainer name="POWER_ANT_DEPLOY">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Power_ANT_DEPLOY_ARG">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
         <MetaCommand name="POWER_CYCLE_VCOM" abstract="false" shortDescription="turn vcom unreg bus off and on again">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -24,10 +55,339 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
+        <MetaCommand name="POWER_PL_APRS" abstract="false" shortDescription="Power Payload APRS">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="5"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="POWER_PL_APRS_ARGS" argumentTypeRef="POWER_PL_APRS__POWER_PL_APRS_ARGS"/>
+          </ArgumentList>
+          <CommandContainer name="POWER_PL_APRS">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="POWER_PL_APRS_ARGS">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
         <MetaCommand name="base" abstract="true">
           <BaseMetaCommand metaCommandRef="/PUS/pus-tc">
             <ArgumentAssignmentList>
               <ArgumentAssignment argumentName="type" argumentValue="78"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="base">
+            <EntryList/>
+            <BaseContainer containerRef="/PUS/pus-tc"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+      </MetaCommandSet>
+    </CommandMetaData>
+  </SpaceSystem>
+  <SpaceSystem name="RTC">
+    <TelemetryMetaData>
+      <ContainerSet>
+        <SequenceContainer name="RTC_Register" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="../Telemetry/Register">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Value">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>79</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>5</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="RTC_Time" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="../Telemetry/SecondFrac100th">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Seconds">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Minutes">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Hours">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Day">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Weekday">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Month">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="../Telemetry/Year">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>79</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>3</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+      </ContainerSet>
+    </TelemetryMetaData>
+    <CommandMetaData>
+      <ArgumentTypeSet>
+        <IntegerArgumentType name="RTC_Read_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Register__Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__SecondFrac100th" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__Seconds" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__Minutes" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__Hours" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__Day" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <EnumeratedArgumentType name="RTC_Set_Time__Weekday">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="Sunday"/>
+            <Enumeration value="1" label="Monday"/>
+            <Enumeration value="2" label="Tuesday"/>
+            <Enumeration value="3" label="Wednesday"/>
+            <Enumeration value="4" label="Thursday"/>
+            <Enumeration value="5" label="Friday"/>
+            <Enumeration value="6" label="Saturday"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__Month" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="RTC_Set_Time__Year" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+      </ArgumentTypeSet>
+      <MetaCommandSet>
+        <MetaCommand name="RTC_Read_Register" abstract="false" shortDescription="Read RTC Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="5"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Register" argumentTypeRef="RTC_Read_Register__Register"/>
+          </ArgumentList>
+          <CommandContainer name="RTC_Read_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RTC_Read_Time" abstract="false" shortDescription="Read current RTC Time">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="3"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RTC_Read_Time">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RTC_Set_Register" abstract="false" shortDescription="Set RTC Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="4"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Register" argumentTypeRef="RTC_Set_Register__Register"/>
+            <Argument name="Value" argumentTypeRef="RTC_Set_Register__Value"/>
+          </ArgumentList>
+          <CommandContainer name="RTC_Set_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Value">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RTC_Set_Time" abstract="false" shortDescription="Set RTC Time">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="2"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="SecondFrac100th" argumentTypeRef="RTC_Set_Time__SecondFrac100th"/>
+            <Argument name="Seconds" argumentTypeRef="RTC_Set_Time__Seconds"/>
+            <Argument name="Minutes" argumentTypeRef="RTC_Set_Time__Minutes"/>
+            <Argument name="Hours" argumentTypeRef="RTC_Set_Time__Hours"/>
+            <Argument name="Day" argumentTypeRef="RTC_Set_Time__Day"/>
+            <Argument name="Weekday" argumentTypeRef="RTC_Set_Time__Weekday"/>
+            <Argument name="Month" argumentTypeRef="RTC_Set_Time__Month"/>
+            <Argument name="Year" argumentTypeRef="RTC_Set_Time__Year"/>
+          </ArgumentList>
+          <CommandContainer name="RTC_Set_Time">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="SecondFrac100th">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Seconds">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Minutes">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Hours">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Day">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Weekday">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Month">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Year">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RTC_Software_Reset" abstract="false" shortDescription="Perform RTC Software Reset">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="1"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RTC_Software_Reset">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="base" abstract="true">
+          <BaseMetaCommand metaCommandRef="/PUS/pus-tc">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="type" argumentValue="79"/>
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <CommandContainer name="base">
@@ -244,6 +604,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <IntegerParameterType name="Day" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
         <IntegerParameterType name="EPS_RTC_CONTROL0" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">control flags tbc.</Unit>
@@ -398,6 +761,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <IntegerParameterType name="Hours" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
         <IntegerParameterType name="LAST_SESSION_UTC" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">seconds</Unit>
@@ -439,6 +805,12 @@ See https://github.com/yamcs/pymdb
             <Unit form="calibrated">Micro Tesla</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Minutes" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Month" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
         <IntegerParameterType name="OBC_CPU_UTIL" signed="true" sizeInBits="32">
           <UnitSet>
@@ -570,6 +942,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <IntegerParameterType name="Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
         <IntegerParameterType name="SW_CERT00" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -584,6 +959,12 @@ See https://github.com/yamcs/pymdb
         </IntegerParameterType>
         <IntegerParameterType name="SW_CERT04" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="SecondFrac100th" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Seconds" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
         <IntegerParameterType name="UNREG_BUS_I" signed="true" sizeInBits="32">
           <UnitSet>
@@ -885,6 +1266,24 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <IntegerParameterType name="Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <EnumeratedParameterType name="Weekday">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="Sunday"/>
+            <Enumeration value="1" label="Monday"/>
+            <Enumeration value="2" label="Tuesday"/>
+            <Enumeration value="3" label="Wednesday"/>
+            <Enumeration value="4" label="Thursday"/>
+            <Enumeration value="5" label="Friday"/>
+            <Enumeration value="6" label="Saturday"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <IntegerParameterType name="Year" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
         <IntegerParameterType name="user_defined_parameter0" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">tbd.</Unit>
@@ -1025,6 +1424,9 @@ See https://github.com/yamcs/pymdb
         <Parameter name="CSA_SOL7" parameterTypeRef="CSA_SOL7" shortDescription="Analog solar input current - Direction (TBC): x+">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="Day" parameterTypeRef="Day" shortDescription="Current Set Days">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="EPS_RTC_CONTROL0" parameterTypeRef="EPS_RTC_CONTROL0" shortDescription="Realtime Clock control settings register 0">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1100,6 +1502,9 @@ See https://github.com/yamcs/pymdb
         <Parameter name="GYRO1_Z_SENS" parameterTypeRef="GYRO1_Z_SENS" shortDescription="Angular rate Z-axis Sensor 1">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="Hours" parameterTypeRef="Hours" shortDescription="Current Set Hours">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="LAST_SESSION_UTC" parameterTypeRef="LAST_SESSION_UTC" shortDescription="Timestamp of last/previous contact">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1119,6 +1524,12 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="MAG1_Z" parameterTypeRef="MAG1_Z" shortDescription="Magnetic field measurement Z-axis Sensor 1">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Minutes" parameterTypeRef="Minutes" shortDescription="Current Set Minutes">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Month" parameterTypeRef="Month" shortDescription="Current Set Month">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="OBC_CPU_UTIL" parameterTypeRef="OBC_CPU_UTIL" shortDescription="Cpu usage">
@@ -1187,6 +1598,9 @@ See https://github.com/yamcs/pymdb
         <Parameter name="PMIC1_VBUS" parameterTypeRef="PMIC1_VBUS" shortDescription="EPS digital PCB temperature">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="Register" parameterTypeRef="Register" shortDescription="Register ID">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="SW_CERT00" parameterTypeRef="SW_CERT00" shortDescription="authorized sw. updater Certificate 0">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1200,6 +1614,12 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="SW_CERT04" parameterTypeRef="SW_CERT04" shortDescription="authorized sw. updater Certificate 4">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="SecondFrac100th" parameterTypeRef="SecondFrac100th" shortDescription="100th Fraction of a second">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Seconds" parameterTypeRef="Seconds" shortDescription="Current Set Seconds">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="UNREG_BUS_I" parameterTypeRef="UNREG_BUS_I" shortDescription="Bus unregulated voltage current measurement">
@@ -1356,6 +1776,15 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="V_UNREG_V" parameterTypeRef="V_UNREG_V" shortDescription="Satellite bus main unreg. power voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Value" parameterTypeRef="Value" shortDescription="Register Value">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Weekday" parameterTypeRef="Weekday" shortDescription="Current set day of the week">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Year" parameterTypeRef="Year" shortDescription="Current Set Year">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="user_defined_parameter0" parameterTypeRef="user_defined_parameter0" shortDescription="tbd. 0">

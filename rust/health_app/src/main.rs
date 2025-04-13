@@ -1,11 +1,13 @@
 use telemetry::service::GetHealthService;
+use controll::service::ControllService;
+use rtc::service::RtcService;
 
 use anyhow::Result;
 use rccn_usr::pus::app::PusApp;
-use rccn_usr::zenoh::key_expr::OwnedKeyExpr;
 
 mod telemetry;
 mod controll;
+mod rtc;
 
 const APID: u16 = 77;
 const VCID: u8 = 0;
@@ -21,6 +23,12 @@ fn main() -> Result<()> {
 
     let service77 = GetHealthService::new();
     app.register_service(service77);
+
+    let service78 = ControllService::new();
+    app.register_service(service78);
+
+    let service79 = RtcService::new();
+    app.register_service(service79);
     
 
     app.run();

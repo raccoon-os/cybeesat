@@ -521,7 +521,7 @@ Container(
     ]   
 )
 
-service2 = Service(name="Controll", system=app)
+service2 = Service(name="EPS_Controll", system=app)
 service2_type_id = 78
 service2.service_id = service2_type_id
 
@@ -542,6 +542,7 @@ RCCNCommand(
 )
 
 RCCNCommand(
+    system=service2,
     base=base2_cmd,
     assignments={"subtype": 2},
     name="POWER_ANT_DEPLOY",
@@ -554,21 +555,24 @@ RCCNCommand(
     ],
 )
 
-RCCNCommand(
-    base=base2_cmd,
-    assignments={"subtype": 3},
-    name="ANT_DEPLOY",
-    short_description="Deploy Antenna",
-)
+# RCCNCommand(
+#     system=service2,
+#     base=base2_cmd,
+#     assignments={"subtype": 3},
+#     name="ANT_DEPLOY",
+#     short_description="Deploy Antenna",
+# )
+
+# RCCNCommand(
+#     system=service2,
+#     base=base2_cmd,
+#     assignments={"subtype": 4},
+#     name="RETRACT_DEPLOY",
+#     short_description="Retract Antenna",
+# )
 
 RCCNCommand(
-    base=base2_cmd,
-    assignments={"subtype": 4},
-    name="RETRACT_DEPLOY",
-    short_description="Retract Antenna",
-)
-
-RCCNCommand(
+    system=service2,
     base=base2_cmd,
     assignments={"subtype": 5},
     name="POWER_PL_APRS",
@@ -579,6 +583,144 @@ RCCNCommand(
             encoding=bool_t,
         ),
     ],
+)
+
+RTC_service = Service(name="RTC", system=app)
+RTC_service_type_id = 79
+RTC_service.service_id = RTC_service_type_id
+
+rtc_base_cmd = Command(
+    system=RTC_service,
+    name="base",
+    abstract=True,
+    base="/PUS/pus-tc",
+    assignments={"type": RTC_service_type_id},
+)
+
+RCCNCommand(
+    system=RTC_service,
+    base=rtc_base_cmd,
+    assignments={"subtype": 1},
+    name="RTC_Software_Reset",
+    short_description="Perform RTC Software Reset"
+)
+
+RCCNCommand(
+    system=RTC_service,
+    base=rtc_base_cmd,
+    assignments={"subtype": 2},
+    name="RTC_Set_Time",
+    short_description="Set RTC Time",
+    arguments=[
+        IntegerArgument(
+            name="SecondFrac100th",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Seconds",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Minutes",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Hours",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Day",
+            encoding=uint8_t,
+        ),
+        EnumeratedArgument(
+            name="Weekday",
+            choices= [[0b000, "Sunday"], [0b001, "Monday"], [0b010, "Tuesday"], [0b011, "Wednesday"], [0b100, "Thursday"], [0b101, "Friday"], [0b110, "Saturday"]],
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Month",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Year",
+            encoding=uint8_t,
+        ),
+    ],
+)
+
+
+RCCNCommand(
+    system=RTC_service,
+    base=rtc_base_cmd,
+    assignments={"subtype": 3},
+    name="RTC_Read_Time",
+    short_description="Read current RTC Time"
+)
+
+Container(
+    system=RTC_service,
+    base="/PUS/pus-tm",
+    name="RTC_Time",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", RTC_service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 3),
+    ),
+    entries=[
+        int_parameter("SecondFrac100th",  "", "100th Fraction of a second",                uint8_t),
+        int_parameter("Seconds",  "", "Current Set Seconds", uint8_t),
+        int_parameter("Minutes",  "", "Current Set Minutes", uint8_t),
+        int_parameter("Hours",  "", "Current Set Hours", uint8_t),
+        int_parameter("Day",  "", "Current Set Days", uint8_t),
+        enum_parameter("Weekday", [[0b000, "Sunday"], [0b001, "Monday"], [0b010, "Tuesday"], [0b011, "Wednesday"], [0b100, "Thursday"], [0b101, "Friday"], [0b110, "Saturday"]], "Current set day of the week", uint8_t),
+        int_parameter("Month",  "", "Current Set Month", uint8_t),
+        int_parameter("Year",  "", "Current Set Year", uint8_t),
+    ]
+)
+
+RCCNCommand(
+    system=RTC_service,
+    base=rtc_base_cmd,
+    assignments={"subtype": 4},
+    name="RTC_Set_Register",
+    short_description="Set RTC Register",
+    arguments=[
+        IntegerArgument(
+            name="Register",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Value",
+            encoding=uint8_t,
+        ),
+    ],
+)
+
+RCCNCommand(
+    system=RTC_service,
+    base=rtc_base_cmd,
+    assignments={"subtype": 5},
+    name="RTC_Read_Register",
+    short_description="Read RTC Register",
+    arguments=[
+        IntegerArgument(
+            name="Register",
+            encoding=uint8_t,
+        ),
+    ],
+)
+
+Container(
+    system=RTC_service,
+    base="/PUS/pus-tm",
+    name="RTC_Register",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", RTC_service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 5),
+    ),
+    entries=[
+        int_parameter("Register",  "", "Register ID", uint8_t),
+        int_parameter("Value",  "", "Register Value", uint8_t),
+    ]
 )
 
 # app.generate_rccn_code()
