@@ -14,11 +14,12 @@ deploy:
 	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_example_app rccn_usr_example_app
 	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_cfdp rccn_usr_cfdp
 	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_update rccn_usr_update
+	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_fec rccn_usr_fec
 	./cross.sh cargo install --path rust/serial_bridge serial_bridge
 	./cross.sh cargo install --path rust/boot_app boot_app
 	./cross.sh cargo install --path rust/deploy_app deploy_app
 	./cross.sh cargo install --path rust/diagnosis_app diagnosis_app
-	./cross.sh cargo install --path rust/health_app health_app
+	# ./cross.sh cargo install --path rust/health_app health_app
 	./cross.sh cargo install zenohd
 
 	cp python/antenna_control.py install/usr/bin
