@@ -5,3 +5,6 @@ install/**.toml
 install/**.json
 .rccn_snapshots/
 .rccn_diffs/
+install/usr/.crates.toml
+install/usr/.crates2.json
+delta.tar.gz
