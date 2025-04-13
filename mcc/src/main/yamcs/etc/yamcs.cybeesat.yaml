@@ -29,13 +29,13 @@ services:
 dataLinks:
   - name: UDP_FRAME_OUT
     class: org.yamcs.tctm.ccsds.UdpTcFrameLink
-    host: 192.168.42.93 #host and port where to send the frames to
+    host: localhost #host and port where to send the frames to
     port: 10056
     spacecraftId: 0xAB
     maxFrameLength: 112
-    # cltuEncoding: BCH
     #the following option can be commented out to randomize the CLTUs. Note that the simulator does not understand randmized data though.
-    #randomizeCltu: false 
+    cltuEncoding: BCH
+    randomizeCltu: true
     #the following option can be used to skip randomization for certain virtual channels
     #skipRandomizationForVcs: [1, 0]
     errorDetection: CRC16
@@ -48,17 +48,19 @@ dataLinks:
               type: CRC-16-CCIIT
            stream: "tc_realtime" #which yamcs stream to get the data from
            useCop1: true #enable FOP1 (the transmitter part of COP1, see CCSDS 232.1-B-2) for this VC
+           cop1T1: 10
+           cop1TxLimit: 10
            clcwStream: "clcw" #the name of the stream where the CLCW is received from, mandatory if FOP1 is used
            initialClcwWait: 3600 #how many seconds to wait at startup for an initial CLCW, before going to state 6(initial). If not configured or negative, start directly in state 6
   - name: UDP_FRAME_IN
     class: org.yamcs.tctm.ccsds.UdpTmFrameLink
     #host: localhost #host and port where to send the frames to
     port: 10066
-#    rawFrameDecoder:
-#        codec: RS
-#        interleavingDepth: 5
-#        errorCorrectionCapability: 16
-#        derandomize: false
+    rawFrameDecoder:
+        codec: RS
+        interleavingDepth: 1
+        errorCorrectionCapability: 16
+        derandomize: true
     frameType: "USLP"
     spacecraftId: 0xAB
     # frameLength: 223
@@ -66,11 +68,6 @@ dataLinks:
     maxFrameLength: 255
     frameHeaderErrorControlPresent: true
     insertZoneLength: 0
-    # cltuEncoding: BCH
-    #the following option can be commented out to randomize the CLTUs. Note that the simulator does not understand randmized data though.
-    #randomizeCltu: false 
-    #the following option can be used to skip randomization for certain virtual channels
-    #skipRandomizationForVcs: [1, 0]
     errorDetection: CRC16
     clcwStream: "clcw"
     goodFrameStream: good_frames

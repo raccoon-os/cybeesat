@@ -11,6 +11,7 @@ members = [
     "rust/rccn-usr/src/rccn_usr_launch", 
     "rust/rccn-usr/src/rccn_usr_cfdp", 
     "rust/rccn-usr/src/rccn_usr_update", 
+    "rust/rccn-usr/src/rccn_usr_fec", 
     "rust/boot_app", 
     "rust/deploy_app", 
     "rust/diagnosis_app", 
@@ -21,3 +22,4 @@ members = [
 rccn_usr = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
 rccn_usr_bitstruct_derive = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
 rccn_usr_pus_macros = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
+zenoh = { version = "1.0.3" }
