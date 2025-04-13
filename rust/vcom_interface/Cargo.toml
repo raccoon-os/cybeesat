@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 linux-embedded-hal = { version = "0.4.0", features = ["gpio_cdev"] }
 rf4463 = { git = "https://gitlab.com/rccn/forks/rf4463", version = "0.1.0" }
+zenoh = { version = "1.0.3" } #, default-features = false, features = ["transport_tcp", "transport_udp"] }
