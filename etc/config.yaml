@@ -1,0 +1,25 @@
+app:
+  app_id: 134
+  vc_id: 0
+
+tx:
+  transport:
+    kind: zenoh
+    key: radio_tx
+
+  coding:
+    kind: rs
+    randomize: true
+    interleaving_deapth: 1
+
+rx:
+  transport:
+    kind: zenoh
+    key: radio_rx
+
+  coding:
+    kind: bch
+    randomize: true
+
+tx_key: fec_tx
+rx_key: fec_rx
