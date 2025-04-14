@@ -87,11 +87,12 @@ impl RtcService {
     }
 
     fn to_bcd(&self, val: u8) -> u8 {
-        (((val / 10) & 0b111) << 4) | ((val % 10) & 0b1111)
+        // (((val / 10) & 0b111) << 4) | ((val % 10) & 0b1111)
+        ((val / 10) << 4) + (val & 0x0F)
     } 
 
     fn from_bcd(&self, val: u8) -> u8 {
-        (val >> 4) * 10 + (val & 0b1111)
+        (val >> 4) * 10 + (val & 0x0F)
     } 
 
 }

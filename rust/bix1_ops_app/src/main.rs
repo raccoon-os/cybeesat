@@ -1,5 +1,5 @@
 use telemetry::service::GetHealthService;
-use controll::service::ControllService;
+use controll::service::EpsCtrlService;
 use rtc::service::RtcService;
 
 use anyhow::Result;
@@ -24,8 +24,8 @@ fn main() -> Result<()> {
     let service77 = GetHealthService::new();
     app.register_service(service77);
 
-    let service78 = ControllService::new();
-    app.register_service(service78);
+    let eps_service78 = EpsCtrlService::new();
+    app.register_service(eps_service78);
 
     let service79 = RtcService::new();
     app.register_service(service79);

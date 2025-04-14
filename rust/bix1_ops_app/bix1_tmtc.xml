@@ -3,7 +3,7 @@
 This file was automatically generated with Yamcs PyMDB.
 See https://github.com/yamcs/pymdb
 -->
-<SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" name="Controll_App">
+<SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" name="BiX1_Cntrl_App">
   <TelemetryMetaData/>
   <CommandMetaData/>
   <SpaceSystem name="EPS_Controll">

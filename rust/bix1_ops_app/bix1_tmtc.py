@@ -8,8 +8,8 @@ from yamcs.pymdb import *
 
 from rccn_gen import *
 
-root_system = System("CyBEEsat")
-app = Application(system=root_system, name="Controll_App", apid=77)
+root_system = System("BiX1")
+app = Application(system=root_system, name="BiX1_Cntrl_App", apid=77)
 
 service = Service(name="Telemetry", system=app)
 service_type_id = 77
@@ -724,6 +724,6 @@ Container(
 )
 
 # app.generate_rccn_code()
-with open("cybeesat.xml", "wt") as f:
+with open("bix1_tmtc.xml", "wt") as f:
   app.dump(f)
   

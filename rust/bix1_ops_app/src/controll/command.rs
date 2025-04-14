@@ -9,10 +9,10 @@ pub enum Command {
     PowerCycleVCOM,
     #[subservice(2)]
     PowerAntDeploy(PowerAntDeployArgs),
-    #[subservice(3)]
-    AntDeploy,
-    #[subservice(4)]
-    AntRetract,
+    // #[subservice(3)]
+    // AntDeploy,
+    // #[subservice(4)]
+    // AntRetract,
     #[subservice(5)]
     PowerPayloadAprs(PowerPayloadAprsArgs),
 }
