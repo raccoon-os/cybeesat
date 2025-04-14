@@ -10,16 +10,8 @@ pub enum Command {
     #[subservice(8)]
     RqCom,
     #[subservice(2)]
-    RqEpsBattery,
-    #[subservice(3)]
-    RqEpsBus,
-    #[subservice(1)]
     RqEpsCsaSol,
     #[subservice(5)]
-    RqEpsTemp,
-    #[subservice(4)]
-    RqEpsUser,
-    #[subservice(9)]
     RqImu,
     #[subservice(6)]
     RqObcInfo,

@@ -7,17 +7,997 @@ See https://github.com/yamcs/pymdb
   <TelemetryMetaData/>
   <CommandMetaData/>
   <SpaceSystem name="EPS_Controll">
-    <TelemetryMetaData/>
+    <TelemetryMetaData>
+      <ParameterTypeSet>
+        <IntegerParameterType name="FG0_CURRENT" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="FG0_PWR" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mW</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="FG0_VBAT" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="FG1_CURRENT" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="FG1_PWR" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mW</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="FG1_VBAT" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PCB_ATEMP0" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PCB_ATEMP1" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PCB_ATEMP2" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PCB_ATEMP3" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PCB_DTEMP" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
+        </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="PMIC0"/>
+            <Enumeration value="1" label="PMIC1"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <IntegerParameterType name="PMIC0_ICHG" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC0_STAT">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="not_charging"/>
+            <Enumeration value="1" label="pre_charge"/>
+            <Enumeration value="2" label="fast_charge"/>
+            <Enumeration value="3" label="charge_terminated"/>
+            <Enumeration value="4" label="read_out_error"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <IntegerParameterType name="PMIC0_VBAT" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PMIC0_VBUS" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PMIC1_ICHG" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC1_STAT">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="not_charging"/>
+            <Enumeration value="1" label="pre_charge"/>
+            <Enumeration value="2" label="fast_charge"/>
+            <Enumeration value="3" label="charge_terminated"/>
+            <Enumeration value="4" label="read_out_error"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <IntegerParameterType name="PMIC1_VBAT" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PMIC1_VBUS" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PMIC_Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="PMIC_Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Power_Sensor_Address" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Power_Sensor_Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Power_Sensor_Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="UNREG_BUS_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="UNREG_BUS_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="UNREG_USER_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <BooleanParameterType name="UNREG_USER_SW" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
+        <IntegerParameterType name="UNREG_USER_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V3_3_BUS0_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V3_3_BUS0_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V3_3_BUS1_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V3_3_BUS1_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V3_3_USER_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <BooleanParameterType name="V3_3_USER_SW" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
+        <IntegerParameterType name="V3_3_USER_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V5_BUS0_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V5_BUS0_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V5_BUS1_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V5_BUS1_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V5_USER_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <BooleanParameterType name="V5_USER_SW" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
+        <IntegerParameterType name="V5_USER_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V_UNREG_I" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="V_UNREG_V" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mV</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+      </ParameterTypeSet>
+      <ParameterSet>
+        <Parameter name="FG0_CURRENT" parameterTypeRef="FG0_CURRENT" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="FG0_PWR" parameterTypeRef="FG0_PWR" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="FG0_VBAT" parameterTypeRef="FG0_VBAT" shortDescription="Fuel gauge 0 battery voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="FG1_CURRENT" parameterTypeRef="FG1_CURRENT" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="FG1_PWR" parameterTypeRef="FG1_PWR" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="FG1_VBAT" parameterTypeRef="FG1_VBAT" shortDescription="Fuel gauge 1 battery voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PCB_ATEMP0" parameterTypeRef="PCB_ATEMP0" shortDescription="OBC PCB Temperature 0">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PCB_ATEMP1" parameterTypeRef="PCB_ATEMP1" shortDescription="OBC PCB Temperature 1">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PCB_ATEMP2" parameterTypeRef="PCB_ATEMP2" shortDescription="OBC PCB Temperature 2">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PCB_ATEMP3" parameterTypeRef="PCB_ATEMP3" shortDescription="OBC PCB Temperature 3">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PCB_DTEMP" parameterTypeRef="PCB_DTEMP" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC" parameterTypeRef="PMIC" shortDescription="PMIC Selection">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC0_ICHG" parameterTypeRef="PMIC0_ICHG" shortDescription="Battery charger 0 charge/discharge current">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC0_STAT" parameterTypeRef="PMIC0_STAT" shortDescription="Battery charger 0 status">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC0_VBAT" parameterTypeRef="PMIC0_VBAT" shortDescription="Battery charger 0 battery voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC0_VBUS" parameterTypeRef="PMIC0_VBUS" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_ICHG" parameterTypeRef="PMIC1_ICHG" shortDescription="Battery charger 1 charge/discharge current">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_STAT" parameterTypeRef="PMIC1_STAT" shortDescription="Battery charger 1 status">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_VBAT" parameterTypeRef="PMIC1_VBAT" shortDescription="Battery charger 1 battery voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_VBUS" parameterTypeRef="PMIC1_VBUS" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC_Register" parameterTypeRef="PMIC_Register" shortDescription="PMIC Register">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC_Value" parameterTypeRef="PMIC_Value" shortDescription="PMIC Register Content">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Power_Sensor_Address" parameterTypeRef="Power_Sensor_Address" shortDescription="Power Sensor I2C Adress">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Power_Sensor_Register" parameterTypeRef="Power_Sensor_Register" shortDescription="Power Sensor Register">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Power_Sensor_Value" parameterTypeRef="Power_Sensor_Value" shortDescription="Power Register Content">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="UNREG_BUS_I" parameterTypeRef="UNREG_BUS_I" shortDescription="Bus unregulated voltage current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="UNREG_BUS_V" parameterTypeRef="UNREG_BUS_V" shortDescription="Bus unregulated voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="UNREG_USER_I" parameterTypeRef="UNREG_USER_I" shortDescription="User unregulated current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="UNREG_USER_SW" parameterTypeRef="UNREG_USER_SW" shortDescription="Satellite user unregulated voltage switch state (true=0n, false=Off)">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="UNREG_USER_V" parameterTypeRef="UNREG_USER_V" shortDescription="User unregulated voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_BUS0_I" parameterTypeRef="V3_3_BUS0_I" shortDescription="Bus 0 3.3V current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_BUS0_V" parameterTypeRef="V3_3_BUS0_V" shortDescription="Bus 0 3.3V voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_BUS1_I" parameterTypeRef="V3_3_BUS1_I" shortDescription="Bus 1 3.3V current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_BUS1_V" parameterTypeRef="V3_3_BUS1_V" shortDescription="Bus 1 3.3V voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_USER_I" parameterTypeRef="V3_3_USER_I" shortDescription="User 0 3.3V current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_USER_SW" parameterTypeRef="V3_3_USER_SW" shortDescription="User 0 3.3V switch state (true=0n, false=Off)">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V3_3_USER_V" parameterTypeRef="V3_3_USER_V" shortDescription="User 0 3.3V voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_BUS0_I" parameterTypeRef="V5_BUS0_I" shortDescription="Bus 0 5V current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_BUS0_V" parameterTypeRef="V5_BUS0_V" shortDescription="Bus 0 5V voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_BUS1_I" parameterTypeRef="V5_BUS1_I" shortDescription="Bus 1 5V current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_BUS1_V" parameterTypeRef="V5_BUS1_V" shortDescription="Bus 1 5V voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_USER_I" parameterTypeRef="V5_USER_I" shortDescription="User 0 5V current measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_USER_SW" parameterTypeRef="V5_USER_SW" shortDescription="User 0 5V switch state (true=0n, false=Off)">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V5_USER_V" parameterTypeRef="V5_USER_V" shortDescription="User 0 5V voltage measurement">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V_UNREG_I" parameterTypeRef="V_UNREG_I" shortDescription="Satellite bus main unreg. power current">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="V_UNREG_V" parameterTypeRef="V_UNREG_V" shortDescription="Satellite bus main unreg. power voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+      </ParameterSet>
+      <ContainerSet>
+        <SequenceContainer name="EPS_Battery_Status" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="PMIC0_VBUS">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC0_ICHG">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC0_VBAT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC0_STAT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="FG0_VBAT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="FG0_CURRENT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="FG0_PWR">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_VBUS">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_ICHG">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_VBAT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_STAT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="FG1_VBAT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="FG1_CURRENT">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="FG1_PWR">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>3</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="EPS_Bus_Power_Status" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="V_UNREG_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V_UNREG_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V3_3_BUS0_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V3_3_BUS0_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V3_3_BUS1_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V3_3_BUS1_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_BUS0_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_BUS0_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_BUS1_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_BUS1_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="UNREG_BUS_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="UNREG_BUS_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>4</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="EPS_Temperature" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="PCB_DTEMP">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PCB_ATEMP0">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PCB_ATEMP1">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PCB_ATEMP2">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PCB_ATEMP3">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>6</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="EPS_User_Power_Status" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="V3_3_USER_SW">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V3_3_USER_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V3_3_USER_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_USER_SW">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_USER_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="V5_USER_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="UNREG_USER_SW">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="UNREG_USER_V">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="UNREG_USER_I">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>5</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="PMIC_Register_Value" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="PMIC">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC_Register">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC_Value">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>14</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="Power_Sensor_Register_Value" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="Power_Sensor_Address">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="Power_Sensor_Register">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="Power_Sensor_Value">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>9</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+      </ContainerSet>
+    </TelemetryMetaData>
     <CommandMetaData>
       <ArgumentTypeSet>
+        <IntegerArgumentType name="Get_Power_Sensor_Register__Adress" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Get_Power_Sensor_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <EnumeratedArgumentType name="PMIC_Get_Register__PMIC_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="PMIC0"/>
+            <Enumeration value="1" label="PMIC1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
+        <IntegerArgumentType name="PMIC_Get_Register__PMIC_Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="PMIC_Set_I_Charge_Limit__IChargeLimit" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="PMIC_Set_I_Input_Limit__InputLimit" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="PMIC_Set_V_Charge_Limit__VChargeLimit" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <EnumeratedArgumentType name="PMIT_Set_Register__PMIC_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="PMIC0"/>
+            <Enumeration value="1" label="PMIC1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
+        <IntegerArgumentType name="PMIT_Set_Register__PMIC_Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="PMIT_Set_Register__PMIC_Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
         <BooleanArgumentType name="POWER_ANT_DEPLOY__Power_ANT_DEPLOY_ARG" zeroStringValue="False" oneStringValue="True">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </BooleanArgumentType>
-        <BooleanArgumentType name="POWER_PL_APRS__POWER_PL_APRS_ARGS" zeroStringValue="False" oneStringValue="True">
+        <BooleanArgumentType name="POWER_Pl_APRS__POWER_PL_APRS_ARGS" zeroStringValue="False" oneStringValue="True">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </BooleanArgumentType>
+        <BooleanArgumentType name="POWER_VCOM__Power_VCOM_ARG" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
+        <IntegerArgumentType name="Set_Power_Sensor_Register__Adress" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Power_Sensor_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Power_Sensor_Register__Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
       </ArgumentTypeSet>
       <MetaCommandSet>
+        <MetaCommand name="Get_Power_Sensor_Register" abstract="false" shortDescription="Get a Power Sensor Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="9"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Adress" argumentTypeRef="Get_Power_Sensor_Register__Adress"/>
+            <Argument name="Register" argumentTypeRef="Get_Power_Sensor_Register__Register"/>
+          </ArgumentList>
+          <CommandContainer name="Get_Power_Sensor_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Adress">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="PMIC_Get_Register" abstract="false" shortDescription="Get a PMIC Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="14"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="PMIC_Select" argumentTypeRef="PMIC_Get_Register__PMIC_Select"/>
+            <Argument name="PMIC_Register" argumentTypeRef="PMIC_Get_Register__PMIC_Register"/>
+          </ArgumentList>
+          <CommandContainer name="PMIC_Get_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="PMIC_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="PMIC_Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="PMIC_Set_I_Charge_Limit" abstract="false" shortDescription="Set the PMIC I Charge Limit">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="10"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="IChargeLimit" argumentTypeRef="PMIC_Set_I_Charge_Limit__IChargeLimit"/>
+          </ArgumentList>
+          <CommandContainer name="PMIC_Set_I_Charge_Limit">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="IChargeLimit">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="PMIC_Set_I_Input_Limit" abstract="false" shortDescription="Set the PMIC I Input Limit">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="11"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="InputLimit" argumentTypeRef="PMIC_Set_I_Input_Limit__InputLimit"/>
+          </ArgumentList>
+          <CommandContainer name="PMIC_Set_I_Input_Limit">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="InputLimit">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="PMIC_Set_V_Charge_Limit" abstract="false" shortDescription="Set the PMIC V Charge Limit">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="12"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="VChargeLimit" argumentTypeRef="PMIC_Set_V_Charge_Limit__VChargeLimit"/>
+          </ArgumentList>
+          <CommandContainer name="PMIC_Set_V_Charge_Limit">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="VChargeLimit">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="PMIT_Set_Register" abstract="false" shortDescription="Set a PMIC Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="13"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="PMIC_Select" argumentTypeRef="PMIT_Set_Register__PMIC_Select"/>
+            <Argument name="PMIC_Register" argumentTypeRef="PMIT_Set_Register__PMIC_Register"/>
+            <Argument name="PMIC_Value" argumentTypeRef="PMIT_Set_Register__PMIC_Value"/>
+          </ArgumentList>
+          <CommandContainer name="PMIT_Set_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="PMIC_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="PMIC_Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="PMIC_Value">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
         <MetaCommand name="POWER_ANT_DEPLOY" abstract="false" shortDescription="Power Deploy Antenna Mechanism">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -41,33 +1021,133 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
-        <MetaCommand name="POWER_CYCLE_VCOM" abstract="false" shortDescription="turn vcom unreg bus off and on again">
+        <MetaCommand name="POWER_Pl_APRS" abstract="false" shortDescription="Power Payload APRS">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="7"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="POWER_PL_APRS_ARGS" argumentTypeRef="POWER_Pl_APRS__POWER_PL_APRS_ARGS"/>
+          </ArgumentList>
+          <CommandContainer name="POWER_Pl_APRS">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="POWER_PL_APRS_ARGS">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="POWER_VCOM" abstract="false" shortDescription="Power VCOM unreg bus">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
               <ArgumentAssignment argumentName="subtype" argumentValue="1"/>
               <ArgumentAssignment argumentName="apid" argumentValue="77"/>
             </ArgumentAssignmentList>
           </BaseMetaCommand>
-          <CommandContainer name="POWER_CYCLE_VCOM">
+          <ArgumentList>
+            <Argument name="Power_VCOM_ARG" argumentTypeRef="POWER_VCOM__Power_VCOM_ARG"/>
+          </ArgumentList>
+          <CommandContainer name="POWER_VCOM">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Power_VCOM_ARG">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RQ_EPS_Battery_Status" abstract="false" shortDescription="Request EPS Battery Status Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="3"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_Battery_Status">
             <EntryList/>
             <BaseContainer containerRef="base"/>
           </CommandContainer>
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
-        <MetaCommand name="POWER_PL_APRS" abstract="false" shortDescription="Power Payload APRS">
+        <MetaCommand name="RQ_EPS_Bus_Power_Status" abstract="false" shortDescription="Request EPS_BUS Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="4"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_Bus_Power_Status">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RQ_EPS_Temperatur" abstract="false" shortDescription="Request EPS Temperature Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="6"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_Temperatur">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RQ_EPS_User_Power_Status" abstract="false" shortDescription="Request EPS_USER Telemetry">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
               <ArgumentAssignment argumentName="subtype" argumentValue="5"/>
               <ArgumentAssignment argumentName="apid" argumentValue="77"/>
             </ArgumentAssignmentList>
           </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_User_Power_Status">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="Set_Power_Sensor_Register" abstract="false" shortDescription="Set a Power Sensor Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="8"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
           <ArgumentList>
-            <Argument name="POWER_PL_APRS_ARGS" argumentTypeRef="POWER_PL_APRS__POWER_PL_APRS_ARGS"/>
+            <Argument name="Adress" argumentTypeRef="Set_Power_Sensor_Register__Adress"/>
+            <Argument name="Register" argumentTypeRef="Set_Power_Sensor_Register__Register"/>
+            <Argument name="Value" argumentTypeRef="Set_Power_Sensor_Register__Value"/>
           </ArgumentList>
-          <CommandContainer name="POWER_PL_APRS">
+          <CommandContainer name="Set_Power_Sensor_Register">
             <EntryList>
-              <ArgumentRefEntry argumentRef="POWER_PL_APRS_ARGS">
+              <ArgumentRefEntry argumentRef="Adress">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Value">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
@@ -96,15 +1176,88 @@ See https://github.com/yamcs/pymdb
   </SpaceSystem>
   <SpaceSystem name="RTC">
     <TelemetryMetaData>
+      <ParameterTypeSet>
+        <IntegerParameterType name="Day" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Hours" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Minutes" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Month" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="SecondFrac100th" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Seconds" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Value" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <EnumeratedParameterType name="Weekday">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="Sunday"/>
+            <Enumeration value="1" label="Monday"/>
+            <Enumeration value="2" label="Tuesday"/>
+            <Enumeration value="3" label="Wednesday"/>
+            <Enumeration value="4" label="Thursday"/>
+            <Enumeration value="5" label="Friday"/>
+            <Enumeration value="6" label="Saturday"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <IntegerParameterType name="Year" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+      </ParameterTypeSet>
+      <ParameterSet>
+        <Parameter name="Day" parameterTypeRef="Day" shortDescription="Current Set Days">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Hours" parameterTypeRef="Hours" shortDescription="Current Set Hours">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Minutes" parameterTypeRef="Minutes" shortDescription="Current Set Minutes">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Month" parameterTypeRef="Month" shortDescription="Current Set Month">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Register" parameterTypeRef="Register" shortDescription="Register ID">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="SecondFrac100th" parameterTypeRef="SecondFrac100th" shortDescription="100th Fraction of a second">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Seconds" parameterTypeRef="Seconds" shortDescription="Current Set Seconds">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Value" parameterTypeRef="Value" shortDescription="Register Value">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Weekday" parameterTypeRef="Weekday" shortDescription="Current set day of the week">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Year" parameterTypeRef="Year" shortDescription="Current Set Year">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+      </ParameterSet>
       <ContainerSet>
         <SequenceContainer name="RTC_Register" abstract="false">
           <EntryList>
-            <ParameterRefEntry parameterRef="../Telemetry/Register">
+            <ParameterRefEntry parameterRef="Register">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Value">
+            <ParameterRefEntry parameterRef="Value">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
@@ -131,42 +1284,42 @@ See https://github.com/yamcs/pymdb
         </SequenceContainer>
         <SequenceContainer name="RTC_Time" abstract="false">
           <EntryList>
-            <ParameterRefEntry parameterRef="../Telemetry/SecondFrac100th">
+            <ParameterRefEntry parameterRef="SecondFrac100th">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Seconds">
+            <ParameterRefEntry parameterRef="Seconds">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Minutes">
+            <ParameterRefEntry parameterRef="Minutes">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Hours">
+            <ParameterRefEntry parameterRef="Hours">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Day">
+            <ParameterRefEntry parameterRef="Day">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Weekday">
+            <ParameterRefEntry parameterRef="Weekday">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Month">
+            <ParameterRefEntry parameterRef="Month">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="../Telemetry/Year">
+            <ParameterRefEntry parameterRef="Year">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
@@ -604,9 +1757,6 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="Day" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
         <IntegerParameterType name="EPS_RTC_CONTROL0" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">control flags tbc.</Unit>
@@ -649,18 +1799,6 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="FG0_CURRENT" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="FG0_PWR" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="FG0_SOC" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Percent</Unit>
@@ -681,24 +1819,6 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="FG0_VBAT" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="FG1_CURRENT" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="FG1_PWR" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="FG1_SOC" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Percent</Unit>
@@ -716,12 +1836,6 @@ See https://github.com/yamcs/pymdb
         <IntegerParameterType name="FG1_THERM" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Ohm</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="FG1_VBAT" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -760,9 +1874,6 @@ See https://github.com/yamcs/pymdb
             <Unit form="calibrated">Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="Hours" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
         <IntegerParameterType name="LAST_SESSION_UTC" signed="true" sizeInBits="32">
           <UnitSet>
@@ -806,12 +1917,6 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="Minutes" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="Month" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
         <IntegerParameterType name="OBC_CPU_UTIL" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Percent 0 - 100</Unit>
@@ -848,102 +1953,17 @@ See https://github.com/yamcs/pymdb
         <BooleanParameterType name="PASS_SW1_STAT" zeroStringValue="False" oneStringValue="True">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </BooleanParameterType>
-        <IntegerParameterType name="PCB_ATEMP0" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PCB_ATEMP1" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PCB_ATEMP2" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PCB_ATEMP3" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PCB_DTEMP" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PMIC0_ICHG" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <EnumeratedParameterType name="PMIC0_STAT">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-          <EnumerationList>
-            <Enumeration value="0" label="charging"/>
-            <Enumeration value="1" label="not_charging"/>
-            <Enumeration value="2" label="charge_terminated"/>
-          </EnumerationList>
-        </EnumeratedParameterType>
         <IntegerParameterType name="PMIC0_THERM" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Ohm</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="PMIC0_VBAT" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PMIC0_VBUS" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PMIC1_ICHG" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <EnumeratedParameterType name="PMIC1_STAT">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-          <EnumerationList>
-            <Enumeration value="0" label="charging"/>
-            <Enumeration value="1" label="not_charging"/>
-            <Enumeration value="2" label="charge_terminated"/>
-          </EnumerationList>
-        </EnumeratedParameterType>
         <IntegerParameterType name="PMIC1_THERM" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Ohm</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PMIC1_VBAT" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="PMIC1_VBUS" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="Register" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
         <IntegerParameterType name="SW_CERT00" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
@@ -960,33 +1980,9 @@ See https://github.com/yamcs/pymdb
         <IntegerParameterType name="SW_CERT04" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="SecondFrac100th" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="Seconds" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="UNREG_BUS_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="UNREG_BUS_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="UNREG_BUS_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="UNREG_USER_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -996,36 +1992,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <BooleanParameterType name="UNREG_USER_SW" zeroStringValue="False" oneStringValue="True">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </BooleanParameterType>
-        <IntegerParameterType name="UNREG_USER_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V3_3_BUS0_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="V3_3_BUS0_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V3_3_BUS0_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V3_3_BUS1_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -1035,36 +2004,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="V3_3_BUS1_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V3_3_USER0_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="V3_3_USER0_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <BooleanParameterType name="V3_3_USER0_SW" zeroStringValue="False" oneStringValue="True">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </BooleanParameterType>
-        <IntegerParameterType name="V3_3_USER0_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V3_3_USER1_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -1074,39 +2016,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <BooleanParameterType name="V3_3_USER1_SW" zeroStringValue="False" oneStringValue="True">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </BooleanParameterType>
-        <IntegerParameterType name="V3_3_USER1_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V3_3_USER2_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="V3_3_USER2_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <BooleanParameterType name="V3_3_USER2_SW" zeroStringValue="False" oneStringValue="True">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </BooleanParameterType>
-        <IntegerParameterType name="V3_3_USER2_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V5_BUS0_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -1116,33 +2028,9 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <IntegerParameterType name="V5_BUS0_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V5_BUS1_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="V5_BUS1_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V5_BUS1_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V5_USER0_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -1152,35 +2040,11 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
-        <BooleanParameterType name="V5_USER0_SW" zeroStringValue="False" oneStringValue="True">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </BooleanParameterType>
-        <IntegerParameterType name="V5_USER0_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V5_USER1_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="V5_USER1_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <BooleanParameterType name="V5_USER1_SW" zeroStringValue="False" oneStringValue="True">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </BooleanParameterType>
-        <IntegerParameterType name="V5_USER1_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="VCOM0_FIFO_INFO" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
@@ -1248,41 +2112,11 @@ See https://github.com/yamcs/pymdb
             <Enumeration value="2" label="tbd3"/>
           </EnumerationList>
         </EnumeratedParameterType>
-        <IntegerParameterType name="V_UNREG_I" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
         <IntegerParameterType name="V_UNREG_P" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mW</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="V_UNREG_V" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mV</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="Value" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <EnumeratedParameterType name="Weekday">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-          <EnumerationList>
-            <Enumeration value="0" label="Sunday"/>
-            <Enumeration value="1" label="Monday"/>
-            <Enumeration value="2" label="Tuesday"/>
-            <Enumeration value="3" label="Wednesday"/>
-            <Enumeration value="4" label="Thursday"/>
-            <Enumeration value="5" label="Friday"/>
-            <Enumeration value="6" label="Saturday"/>
-          </EnumerationList>
-        </EnumeratedParameterType>
-        <IntegerParameterType name="Year" signed="true" sizeInBits="32">
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
         <IntegerParameterType name="user_defined_parameter0" signed="true" sizeInBits="32">
           <UnitSet>
@@ -1424,9 +2258,6 @@ See https://github.com/yamcs/pymdb
         <Parameter name="CSA_SOL7" parameterTypeRef="CSA_SOL7" shortDescription="Analog solar input current - Direction (TBC): x+">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="Day" parameterTypeRef="Day" shortDescription="Current Set Days">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="EPS_RTC_CONTROL0" parameterTypeRef="EPS_RTC_CONTROL0" shortDescription="Realtime Clock control settings register 0">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1448,12 +2279,6 @@ See https://github.com/yamcs/pymdb
         <Parameter name="EPS_RTC_DATETIME" parameterTypeRef="EPS_RTC_DATETIME" shortDescription="Realtime Clock date time">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="FG0_CURRENT" parameterTypeRef="FG0_CURRENT" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="FG0_PWR" parameterTypeRef="FG0_PWR" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="FG0_SOC" parameterTypeRef="FG0_SOC" shortDescription="Fuel gauge 0 battery state of charge">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1463,15 +2288,6 @@ See https://github.com/yamcs/pymdb
         <Parameter name="FG0_THERM" parameterTypeRef="FG0_THERM" shortDescription="Fuel gauge 0 Thermistor">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="FG0_VBAT" parameterTypeRef="FG0_VBAT" shortDescription="Fuel gauge 0 battery voltage">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="FG1_CURRENT" parameterTypeRef="FG1_CURRENT" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="FG1_PWR" parameterTypeRef="FG1_PWR" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="FG1_SOC" parameterTypeRef="FG1_SOC" shortDescription="Fuel gauge 1 battery state of charge">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1479,9 +2295,6 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="FG1_THERM" parameterTypeRef="FG1_THERM" shortDescription="Fuel gauge 1 Thermistor">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="FG1_VBAT" parameterTypeRef="FG1_VBAT" shortDescription="Fuel gauge 1 battery voltage">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="GYRO0_X_SENS" parameterTypeRef="GYRO0_X_SENS" shortDescription="Angular rate X-axis Sensor 0">
@@ -1500,9 +2313,6 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="GYRO1_Z_SENS" parameterTypeRef="GYRO1_Z_SENS" shortDescription="Angular rate Z-axis Sensor 1">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Hours" parameterTypeRef="Hours" shortDescription="Current Set Hours">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="LAST_SESSION_UTC" parameterTypeRef="LAST_SESSION_UTC" shortDescription="Timestamp of last/previous contact">
@@ -1526,12 +2336,6 @@ See https://github.com/yamcs/pymdb
         <Parameter name="MAG1_Z" parameterTypeRef="MAG1_Z" shortDescription="Magnetic field measurement Z-axis Sensor 1">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="Minutes" parameterTypeRef="Minutes" shortDescription="Current Set Minutes">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Month" parameterTypeRef="Month" shortDescription="Current Set Month">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="OBC_CPU_UTIL" parameterTypeRef="OBC_CPU_UTIL" shortDescription="Cpu usage">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -1553,52 +2357,10 @@ See https://github.com/yamcs/pymdb
         <Parameter name="PASS_SW1_STAT" parameterTypeRef="PASS_SW1_STAT" shortDescription="Passivation mode 1 state, active/inactive">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="PCB_ATEMP0" parameterTypeRef="PCB_ATEMP0" shortDescription="OBC PCB Temperature 0">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PCB_ATEMP1" parameterTypeRef="PCB_ATEMP1" shortDescription="OBC PCB Temperature 1">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PCB_ATEMP2" parameterTypeRef="PCB_ATEMP2" shortDescription="OBC PCB Temperature 2">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PCB_ATEMP3" parameterTypeRef="PCB_ATEMP3" shortDescription="OBC PCB Temperature 3">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PCB_DTEMP" parameterTypeRef="PCB_DTEMP" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC0_ICHG" parameterTypeRef="PMIC0_ICHG" shortDescription="Battery charger 0 charge/discharge current">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC0_STAT" parameterTypeRef="PMIC0_STAT" shortDescription="Battery charger 0 status">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="PMIC0_THERM" parameterTypeRef="PMIC0_THERM" shortDescription="Battery charger 0 Thermistor">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="PMIC0_VBAT" parameterTypeRef="PMIC0_VBAT" shortDescription="Battery charger 0 battery voltage">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC0_VBUS" parameterTypeRef="PMIC0_VBUS" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC1_ICHG" parameterTypeRef="PMIC1_ICHG" shortDescription="Battery charger 1 charge/discharge current">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC1_STAT" parameterTypeRef="PMIC1_STAT" shortDescription="Battery charger 1 status">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="PMIC1_THERM" parameterTypeRef="PMIC1_THERM" shortDescription="Battery charger 1 Thermistor">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC1_VBAT" parameterTypeRef="PMIC1_VBAT" shortDescription="Battery charger 1 battery voltage">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="PMIC1_VBUS" parameterTypeRef="PMIC1_VBUS" shortDescription="EPS digital PCB temperature">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Register" parameterTypeRef="Register" shortDescription="Register ID">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="SW_CERT00" parameterTypeRef="SW_CERT00" shortDescription="authorized sw. updater Certificate 0">
@@ -1616,127 +2378,37 @@ See https://github.com/yamcs/pymdb
         <Parameter name="SW_CERT04" parameterTypeRef="SW_CERT04" shortDescription="authorized sw. updater Certificate 4">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="SecondFrac100th" parameterTypeRef="SecondFrac100th" shortDescription="100th Fraction of a second">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Seconds" parameterTypeRef="Seconds" shortDescription="Current Set Seconds">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="UNREG_BUS_I" parameterTypeRef="UNREG_BUS_I" shortDescription="Bus unregulated voltage current measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="UNREG_BUS_P" parameterTypeRef="UNREG_BUS_P" shortDescription="Bus unregulated voltage power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="UNREG_BUS_V" parameterTypeRef="UNREG_BUS_V" shortDescription="Bus unregulated voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="UNREG_USER_I" parameterTypeRef="UNREG_USER_I" shortDescription="User unregulated current measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="UNREG_USER_P" parameterTypeRef="UNREG_USER_P" shortDescription="User unregulated power measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="UNREG_USER_SW" parameterTypeRef="UNREG_USER_SW" shortDescription="Satellite user unregulated voltage switch state (true=0n, false=Off)">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="UNREG_USER_V" parameterTypeRef="UNREG_USER_V" shortDescription="User unregulated voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_BUS0_I" parameterTypeRef="V3_3_BUS0_I" shortDescription="Bus 0 3.3V current measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="V3_3_BUS0_P" parameterTypeRef="V3_3_BUS0_P" shortDescription="Bus 0 3.3V power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_BUS0_V" parameterTypeRef="V3_3_BUS0_V" shortDescription="Bus 0 3.3V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_BUS1_I" parameterTypeRef="V3_3_BUS1_I" shortDescription="Bus 1 3.3V current measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="V3_3_BUS1_P" parameterTypeRef="V3_3_BUS1_P" shortDescription="Bus 1 3.3V power measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="V3_3_BUS1_V" parameterTypeRef="V3_3_BUS1_V" shortDescription="Bus 1 3.3V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER0_I" parameterTypeRef="V3_3_USER0_I" shortDescription="User 0 3.3V current measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="V3_3_USER0_P" parameterTypeRef="V3_3_USER0_P" shortDescription="User 0 3.3V power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER0_SW" parameterTypeRef="V3_3_USER0_SW" shortDescription="User 0 3.3V switch state (true=0n, false=Off)">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER0_V" parameterTypeRef="V3_3_USER0_V" shortDescription="User 0 3.3V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER1_I" parameterTypeRef="V3_3_USER1_I" shortDescription="User 1 3.3V current measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="V3_3_USER1_P" parameterTypeRef="V3_3_USER1_P" shortDescription="User 1 3.3V power measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="V3_3_USER1_SW" parameterTypeRef="V3_3_USER1_SW" shortDescription="User 1 3.3V switch state (true=0n, false=Off)">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER1_V" parameterTypeRef="V3_3_USER1_V" shortDescription="User 1 3.3V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER2_I" parameterTypeRef="V3_3_USER2_I" shortDescription="User 1 3.3V current measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="V3_3_USER2_P" parameterTypeRef="V3_3_USER2_P" shortDescription="User 2 3.3V power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER2_SW" parameterTypeRef="V3_3_USER2_SW" shortDescription="User 1 3.3V switch state (true=0n, false=Off)">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V3_3_USER2_V" parameterTypeRef="V3_3_USER2_V" shortDescription="User 1 3.3V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_BUS0_I" parameterTypeRef="V5_BUS0_I" shortDescription="Bus 0 5V current measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="V5_BUS0_P" parameterTypeRef="V5_BUS0_P" shortDescription="Bus 0 5V power measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="V5_BUS0_V" parameterTypeRef="V5_BUS0_V" shortDescription="Bus 0 5V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_BUS1_I" parameterTypeRef="V5_BUS1_I" shortDescription="Bus 1 5V current measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="V5_BUS1_P" parameterTypeRef="V5_BUS1_P" shortDescription="Bus 1 5V power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_BUS1_V" parameterTypeRef="V5_BUS1_V" shortDescription="Bus 1 5V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_USER0_I" parameterTypeRef="V5_USER0_I" shortDescription="User 0 5V current measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="V5_USER0_P" parameterTypeRef="V5_USER0_P" shortDescription="User 0 5V power measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="V5_USER0_SW" parameterTypeRef="V5_USER0_SW" shortDescription="User 0 5V switch state (true=0n, false=Off)">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_USER0_V" parameterTypeRef="V5_USER0_V" shortDescription="User 0 5V voltage measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_USER1_I" parameterTypeRef="V5_USER1_I" shortDescription="User 1 5V current measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="V5_USER1_P" parameterTypeRef="V5_USER1_P" shortDescription="User 1 5V power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_USER1_SW" parameterTypeRef="V5_USER1_SW" shortDescription="User 1 5V switch state (true=0n, false=Off)">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V5_USER1_V" parameterTypeRef="V5_USER1_V" shortDescription="User 1 5V voltage measurement">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="VCOM0_FIFO_INFO" parameterTypeRef="VCOM0_FIFO_INFO" shortDescription="tbd">
@@ -1769,22 +2441,7 @@ See https://github.com/yamcs/pymdb
         <Parameter name="VCOM1_STAT" parameterTypeRef="VCOM1_STAT" shortDescription="tbd">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="V_UNREG_I" parameterTypeRef="V_UNREG_I" shortDescription="Satellite bus main unreg. power current">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="V_UNREG_P" parameterTypeRef="V_UNREG_P" shortDescription="Satellite bus main unregulated voltage power measurement">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="V_UNREG_V" parameterTypeRef="V_UNREG_V" shortDescription="Satellite bus main unreg. power voltage">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Value" parameterTypeRef="Value" shortDescription="Register Value">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Weekday" parameterTypeRef="Weekday" shortDescription="Current set day of the week">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="Year" parameterTypeRef="Year" shortDescription="Current Set Year">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="user_defined_parameter0" parameterTypeRef="user_defined_parameter0" shortDescription="tbd. 0">
@@ -1849,180 +2506,6 @@ See https://github.com/yamcs/pymdb
             </RestrictionCriteria>
           </BaseContainer>
         </SequenceContainer>
-        <SequenceContainer name="EPS_BATTERY" abstract="false">
-          <EntryList>
-            <ParameterRefEntry parameterRef="PMIC0_VBUS">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC0_ICHG">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC0_VBAT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC0_STAT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="FG0_VBAT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="FG0_CURRENT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="FG0_PWR">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC1_VBUS">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC1_ICHG">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC1_VBAT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PMIC1_STAT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="FG1_VBAT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="FG1_CURRENT">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="FG1_PWR">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-          </EntryList>
-          <BaseContainer containerRef="/PUS/pus-tm">
-            <RestrictionCriteria>
-              <BooleanExpression>
-                <ANDedConditions>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>77</Value>
-                  </Condition>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>2</Value>
-                  </Condition>
-                </ANDedConditions>
-              </BooleanExpression>
-            </RestrictionCriteria>
-          </BaseContainer>
-        </SequenceContainer>
-        <SequenceContainer name="EPS_BUS" abstract="false">
-          <EntryList>
-            <ParameterRefEntry parameterRef="V_UNREG_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V_UNREG_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_BUS0_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_BUS0_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_BUS1_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_BUS1_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_BUS0_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_BUS0_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_BUS1_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_BUS1_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="UNREG_BUS_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="UNREG_BUS_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-          </EntryList>
-          <BaseContainer containerRef="/PUS/pus-tm">
-            <RestrictionCriteria>
-              <BooleanExpression>
-                <ANDedConditions>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>77</Value>
-                  </Condition>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>3</Value>
-                  </Condition>
-                </ANDedConditions>
-              </BooleanExpression>
-            </RestrictionCriteria>
-          </BaseContainer>
-        </SequenceContainer>
         <SequenceContainer name="EPS_CSA_SOL" abstract="false">
           <EntryList>
             <ParameterRefEntry parameterRef="CSA_SOL0">
@@ -2079,165 +2562,6 @@ See https://github.com/yamcs/pymdb
                     <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
                     <ComparisonOperator>==</ComparisonOperator>
                     <Value>1</Value>
-                  </Condition>
-                </ANDedConditions>
-              </BooleanExpression>
-            </RestrictionCriteria>
-          </BaseContainer>
-        </SequenceContainer>
-        <SequenceContainer name="EPS_TEMP" abstract="false">
-          <EntryList>
-            <ParameterRefEntry parameterRef="PCB_DTEMP">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PCB_ATEMP0">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PCB_ATEMP1">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PCB_ATEMP2">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="PCB_ATEMP3">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-          </EntryList>
-          <BaseContainer containerRef="/PUS/pus-tm">
-            <RestrictionCriteria>
-              <BooleanExpression>
-                <ANDedConditions>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>77</Value>
-                  </Condition>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>5</Value>
-                  </Condition>
-                </ANDedConditions>
-              </BooleanExpression>
-            </RestrictionCriteria>
-          </BaseContainer>
-        </SequenceContainer>
-        <SequenceContainer name="EPS_USER" abstract="false">
-          <EntryList>
-            <ParameterRefEntry parameterRef="V3_3_USER0_SW">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER0_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER0_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER1_SW">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER1_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER1_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER2_SW">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER2_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V3_3_USER2_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_USER0_SW">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_USER0_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_USER0_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_USER1_SW">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_USER1_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="V5_USER1_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="UNREG_USER_SW">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="UNREG_USER_V">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="UNREG_USER_I">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-          </EntryList>
-          <BaseContainer containerRef="/PUS/pus-tm">
-            <RestrictionCriteria>
-              <BooleanExpression>
-                <ANDedConditions>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>77</Value>
-                  </Condition>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>4</Value>
                   </Condition>
                 </ANDedConditions>
               </BooleanExpression>
@@ -2954,34 +3278,6 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
-        <MetaCommand name="RQ_EPS_BATTERY" abstract="false" shortDescription="Request EPS_BATTERY Telemetry">
-          <BaseMetaCommand metaCommandRef="base">
-            <ArgumentAssignmentList>
-              <ArgumentAssignment argumentName="subtype" argumentValue="2"/>
-              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
-            </ArgumentAssignmentList>
-          </BaseMetaCommand>
-          <CommandContainer name="RQ_EPS_BATTERY">
-            <EntryList/>
-            <BaseContainer containerRef="base"/>
-          </CommandContainer>
-          <DefaultSignificance consequenceLevel="normal"/>
-          <VerifierSet/>
-        </MetaCommand>
-        <MetaCommand name="RQ_EPS_BUS" abstract="false" shortDescription="Request EPS_BUS Telemetry">
-          <BaseMetaCommand metaCommandRef="base">
-            <ArgumentAssignmentList>
-              <ArgumentAssignment argumentName="subtype" argumentValue="3"/>
-              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
-            </ArgumentAssignmentList>
-          </BaseMetaCommand>
-          <CommandContainer name="RQ_EPS_BUS">
-            <EntryList/>
-            <BaseContainer containerRef="base"/>
-          </CommandContainer>
-          <DefaultSignificance consequenceLevel="normal"/>
-          <VerifierSet/>
-        </MetaCommand>
         <MetaCommand name="RQ_EPS_CSA_SOL" abstract="false" shortDescription="Request EPS_CSA_SOL Telemetry">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -2990,34 +3286,6 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <CommandContainer name="RQ_EPS_CSA_SOL">
-            <EntryList/>
-            <BaseContainer containerRef="base"/>
-          </CommandContainer>
-          <DefaultSignificance consequenceLevel="normal"/>
-          <VerifierSet/>
-        </MetaCommand>
-        <MetaCommand name="RQ_EPS_TEMP" abstract="false" shortDescription="Request EPS_TEMP Telemetry">
-          <BaseMetaCommand metaCommandRef="base">
-            <ArgumentAssignmentList>
-              <ArgumentAssignment argumentName="subtype" argumentValue="5"/>
-              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
-            </ArgumentAssignmentList>
-          </BaseMetaCommand>
-          <CommandContainer name="RQ_EPS_TEMP">
-            <EntryList/>
-            <BaseContainer containerRef="base"/>
-          </CommandContainer>
-          <DefaultSignificance consequenceLevel="normal"/>
-          <VerifierSet/>
-        </MetaCommand>
-        <MetaCommand name="RQ_EPS_USER" abstract="false" shortDescription="Request EPS_USER Telemetry">
-          <BaseMetaCommand metaCommandRef="base">
-            <ArgumentAssignmentList>
-              <ArgumentAssignment argumentName="subtype" argumentValue="4"/>
-              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
-            </ArgumentAssignmentList>
-          </BaseMetaCommand>
-          <CommandContainer name="RQ_EPS_USER">
             <EntryList/>
             <BaseContainer containerRef="base"/>
           </CommandContainer>

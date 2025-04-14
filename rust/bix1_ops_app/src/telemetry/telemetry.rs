@@ -27,78 +27,15 @@ pub enum Vcom1Stat {
 	tbd1 = 1,
 	tbd2 = 2,
 }
-#[derive(ServiceTelemetry, BitStruct, Debug)]
-#[subtype(2)]
-pub struct EPS_BATTERY {
-	#[bits(16)]
-	pub pmic0_vbus: i16,
-	#[bits(16)]
-	pub pmic0_ichg: i16,
-	#[bits(16)]
-	pub pmic0_vbat: i16,
-	#[bits(8)]
-	pub PMIC0_STAT: Pmic0Stat,
-	#[bits(16)]
-	pub fg0_vbat: i16,
-	#[bits(16)]
-	pub fg0_current: i16,
-	#[bits(16)]
-	pub fg0_pwr: i16,
-	#[bits(16)]
-	pub pmic1_vbus: i16,
-	#[bits(16)]
-	pub pmic1_ichg: i16,
-	#[bits(16)]
-	pub pmic1_vbat: i16,
-	#[bits(8)]
-	pub PMIC1_STAT: Pmic1Stat,
-	#[bits(16)]
-	pub fg1_vbat: i16,
-	#[bits(16)]
-	pub fg1_current: i16,
-	#[bits(16)]
-	pub fg1_pwr: i16,
-}
-#[derive(FromPrimitive, ToPrimitive, Debug)]
-pub enum Pmic0Stat {
-	charging = 0,
-	not_charging = 1,
-	charge_terminated = 2,
-}
+
+
 #[derive(FromPrimitive, ToPrimitive, Debug)]
 pub enum Pmic1Stat {
 	charging = 0,
 	not_charging = 1,
 	charge_terminated = 2,
 }
-#[derive(ServiceTelemetry, BitStruct, Debug)]
-#[subtype(1)]
-pub struct EPS_BUS {
-	#[bits(16)]
-	pub v_unreg_v: i16,
-	#[bits(16)]
-	pub v_unreg_i: i16,
-	#[bits(16)]
-	pub v3_3_bus0_v: i16,
-	#[bits(16)]
-	pub v3_3_bus0_i: i16,
-	#[bits(16)]
-	pub v3_3_bus1_v: i16,
-	#[bits(16)]
-	pub v3_3_bus1_i: i16,
-	#[bits(16)]
-	pub v5_bus0_v: i16,
-	#[bits(16)]
-	pub v5_bus0_i: i16,
-	#[bits(16)]
-	pub v5_bus1_v: i16,
-	#[bits(16)]
-	pub v5_bus1_i: i16,
-	#[bits(16)]
-	pub unreg_bus_v: i16,
-	#[bits(16)]
-	pub unreg_bus_i: i16,
-}
+
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(1)]
 pub struct EPS_CSA_SOL {
@@ -133,46 +70,7 @@ pub struct EPS_TEMP {
 	#[bits(16)]
 	pub pcb_atemp3: i16,
 }
-#[derive(ServiceTelemetry, BitStruct, Debug)]
-#[subtype(4)]
-pub struct EPS_USER {
-	#[bits(1)]
-	pub v3_3_user0_sw: bool,
-	#[bits(16)]
-	pub v3_3_user0_v: i16,
-	#[bits(16)]
-	pub v3_3_user0_i: i16,
-	#[bits(1)]
-	pub v3_3_user1_sw: bool,
-	#[bits(16)]
-	pub v3_3_user1_v: i16,
-	#[bits(16)]
-	pub v3_3_user1_i: i16,
-	#[bits(1)]
-	pub v3_3_user2_sw: bool,
-	#[bits(16)]
-	pub v3_3_user2_v: i16,
-	#[bits(16)]
-	pub v3_3_user2_i: i16,
-	#[bits(1)]
-	pub v5_user0_sw: bool,
-	#[bits(16)]
-	pub v5_user0_v: i16,
-	#[bits(16)]
-	pub v5_user0_i: i16,
-	#[bits(1)]
-	pub v5_user1_sw: bool,
-	#[bits(16)]
-	pub v5_user1_v: i16,
-	#[bits(16)]
-	pub v5_user1_i: i16,
-	#[bits(1)]
-	pub unreg_user_sw: bool,
-	#[bits(16)]
-	pub unreg_user_v: i16,
-	#[bits(16)]
-	pub unreg_user_i: i16,
-}
+
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(9)]
 pub struct IMU {
