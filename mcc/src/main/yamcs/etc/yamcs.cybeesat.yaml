@@ -26,10 +26,50 @@ services:
       backFiller:
         enabled: true
         warmupTime: 60
+
+
+  - class: org.yamcs.cfdp.CfdpService
+    name: cfdp0
+    args:
+     inactivityTimeout: 30000
+     sequenceNrLength: 4
+     maxPduSize: 512
+     incomingBucket: "cfdpDown"
+     allowRemoteProvidedBucket: false
+     allowRemoteProvidedSubdirectory: false
+     allowDownloadOverwrites: false
+     maxExistingFileRenames: 1000
+     eofAckTimeout: 3000
+     eofAckLimit: 5
+     #Note that the simulator does not process commands faster than 1/second.
+     # Decreasign this number will make the packets queue up in the TCP queue
+     # and the CFDP sender will timeout waiting for the EOF ACK
+     sleepBetweenPdus: 1000
+     #The simulator only supports one transfer at a time
+     maxNumPendingUploads: 1
+     #How many milliseconds to keep the incoming transfer in the pending queue after completion
+     #During this time an incoming PDU with that transaction id will not be recognized as a new transaction
+     pendingAfterCompletion: 10000
+     localEntities:
+       - name: ground_segment
+         id: 1
+         bucket: demobucket
+     remoteEntities:
+       - name: space_segment
+         id: 0
+     senderFaultHandlers:
+       AckLimitReached: suspend
+     fileListingParserClassName: org.yamcs.filetransfer.CsvListingParser
+     fileListingParserArgs:
+       timestampMultiplier: 1
+
+
+
 dataLinks:
   - name: UDP_FRAME_OUT
     class: org.yamcs.tctm.ccsds.UdpTcFrameLink
-    host: 192.168.188.35 # 192.168.42.101 #localhost #host and port where to send the frames to
+    #host: 192.168.188.35 # 192.168.42.101 #localhost #host and port where to send the frames to
+    host: localhost
     port: 10056
     spacecraftId: 0xAB
     maxFrameLength: 112
@@ -40,27 +80,33 @@ dataLinks:
     #skipRandomizationForVcs: [1, 0]
     errorDetection: CRC16
     virtualChannels:
-         - vcId: 0
-           service: "PACKET"
-           commandPostprocessorClassName: org.yamcs.tctm.pus.PusCommandPostprocessor
-           commandPostprocessorArgs:
-            errorDetection:
-              type: CRC-16-CCIIT
-           stream: "tc_realtime" #which yamcs stream to get the data from
-           useCop1: true #enable FOP1 (the transmitter part of COP1, see CCSDS 232.1-B-2) for this VC
-           cop1T1: 10
-           cop1TxLimit: 10
-           clcwStream: "clcw" #the name of the stream where the CLCW is received from, mandatory if FOP1 is used
-           initialClcwWait: 3600 #how many seconds to wait at startup for an initial CLCW, before going to state 6(initial). If not configured or negative, start directly in state 6
+    - vcId: 0
+      service: "PACKET"
+      commandPostprocessorClassName: org.yamcs.tctm.pus.PusCommandPostprocessor
+      commandPostprocessorArgs:
+        errorDetection:
+          type: CRC-16-CCIIT
+      stream: "tc_realtime" #which yamcs stream to get the data from
+      useCop1: true #enable FOP1 (the transmitter part of COP1, see CCSDS 232.1-B-2) for this VC
+      cop1T1: 10
+      cop1TxLimit: 10
+      clcwStream: "clcw" #the name of the stream where the CLCW is received from, mandatory if FOP1 is used
+      initialClcwWait: 3600 #how many seconds to wait at startup for an initial CLCW, before going to state 6(initial). If not configured or negative, start directly in state 6
+    - vcId: 1 # CFDP
+      service: "PACKET"
+      priority: 1
+      stream: "cfdp_udp_tx"
+
+  
   - name: UDP_FRAME_IN
     class: org.yamcs.tctm.ccsds.UdpTmFrameLink
     #host: localhost #host and port where to send the frames to
     port: 10066
     rawFrameDecoder:
-        codec: RS
-        interleavingDepth: 1
-        errorCorrectionCapability: 16
-        derandomize: true
+      codec: RS
+      interleavingDepth: 1
+      errorCorrectionCapability: 16
+      derandomize: true
     frameType: "USLP"
     spacecraftId: 0xAB
     # frameLength: 223
@@ -73,49 +119,29 @@ dataLinks:
     goodFrameStream: good_frames
     badFrameStream: bad_frames
     virtualChannels:
-         - vcId: 0
-           ocfPresent: true
-           service: "PACKET"
-           maxPacketLength: 223
-          #  packetPreprocessorClassName: org.yamcs.tctm.IssPacketPreprocessor
-           packetPreprocessorClassName: org.yamcs.tctm.GenericPacketPreprocessor
-           packetPreprocessorArgs:
-            timestampOffset: -1 
-            seqCountOffset: 4
-           stream: "tm_realtime" #which yamcs stream to get the data from
-           # useCop1: true #enable FOP1 (the transmitter part of COP1, see CCSDS 232.1-B-2) for this VC
-           clcwStream: "clcw"
+    - vcId: 0
+      ocfPresent: true
+      service: "PACKET"
+      maxPacketLength: 223
+      packetPreprocessorClassName: org.yamcs.tctm.GenericPacketPreprocessor
+      packetPreprocessorArgs:
+        timestampOffset: -1 
+        seqCountOffset: 4
+      stream: "tm_realtime" #which yamcs stream to get the data from
+      # useCop1: true #enable FOP1 (the transmitter part of COP1, see CCSDS 232.1-B-2) for this VC
+      clcwStream: "clcw"
 
-  - name: tm_realtime
-    class: org.yamcs.tctm.UdpTmDataLink
-    stream: tm_realtime
-    #host: 127.0.0.1
-    port: 10017
-    # Give the embedded simulator some time to boot up
-    #packetPreprocessorClassName: org.yamcs.tctm.pus.PusPacketPreprocessor
-    #packetPreprocessorArgs:
-    #    errorDetection:
-    #       type: CRC-16-CCIIT
-    #    timeEncoding:
-    #       type: CUC
-    #       epoch: NONE           
-    #    tcoService: tco0
-    packetPreprocessorClassName: org.yamcs.tctm.GenericPacketPreprocessor
-    packetPreprocessorArgs:
-      timestampOffset: -1 
-      seqCountOffset: 4
-    
-  - name: tc_realtime
-    class: org.yamcs.tctm.UdpTcDataLink
-    stream: tc_realtime
-    host: localhost 
-    port: 10027
-    # Give the embedded simulator smoe time to boot up
-    commandPostprocessorClassName: org.yamcs.tctm.pus.PusCommandPostprocessor
-    commandPostprocessorArgs:
-        errorDetection:
-          type: CRC-16-CCIIT
-        
+    - vcId: 1 # CFDP
+      ocfPresent: true
+      service: "PACKET"
+      maxPacketLength: 2048
+      stream: "cfdp_udp_tm"
+      packetPreprocessorClassName: org.yamcs.tctm.GenericPacketPreprocessor
+      packetPreprocessorArgs:
+        timestampOffset: -1
+        seqCountOffset: -1
+
+
 mdb:
   # Configuration of the active loaders
   # Valid loaders are: sheet, xtce or fully qualified name of the class
@@ -131,12 +157,19 @@ mdb:
   - type: "xtce"
     spec: "mdb/bix1_tmtc.xml"
 
+  - type: "xtce"
+    spec: "mdb/aprs-app.xml"
+
 
 #Configuration for streams created at server startup
 streamConfig:
   tm:
     - name: "tm_realtime"
       processor: "realtime"
+    - name: "cfdp_udp_tm"
+      processor: "realtime"
+
+
   invalidTm: "invalid_tm_stream"
   cmdHist: ["cmdhist_realtime", "cmdhist_dump"]
   event: ["events_realtime", "events_dump"]
@@ -146,6 +179,10 @@ streamConfig:
   tc: 
     - name: "tc_realtime"
       processor: "realtime"
-  # sqlFile: "etc/cfdp_streams.sql"
+    - name: "cfdp_udp_tx"
+      processor: "realtime"
+
+
+  sqlFile: "etc/cfdp_streams.sql"
 
 

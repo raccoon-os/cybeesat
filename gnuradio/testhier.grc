@@ -1,0 +1,237 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: hb
+    hier_block_src_path: '.:'
+    id: testhier
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Resampler
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 12.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: blocks_tagged_stream_multiply_length_0
+  id: blocks_tagged_stream_multiply_length
+  parameters:
+    affinity: ''
+    alias: ''
+    c: '100'
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [760, 384.0]
+    rotation: 0
+    state: enabled
+- name: blocks_tagged_stream_multiply_length_0_0_0
+  id: blocks_tagged_stream_multiply_length
+  parameters:
+    affinity: ''
+    alias: ''
+    c: 8*sps
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [464, 216.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_4
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\nimport\
+      \ time\n\nclass blk(gr.sync_block):\n    def __init__(self):\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='Tag Block',\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64]\n        )\n        self.tag_added = False\n\
+      \        self.last_packet_len_tag = None\n\n    def work(self, input_items,\
+      \ output_items):\n        # Get all tags in the current window\n        tags\
+      \ = self.get_tags_in_window(0, 0, len(input_items[0]))\n        \n        #\
+      \ Check for packet_len tag\n        new_packet_len_tag = None\n        for tag\
+      \ in tags:\n            if tag.key == pmt.intern(\"packet_len\"):\n        \
+      \        print(\"got len tag\", tag)\n                new_packet_len_tag = tag\n\
+      \                break\n\n        # If a new packet_len tag is found, reset\
+      \ tag_added\n        if new_packet_len_tag and new_packet_len_tag != self.last_packet_len_tag:\n\
+      \            self.tag_added = False\n            self.last_packet_len_tag =\
+      \ new_packet_len_tag\n            print(\"len tag reset\")\n\n        if not\
+      \ self.tag_added and len(input_items[0]) > 0:\n            # Get the current\
+      \ time\n            current_time = time.time()\n            seconds = int(current_time)\n\
+      \            fractional_seconds = current_time - seconds\n            \n   \
+      \         key = pmt.intern(\"tx_time\")\n            value = pmt.make_tuple(pmt.from_uint64(seconds),\
+      \ pmt.from_double(fractional_seconds))\n            self.add_item_tag(\n   \
+      \             0,  # Output port 0\n                self.nitems_written(0), \
+      \ # Index of the first sample in absolute terms\n                key,  # Key\
+      \ of the tag\n                value  # Value of the tag\n            )\n   \
+      \         self.tag_added = True\n            print(\"added tx time tag\")\n\
+      \        \n        output_items[0][:] = input_items[0]  # Copy input to output\n\
+      \        return len(output_items[0])\n\n\n\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Tag Block', 'blk', [], [('0', 'complex', 1)], [('0', 'complex', 1)],
+      '', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1032, 248.0]
+    rotation: 0
+    state: disabled
+- name: pad_sink_0
+  id: pad_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    label: out
+    num_streams: '1'
+    optional: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1184, 92.0]
+    rotation: 0
+    state: true
+- name: pad_source_0
+  id: pad_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    label: in
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '1'
+    optional: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [248, 188.0]
+    rotation: 0
+    state: true
+- name: pfb_arb_resampler_xxx_0
+  id: pfb_arb_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    atten: '100'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilts: '32'
+    rrate: '100'
+    samp_delay: '0'
+    taps: ''
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 216.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Sample Rate Demod
+    short_id: ''
+    type: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [408, 28.0]
+    rotation: 0
+    state: true
+- name: sample_rate_tx
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Sample Rate (Transmit)
+    short_id: ''
+    type: ''
+    value: int(1.2e6)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 108.0]
+    rotation: 0
+    state: true
+- name: sps
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Samples per Symbol
+    short_id: ''
+    type: ''
+    value: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [240, 76.0]
+    rotation: 0
+    state: true
+
+connections:
+- [blocks_tagged_stream_multiply_length_0, '0', epy_block_4, '0']
+- [blocks_tagged_stream_multiply_length_0, '0', pad_sink_0, '0']
+- [blocks_tagged_stream_multiply_length_0_0_0, '0', pfb_arb_resampler_xxx_0, '0']
+- [epy_block_4, '0', pad_sink_0, '0']
+- [pad_source_0, '0', blocks_tagged_stream_multiply_length_0_0_0, '0']
+- [pfb_arb_resampler_xxx_0, '0', blocks_tagged_stream_multiply_length_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.12.0
