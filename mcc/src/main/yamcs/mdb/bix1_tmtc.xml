@@ -9,6 +9,141 @@ See https://github.com/yamcs/pymdb
   <SpaceSystem name="EPS_Controll">
     <TelemetryMetaData>
       <ParameterTypeSet>
+        <IntegerParameterType name="ALX_SOL0" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ALX_SOL1" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ALX_SOL2" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ALX_SOL3" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ALX_SOL4" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ALX_SOL5" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ALX_SOL6" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">light intensity 0 - 255</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL0" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL1" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL2" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL3" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL4" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL5" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="ATEMP_SOL6" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Deci Celcius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Address" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL0" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL1" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL2" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL3" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL4" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL5" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL6" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="CSA_SOL7" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">mA</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
         <IntegerParameterType name="FG0_CURRENT" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mA</Unit>
@@ -45,6 +180,18 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <BooleanParameterType name="PASS_SW0_Passivation_state" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
+        <BooleanParameterType name="PASS_SW0_Persitant" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
+        <BooleanParameterType name="PASS_SW1_Passivation_state" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
+        <BooleanParameterType name="PASS_SW1_Persitant" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanParameterType>
         <IntegerParameterType name="PCB_ATEMP0" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Celcius</Unit>
@@ -152,6 +299,27 @@ See https://github.com/yamcs/pymdb
         </IntegerParameterType>
         <IntegerParameterType name="Power_Sensor_Value" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <ArrayParameterType name="ReadRegisterValues" arrayTypeRef="ReadRegisterValues__el">
+          <DimensionList>
+            <Dimension>
+              <StartingIndex>
+                <FixedValue>0</FixedValue>
+              </StartingIndex>
+              <EndingIndex>
+                <DynamicValue>
+                  <ParameterInstanceRef parameterRef="n"/>
+                  <LinearAdjustment intercept="-1"/>
+                </DynamicValue>
+              </EndingIndex>
+            </Dimension>
+          </DimensionList>
+        </ArrayParameterType>
+        <IntegerParameterType name="ReadRegisterValues__el" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
         <IntegerParameterType name="UNREG_BUS_I" signed="true" sizeInBits="32">
           <UnitSet>
@@ -270,8 +438,80 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <IntegerParameterType name="n" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerParameterType>
       </ParameterTypeSet>
       <ParameterSet>
+        <Parameter name="ALX_SOL0" parameterTypeRef="ALX_SOL0" shortDescription="Analog solar panel illuminance - Direction (TBC):x-">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ALX_SOL1" parameterTypeRef="ALX_SOL1" shortDescription="Analog solar panel illuminance - Direction (TBC):z+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ALX_SOL2" parameterTypeRef="ALX_SOL2" shortDescription="Analog solar panel illuminance - Direction (TBC):y-">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ALX_SOL3" parameterTypeRef="ALX_SOL3" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ALX_SOL4" parameterTypeRef="ALX_SOL4" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ALX_SOL5" parameterTypeRef="ALX_SOL5" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ALX_SOL6" parameterTypeRef="ALX_SOL6" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL0" parameterTypeRef="ATEMP_SOL0" shortDescription="Analog temperature of solar panel - Direction (TBC):x-">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL1" parameterTypeRef="ATEMP_SOL1" shortDescription="Analog temperature of solar panel - Direction (TBC):z+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL2" parameterTypeRef="ATEMP_SOL2" shortDescription="Analog temperature of solar panel - Direction (TBC):y-">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL3" parameterTypeRef="ATEMP_SOL3" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL4" parameterTypeRef="ATEMP_SOL4" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL5" parameterTypeRef="ATEMP_SOL5" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ATEMP_SOL6" parameterTypeRef="ATEMP_SOL6" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Address" parameterTypeRef="Address" shortDescription="I2C Adress">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL0" parameterTypeRef="CSA_SOL0" shortDescription="Analog solar input current - Direction (TBC): x-">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL1" parameterTypeRef="CSA_SOL1" shortDescription="Analog solar input current - Direction (TBC): z+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL2" parameterTypeRef="CSA_SOL2" shortDescription="Analog solar input current - Direction (TBC): y-">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL3" parameterTypeRef="CSA_SOL3" shortDescription="Analog solar input current - Direction (TBC): x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL4" parameterTypeRef="CSA_SOL4" shortDescription="Analog solar input current - Direction (TBC): x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL5" parameterTypeRef="CSA_SOL5" shortDescription="Analog solar input current - Direction (TBC): x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL6" parameterTypeRef="CSA_SOL6" shortDescription="Analog solar input current - Direction (TBC): x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="CSA_SOL7" parameterTypeRef="CSA_SOL7" shortDescription="Analog solar input current - Direction (TBC): x+">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="FG0_CURRENT" parameterTypeRef="FG0_CURRENT" shortDescription="EPS digital PCB temperature">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -288,6 +528,18 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="FG1_VBAT" parameterTypeRef="FG1_VBAT" shortDescription="Fuel gauge 1 battery voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PASS_SW0_Passivation_state" parameterTypeRef="PASS_SW0_Passivation_state" shortDescription="Passivation mode 0 state, active/inactive">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PASS_SW0_Persitant" parameterTypeRef="PASS_SW0_Persitant" shortDescription="Passivation mode 0 Persitant">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PASS_SW1_Passivation_state" parameterTypeRef="PASS_SW1_Passivation_state" shortDescription="Passivation mode 1 state, active/inactive">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PASS_SW1_Persitant" parameterTypeRef="PASS_SW1_Persitant" shortDescription="Passivation mode 1 Persitant">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="PCB_ATEMP0" parameterTypeRef="PCB_ATEMP0" shortDescription="OBC PCB Temperature 0">
@@ -345,6 +597,12 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="Power_Sensor_Value" parameterTypeRef="Power_Sensor_Value" shortDescription="Power Register Content">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="ReadRegisterValues" parameterTypeRef="ReadRegisterValues">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="Register" parameterTypeRef="Register" shortDescription="Register">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="UNREG_BUS_I" parameterTypeRef="UNREG_BUS_I" shortDescription="Bus unregulated voltage current measurement">
@@ -410,8 +668,53 @@ See https://github.com/yamcs/pymdb
         <Parameter name="V_UNREG_V" parameterTypeRef="V_UNREG_V" shortDescription="Satellite bus main unreg. power voltage">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="n" parameterTypeRef="n">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
       </ParameterSet>
       <ContainerSet>
+        <SequenceContainer name="EPS_Battery_Config" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="PASS_SW0_Passivation_state">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PASS_SW0_Persitant">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PASS_SW1_Passivation_state">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PASS_SW1_Persitant">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>15</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
         <SequenceContainer name="EPS_Battery_Status" abstract="false">
           <EntryList>
             <ParameterRefEntry parameterRef="PMIC0_VBUS">
@@ -580,6 +883,160 @@ See https://github.com/yamcs/pymdb
                     <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
                     <ComparisonOperator>==</ComparisonOperator>
                     <Value>4</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="EPS_CSA_SOL" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="CSA_SOL0">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL1">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL2">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL3">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL4">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL5">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL6">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="CSA_SOL7">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>19</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="EPS_TEMP_ALX_SOL" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="ATEMP_SOL0">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ATEMP_SOL1">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ATEMP_SOL2">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ATEMP_SOL3">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ATEMP_SOL4">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ATEMP_SOL5">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ATEMP_SOL6">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL0">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL1">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL2">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL3">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL4">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL5">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ALX_SOL6">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>20</Value>
                   </Condition>
                 </ANDedConditions>
               </BooleanExpression>
@@ -774,6 +1231,48 @@ See https://github.com/yamcs/pymdb
             </RestrictionCriteria>
           </BaseContainer>
         </SequenceContainer>
+        <SequenceContainer name="Register_Value_TM" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="Address">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="Register">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="n">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="ReadRegisterValues">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>78</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>18</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
       </ContainerSet>
     </TelemetryMetaData>
     <CommandMetaData>
@@ -782,6 +1281,15 @@ See https://github.com/yamcs/pymdb
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerArgumentType>
         <IntegerArgumentType name="Get_Power_Sensor_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Get_Register__Adress" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Get_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Get_Register__Length" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
         <EnumeratedArgumentType name="PMIC_Get_Register__PMIC_Select">
@@ -794,12 +1302,33 @@ See https://github.com/yamcs/pymdb
         <IntegerArgumentType name="PMIC_Get_Register__PMIC_Register" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
+        <EnumeratedArgumentType name="PMIC_Set_I_Charge_Limit__PMIC_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="PMIC0"/>
+            <Enumeration value="1" label="PMIC1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <IntegerArgumentType name="PMIC_Set_I_Charge_Limit__IChargeLimit" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
+        <EnumeratedArgumentType name="PMIC_Set_I_Input_Limit__PMIC_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="PMIC0"/>
+            <Enumeration value="1" label="PMIC1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <IntegerArgumentType name="PMIC_Set_I_Input_Limit__InputLimit" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
+        <EnumeratedArgumentType name="PMIC_Set_V_Charge_Limit__PMIC_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="PMIC0"/>
+            <Enumeration value="1" label="PMIC1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <IntegerArgumentType name="PMIC_Set_V_Charge_Limit__VChargeLimit" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
@@ -825,6 +1354,19 @@ See https://github.com/yamcs/pymdb
         <BooleanArgumentType name="POWER_VCOM__Power_VCOM_ARG" zeroStringValue="False" oneStringValue="True">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </BooleanArgumentType>
+        <EnumeratedArgumentType name="Set_Passivation_Sw_State__Switch_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="Switch_0"/>
+            <Enumeration value="1" label="Switch_1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
+        <BooleanArgumentType name="Set_Passivation_Sw_State__Passivation_State" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
+        <BooleanArgumentType name="Set_Passivation_Sw_State__Persitant" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
         <IntegerArgumentType name="Set_Power_Sensor_Register__Adress" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerArgumentType>
@@ -833,6 +1375,111 @@ See https://github.com/yamcs/pymdb
         </IntegerArgumentType>
         <IntegerArgumentType name="Set_Power_Sensor_Register__Value" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Address" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Register" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Length" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte00" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte01" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte02" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte03" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte04" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte05" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte06" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte07" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte08" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte09" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte10" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte11" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte12" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte13" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte14" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte15" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte16" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte17" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte18" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte19" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte20" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte21" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte22" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte23" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte24" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte25" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte26" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte27" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte28" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte29" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte30" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </IntegerArgumentType>
+        <IntegerArgumentType name="Set_Register__Byte31" signed="true" sizeInBits="32" initialValue="0">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
       </ArgumentTypeSet>
       <MetaCommandSet>
@@ -855,6 +1502,41 @@ See https://github.com/yamcs/pymdb
                 </LocationInContainerInBits>
               </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="Get_Register" abstract="false" shortDescription="Get a Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="18"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Adress" argumentTypeRef="Get_Register__Adress"/>
+            <Argument name="Register" argumentTypeRef="Get_Register__Register"/>
+            <Argument name="Length" argumentTypeRef="Get_Register__Length"/>
+          </ArgumentList>
+          <CommandContainer name="Get_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Adress">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Length">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
@@ -902,10 +1584,16 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <ArgumentList>
+            <Argument name="PMIC_Select" argumentTypeRef="PMIC_Set_I_Charge_Limit__PMIC_Select"/>
             <Argument name="IChargeLimit" argumentTypeRef="PMIC_Set_I_Charge_Limit__IChargeLimit"/>
           </ArgumentList>
           <CommandContainer name="PMIC_Set_I_Charge_Limit">
             <EntryList>
+              <ArgumentRefEntry argumentRef="PMIC_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="IChargeLimit">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
@@ -925,10 +1613,16 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <ArgumentList>
+            <Argument name="PMIC_Select" argumentTypeRef="PMIC_Set_I_Input_Limit__PMIC_Select"/>
             <Argument name="InputLimit" argumentTypeRef="PMIC_Set_I_Input_Limit__InputLimit"/>
           </ArgumentList>
           <CommandContainer name="PMIC_Set_I_Input_Limit">
             <EntryList>
+              <ArgumentRefEntry argumentRef="PMIC_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="InputLimit">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
@@ -948,10 +1642,16 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <ArgumentList>
+            <Argument name="PMIC_Select" argumentTypeRef="PMIC_Set_V_Charge_Limit__PMIC_Select"/>
             <Argument name="VChargeLimit" argumentTypeRef="PMIC_Set_V_Charge_Limit__VChargeLimit"/>
           </ArgumentList>
           <CommandContainer name="PMIC_Set_V_Charge_Limit">
             <EntryList>
+              <ArgumentRefEntry argumentRef="PMIC_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="VChargeLimit">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
@@ -1067,6 +1767,20 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
+        <MetaCommand name="RQ_EPS_Battery_Config" abstract="false" shortDescription="Get EPS Battery Config Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="15"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_Battery_Config">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
         <MetaCommand name="RQ_EPS_Battery_Status" abstract="false" shortDescription="Request EPS Battery Status Telemetry">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -1089,6 +1803,34 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <CommandContainer name="RQ_EPS_Bus_Power_Status">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RQ_EPS_CSA_SOL" abstract="false" shortDescription="Request EPS_CSA_SOL Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="19"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_CSA_SOL">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RQ_EPS_TEMP_ALX_SOL" abstract="false" shortDescription="Request OPT_EPS_SOL Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="20"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_EPS_TEMP_ALX_SOL">
             <EntryList/>
             <BaseContainer containerRef="base"/>
           </CommandContainer>
@@ -1123,6 +1865,41 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
+        <MetaCommand name="Set_Passivation_Sw_State" abstract="false" shortDescription="Set the Passivation Switch State">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="16"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Switch_Select" argumentTypeRef="Set_Passivation_Sw_State__Switch_Select"/>
+            <Argument name="Passivation_State" argumentTypeRef="Set_Passivation_Sw_State__Passivation_State" shortDescription="False: Battery charging active (NO EoL-PASSIVATION), &#10;True: Battery charging inactive (EoL-PASSIVATION)"/>
+            <Argument name="Persitant" argumentTypeRef="Set_Passivation_Sw_State__Persitant"/>
+          </ArgumentList>
+          <CommandContainer name="Set_Passivation_Sw_State">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Switch_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Passivation_State">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Persitant">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
         <MetaCommand name="Set_Power_Sensor_Register" abstract="false" shortDescription="Set a Power Sensor Register">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -1148,6 +1925,233 @@ See https://github.com/yamcs/pymdb
                 </LocationInContainerInBits>
               </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="Value">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="Set_Register" abstract="false" shortDescription="Set a Register">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="17"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Address" argumentTypeRef="Set_Register__Address"/>
+            <Argument name="Register" argumentTypeRef="Set_Register__Register"/>
+            <Argument name="Length" argumentTypeRef="Set_Register__Length"/>
+            <Argument name="Byte00" argumentTypeRef="Set_Register__Byte00"/>
+            <Argument name="Byte01" argumentTypeRef="Set_Register__Byte01"/>
+            <Argument name="Byte02" argumentTypeRef="Set_Register__Byte02"/>
+            <Argument name="Byte03" argumentTypeRef="Set_Register__Byte03"/>
+            <Argument name="Byte04" argumentTypeRef="Set_Register__Byte04"/>
+            <Argument name="Byte05" argumentTypeRef="Set_Register__Byte05"/>
+            <Argument name="Byte06" argumentTypeRef="Set_Register__Byte06"/>
+            <Argument name="Byte07" argumentTypeRef="Set_Register__Byte07"/>
+            <Argument name="Byte08" argumentTypeRef="Set_Register__Byte08"/>
+            <Argument name="Byte09" argumentTypeRef="Set_Register__Byte09"/>
+            <Argument name="Byte10" argumentTypeRef="Set_Register__Byte10"/>
+            <Argument name="Byte11" argumentTypeRef="Set_Register__Byte11"/>
+            <Argument name="Byte12" argumentTypeRef="Set_Register__Byte12"/>
+            <Argument name="Byte13" argumentTypeRef="Set_Register__Byte13"/>
+            <Argument name="Byte14" argumentTypeRef="Set_Register__Byte14"/>
+            <Argument name="Byte15" argumentTypeRef="Set_Register__Byte15"/>
+            <Argument name="Byte16" argumentTypeRef="Set_Register__Byte16"/>
+            <Argument name="Byte17" argumentTypeRef="Set_Register__Byte17"/>
+            <Argument name="Byte18" argumentTypeRef="Set_Register__Byte18"/>
+            <Argument name="Byte19" argumentTypeRef="Set_Register__Byte19"/>
+            <Argument name="Byte20" argumentTypeRef="Set_Register__Byte20"/>
+            <Argument name="Byte21" argumentTypeRef="Set_Register__Byte21"/>
+            <Argument name="Byte22" argumentTypeRef="Set_Register__Byte22"/>
+            <Argument name="Byte23" argumentTypeRef="Set_Register__Byte23"/>
+            <Argument name="Byte24" argumentTypeRef="Set_Register__Byte24"/>
+            <Argument name="Byte25" argumentTypeRef="Set_Register__Byte25"/>
+            <Argument name="Byte26" argumentTypeRef="Set_Register__Byte26"/>
+            <Argument name="Byte27" argumentTypeRef="Set_Register__Byte27"/>
+            <Argument name="Byte28" argumentTypeRef="Set_Register__Byte28"/>
+            <Argument name="Byte29" argumentTypeRef="Set_Register__Byte29"/>
+            <Argument name="Byte30" argumentTypeRef="Set_Register__Byte30"/>
+            <Argument name="Byte31" argumentTypeRef="Set_Register__Byte31"/>
+          </ArgumentList>
+          <CommandContainer name="Set_Register">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Address">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Register">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Length">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte00">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte01">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte02">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte03">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte04">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte05">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte06">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte07">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte08">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte09">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte10">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte11">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte12">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte13">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte14">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte15">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte16">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte17">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte18">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte19">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte20">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte21">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte22">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte23">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte24">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte25">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte26">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte27">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte28">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte29">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte30">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Byte31">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
@@ -1595,48 +2599,6 @@ See https://github.com/yamcs/pymdb
         <BooleanParameterType name="ACTIVE_OBC" zeroStringValue="False" oneStringValue="True">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </BooleanParameterType>
-        <IntegerParameterType name="ALX_SOL0" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ALX_SOL1" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ALX_SOL2" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ALX_SOL3" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ALX_SOL4" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ALX_SOL5" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ALX_SOL6" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerParameterType>
         <IntegerParameterType name="APRS_STAT0" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">tbd</Unit>
@@ -1664,96 +2626,6 @@ See https://github.com/yamcs/pymdb
         <IntegerParameterType name="APRS_STAT4" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">tbd</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL0" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL1" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL2" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL3" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL4" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL5" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="ATEMP_SOL6" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">Celcius</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="8" encoding="twosComplement"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL0" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL1" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL2" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL3" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL4" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL5" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL6" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
-          </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
-        </IntegerParameterType>
-        <IntegerParameterType name="CSA_SOL7" signed="true" sizeInBits="32">
-          <UnitSet>
-            <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -2177,27 +3049,6 @@ See https://github.com/yamcs/pymdb
         <Parameter name="ACTIVE_OBC" parameterTypeRef="ACTIVE_OBC" shortDescription="Currently active OBC">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
-        <Parameter name="ALX_SOL0" parameterTypeRef="ALX_SOL0" shortDescription="Analog solar panel illuminance - Direction (TBC):x-">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ALX_SOL1" parameterTypeRef="ALX_SOL1" shortDescription="Analog solar panel illuminance - Direction (TBC):z+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ALX_SOL2" parameterTypeRef="ALX_SOL2" shortDescription="Analog solar panel illuminance - Direction (TBC):y-">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ALX_SOL3" parameterTypeRef="ALX_SOL3" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ALX_SOL4" parameterTypeRef="ALX_SOL4" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ALX_SOL5" parameterTypeRef="ALX_SOL5" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ALX_SOL6" parameterTypeRef="ALX_SOL6" shortDescription="Analog solar panel illuminance - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
         <Parameter name="APRS_STAT0" parameterTypeRef="APRS_STAT0" shortDescription="APRS Module operational status 0">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -2211,51 +3062,6 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="APRS_STAT4" parameterTypeRef="APRS_STAT4" shortDescription="APRS Module operational status 4">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL0" parameterTypeRef="ATEMP_SOL0" shortDescription="Analog temperature of solar panel - Direction (TBC):x-">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL1" parameterTypeRef="ATEMP_SOL1" shortDescription="Analog temperature of solar panel - Direction (TBC):z+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL2" parameterTypeRef="ATEMP_SOL2" shortDescription="Analog temperature of solar panel - Direction (TBC):y-">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL3" parameterTypeRef="ATEMP_SOL3" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL4" parameterTypeRef="ATEMP_SOL4" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL5" parameterTypeRef="ATEMP_SOL5" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="ATEMP_SOL6" parameterTypeRef="ATEMP_SOL6" shortDescription="Analog temperature of solar panel - Direction (TBC):x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL0" parameterTypeRef="CSA_SOL0" shortDescription="Analog solar input current - Direction (TBC): x-">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL1" parameterTypeRef="CSA_SOL1" shortDescription="Analog solar input current - Direction (TBC): z+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL2" parameterTypeRef="CSA_SOL2" shortDescription="Analog solar input current - Direction (TBC): y-">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL3" parameterTypeRef="CSA_SOL3" shortDescription="Analog solar input current - Direction (TBC): x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL4" parameterTypeRef="CSA_SOL4" shortDescription="Analog solar input current - Direction (TBC): x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL5" parameterTypeRef="CSA_SOL5" shortDescription="Analog solar input current - Direction (TBC): x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL6" parameterTypeRef="CSA_SOL6" shortDescription="Analog solar input current - Direction (TBC): x+">
-          <ParameterProperties dataSource="telemetered" persistence="true"/>
-        </Parameter>
-        <Parameter name="CSA_SOL7" parameterTypeRef="CSA_SOL7" shortDescription="Analog solar input current - Direction (TBC): x+">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="EPS_RTC_CONTROL0" parameterTypeRef="EPS_RTC_CONTROL0" shortDescription="Realtime Clock control settings register 0">
@@ -2500,68 +3306,6 @@ See https://github.com/yamcs/pymdb
                     <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
                     <ComparisonOperator>==</ComparisonOperator>
                     <Value>8</Value>
-                  </Condition>
-                </ANDedConditions>
-              </BooleanExpression>
-            </RestrictionCriteria>
-          </BaseContainer>
-        </SequenceContainer>
-        <SequenceContainer name="EPS_CSA_SOL" abstract="false">
-          <EntryList>
-            <ParameterRefEntry parameterRef="CSA_SOL0">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL1">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL2">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL3">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL4">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL5">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL6">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="CSA_SOL7">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-          </EntryList>
-          <BaseContainer containerRef="/PUS/pus-tm">
-            <RestrictionCriteria>
-              <BooleanExpression>
-                <ANDedConditions>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>77</Value>
-                  </Condition>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>1</Value>
                   </Condition>
                 </ANDedConditions>
               </BooleanExpression>
@@ -3000,98 +3744,6 @@ See https://github.com/yamcs/pymdb
             </RestrictionCriteria>
           </BaseContainer>
         </SequenceContainer>
-        <SequenceContainer name="OPT_EPS_SOL" abstract="false">
-          <EntryList>
-            <ParameterRefEntry parameterRef="ATEMP_SOL0">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ATEMP_SOL1">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ATEMP_SOL2">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ATEMP_SOL3">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ATEMP_SOL4">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ATEMP_SOL5">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ATEMP_SOL6">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL0">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL1">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL2">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL3">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL4">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL5">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="ALX_SOL6">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-          </EntryList>
-          <BaseContainer containerRef="/PUS/pus-tm">
-            <RestrictionCriteria>
-              <BooleanExpression>
-                <ANDedConditions>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>77</Value>
-                  </Condition>
-                  <Condition>
-                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
-                    <ComparisonOperator>==</ComparisonOperator>
-                    <Value>11</Value>
-                  </Condition>
-                </ANDedConditions>
-              </BooleanExpression>
-            </RestrictionCriteria>
-          </BaseContainer>
-        </SequenceContainer>
         <SequenceContainer name="OPT_OBC_CERT" abstract="false">
           <EntryList>
             <ParameterRefEntry parameterRef="SW_CERT00">
@@ -3278,20 +3930,6 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
-        <MetaCommand name="RQ_EPS_CSA_SOL" abstract="false" shortDescription="Request EPS_CSA_SOL Telemetry">
-          <BaseMetaCommand metaCommandRef="base">
-            <ArgumentAssignmentList>
-              <ArgumentAssignment argumentName="subtype" argumentValue="1"/>
-              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
-            </ArgumentAssignmentList>
-          </BaseMetaCommand>
-          <CommandContainer name="RQ_EPS_CSA_SOL">
-            <EntryList/>
-            <BaseContainer containerRef="base"/>
-          </CommandContainer>
-          <DefaultSignificance consequenceLevel="normal"/>
-          <VerifierSet/>
-        </MetaCommand>
         <MetaCommand name="RQ_IMU" abstract="false" shortDescription="Request IMU Telemetry">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -3370,20 +4008,6 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <CommandContainer name="RQ_OPT_EPS_RTC">
-            <EntryList/>
-            <BaseContainer containerRef="base"/>
-          </CommandContainer>
-          <DefaultSignificance consequenceLevel="normal"/>
-          <VerifierSet/>
-        </MetaCommand>
-        <MetaCommand name="RQ_OPT_EPS_SOL" abstract="false" shortDescription="Request OPT_EPS_SOL Telemetry">
-          <BaseMetaCommand metaCommandRef="base">
-            <ArgumentAssignmentList>
-              <ArgumentAssignment argumentName="subtype" argumentValue="11"/>
-              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
-            </ArgumentAssignmentList>
-          </BaseMetaCommand>
-          <CommandContainer name="RQ_OPT_EPS_SOL">
             <EntryList/>
             <BaseContainer containerRef="base"/>
           </CommandContainer>

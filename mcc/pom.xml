@@ -18,7 +18,7 @@
       -->
       <!-- <yamcsVersion>5.9.6</yamcsVersion> -->
       <!-- <yamcsVersion>5.10.9</yamcsVersion> -->
-      <yamcsVersion>5.11.1</yamcsVersion>
+      <yamcsVersion>5.11.8</yamcsVersion>
       <!-- <yamcsVersion>5.11.8-SNAPSHOT</yamcsVersion> -->
     </properties>
   

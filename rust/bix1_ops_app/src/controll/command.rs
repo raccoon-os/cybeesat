@@ -35,6 +35,19 @@ pub enum Command {
     PMICSetRegister(PMICSetRegisterArgs),
     #[subservice(14)]
     PMICGetRegister(PMICGetRegisterArgs),
+    #[subservice(15)]
+    RqEpsBatteryConfig,
+    #[subservice(16)]
+    SetPassivationSwState(SetPassivationSwStateArgs),
+    #[subservice(17)]
+    SetRegister(SetRegisterArgs),
+    #[subservice(18)]
+    GetRegister(GetRegisterArgs),
+    #[subservice(19)]
+    RqEpsCsaSol,
+    #[subservice(20)]
+    RqTempAlxSol,
+
 }
 
 #[derive(BitStruct, Debug)]
@@ -77,6 +90,8 @@ pub struct GetPowerSensorRegisterArgs {
 #[derive(BitStruct, Debug)]
 pub struct PMICSetIChargeLimitArgs {
     #[bits(8)]
+    pub pmic_select: PMICSelect,
+    #[bits(8)]
     pub i_charge_limit: u8,
 }
 
@@ -84,12 +99,16 @@ pub struct PMICSetIChargeLimitArgs {
 #[derive(BitStruct, Debug)]
 pub struct PMICSetIInputLimitArgs {
     #[bits(8)]
+    pub pmic_select: PMICSelect,
+    #[bits(8)]
     pub input_limit: u8,
 }
 
 
 #[derive(BitStruct, Debug)]
 pub struct PMICSetVChargeLimitArgs {
+    #[bits(8)]
+    pub pmic_select: PMICSelect,
     #[bits(8)]
     pub v_charge_limit: u8,
 }
@@ -120,3 +139,103 @@ pub struct PMICGetRegisterArgs {
     pub pmic_register: u8,
 }
 
+#[derive(BitStruct, Debug)]
+pub struct SetPassivationSwStateArgs {
+    #[bits(8)]
+    pub switch_select: SwitchSelect,
+    #[bits(8)]
+    pub switch_passivation_state: bool,
+    #[bits(8)]
+    pub persistant: bool,
+}
+
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[repr(u8)]
+pub enum SwitchSelect {
+    Switch0 = 0,
+	Switch1 = 1,
+}
+
+#[derive(BitStruct, Debug)]
+pub struct SetRegisterArgs {
+    #[bits(16)]
+    pub adress: u16,
+    #[bits(8)]
+    pub register: u8,
+    #[bits(8)]
+    pub length: u8,
+    #[bits(8)]
+    pub byte00: u8,
+    #[bits(8)]
+    pub byte01: u8,
+    #[bits(8)]
+    pub byte02: u8,
+    #[bits(8)]
+    pub byte03: u8,
+    #[bits(8)]
+    pub byte04: u8,
+    #[bits(8)]
+    pub byte05: u8,
+    #[bits(8)]
+    pub byte06: u8,
+    #[bits(8)]
+    pub byte07: u8,
+    #[bits(8)]
+    pub byte08: u8,
+    #[bits(8)]
+    pub byte09: u8,
+    #[bits(8)]
+    pub byte10: u8,
+    #[bits(8)]
+    pub byte11: u8,
+    #[bits(8)]
+    pub byte12: u8,
+    #[bits(8)]
+    pub byte13: u8,
+    #[bits(8)]
+    pub byte14: u8,
+    #[bits(8)]
+    pub byte15: u8,
+    #[bits(8)]
+    pub byte16: u8,
+    #[bits(8)]
+    pub byte17: u8,
+    #[bits(8)]
+    pub byte18: u8,
+    #[bits(8)]
+    pub byte19: u8,
+    #[bits(8)]
+    pub byte20: u8,
+    #[bits(8)]
+    pub byte21: u8,
+    #[bits(8)]
+    pub byte22: u8,
+    #[bits(8)]
+    pub byte23: u8,
+    #[bits(8)]
+    pub byte24: u8,
+    #[bits(8)]
+    pub byte25: u8,
+    #[bits(8)]
+    pub byte26: u8,
+    #[bits(8)]
+    pub byte27: u8,
+    #[bits(8)]
+    pub byte28: u8,
+    #[bits(8)]
+    pub byte29: u8,
+    #[bits(8)]
+    pub byte30: u8,
+    #[bits(8)]
+    pub byte31: u8,
+}
+
+#[derive(BitStruct, Debug)]
+pub struct GetRegisterArgs {
+    #[bits(16)]
+    pub address: u16,
+    #[bits(8)]
+    pub register: u8,
+    #[bits(8)]
+    pub length: u8,
+}

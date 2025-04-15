@@ -24,22 +24,7 @@ impl PusService for GetHealthService {
     fn handle_tc(&mut self, mut tc: AcceptedTc, cmd: Self::CommandT) -> AcceptanceResult {
         println!("PUS-Service: Command received.");
         match cmd {
-            command::Command::RqEpsCsaSol => tc.handle_with_tm(||{
-                if false {
-                    return Err(());
-                }
 
-                Ok(telemetry::EPS_CSA_SOL{
-                    csa_sol0: 0,
-                    csa_sol1: 0,
-                    csa_sol2: 0,
-                    csa_sol3: 0,
-                    csa_sol4: 0,
-                    csa_sol5: 0,
-                    csa_sol6: 0,
-                    csa_sol7: 0 
-                })
-            }),
             
             command::Command::RqObcInfo => tc.handle_with_tm(||{
                 let mut m = Machine::new();
@@ -129,28 +114,6 @@ impl PusService for GetHealthService {
                 Ok(PAYLOAD{
                     aprs_stat0: 0,
                     aprs_stat1: 0
-                })
-            }),
-            command::Command::RqOptEpsSol => tc.handle_with_tm(||{
-                if false {
-                    return Err(());
-                }
-
-                Ok(telemetry::OPT_EPS_SOL{
-                    atemp_sol0: 0,
-                    atemp_sol1: 0,
-                    atemp_sol2: 0,
-                    atemp_sol3: 0,
-                    atemp_sol4: 0,
-                    atemp_sol5: 0,
-                    atemp_sol6: 0,
-                    alx_sol0: 0,
-                    alx_sol1: 0,
-                    alx_sol2: 0,
-                    alx_sol3: 0,
-                    alx_sol4: 0,
-                    alx_sol5: 0,
-                    alx_sol6: 0
                 })
             }),
             command::Command::RqOptEpsRtc => tc.handle_with_tm(||{

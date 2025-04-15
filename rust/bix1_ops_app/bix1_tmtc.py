@@ -59,31 +59,6 @@ def multi_int_parameter(service, base_name, count, units, short_description_base
     return [int_parameter(service, base_name + str(i), units, short_description=short_description_base + description_list[i] if description_list != None else short_description_base + " " + str(i), encoding=encoding)
             for i in range(count)]
 
-solar_panels = ["x-", "z+", "y-", "x+", "x+", "x+", "x+", "x+"]
-
-
-RCCNCommand(
-    system=service,
-    base=base_cmd,
-    assignments={"subtype": 1},
-    name="RQ_EPS_CSA_SOL",
-    short_description="Request EPS_CSA_SOL Telemetry",
-)
-
-Container(
-    system=service,
-    base="/PUS/pus-tm",
-    name="EPS_CSA_SOL",
-    condition=AndExpression(
-        EqExpression("/PUS/pus-tm/type", service_type_id),
-        EqExpression("/PUS/pus-tm/subtype", 1),
-    ),
-    entries=[
-        *multi_int_parameter(service, "CSA_SOL", 8, "mA", short_description_base = "Analog solar input current - Direction (TBC): ", description_list = solar_panels),
-    ]
-)
-
-
 
 RCCNCommand(
     system=service,
@@ -214,28 +189,6 @@ Container(
     entries=[
         int_parameter(service, "APRS_STAT0", "tbd", "APRS Module operational status 0", uint16_t),
         int_parameter(service, "APRS_STAT1", "tbd", "APRS Module operational status 1", uint16_t),
-    ]
-)
-
-RCCNCommand(
-    system=service,
-    base=base_cmd,
-    assignments={"subtype": 11},
-    name="RQ_OPT_EPS_SOL",
-    short_description="Request OPT_EPS_SOL Telemetry",
-)
-
-Container(
-    system=service,
-    base="/PUS/pus-tm",
-    name="OPT_EPS_SOL",
-    condition=AndExpression(
-        EqExpression("/PUS/pus-tm/type", service_type_id),
-        EqExpression("/PUS/pus-tm/subtype", 11),
-    ),
-    entries=[
-        *multi_int_parameter(service, "ATEMP_SOL", 7, "Celcius", "Analog temperature of solar panel - Direction (TBC):", solar_panels, int8_t),
-        *multi_int_parameter(service, "ALX_SOL", 7, "light intensity 0 - 255", "Analog solar panel illuminance - Direction (TBC):", solar_panels, uint8_t)
     ]
 )
 
@@ -620,6 +573,13 @@ Container(
     ]   
 )
 
+
+pmic_select_argument = EnumeratedArgument(
+            name="PMIC_Select",
+            choices= [[0, "PMIC0"], [1, "PMIC1"]],
+            encoding=uint8_t,
+        )
+
 RCCNCommand(
     system=eps_service,
     base=eps_base_cmd,
@@ -627,10 +587,17 @@ RCCNCommand(
     name="PMIC_Set_I_Charge_Limit",
     short_description="Set the PMIC I Charge Limit",
     arguments=[
-        IntegerArgument(
-            name="IChargeLimit",
+        pmic_select_argument,
+        # IntegerArgument(
+        #     name="IChargeLimit",
+        #     encoding=uint8_t,
+        # ),
+        EnumeratedArgument(
+            name="I_Charge_Limit_Select",
+            choices= [[0, "Limit:256mA"], [1, "Limit:512mA"], [2, "Limit:1024mA"], [3, "Limit:1536mA"], [3, "Limit:2048mA"]],
+            # Reg04 Val:    0000100                 0001000             0010000             0011000                 0100000      
             encoding=uint8_t,
-        ),
+        )
     ],
 )
 
@@ -641,10 +608,17 @@ RCCNCommand(
     name="PMIC_Set_I_Input_Limit",
     short_description="Set the PMIC I Input Limit",
     arguments=[
-        IntegerArgument(
-            name="InputLimit",
+        pmic_select_argument,
+        # IntegerArgument(
+        #     name="InputLimit",
+        #     encoding=uint8_t,
+        # ),
+        EnumeratedArgument(
+            name="I_Input_Limit_Select",
+            choices= [[0, "Limit:400mA"], [1, "Limit:800mA"], [2, "Limit:1400mA"], [3, "Limit:2000mA"], [4, "Limit:2400mA"], [5, "Limit:2800mA"], [4, "Limit:3250mA"]],
+            #  REG00 Val:       001000                  010000          011100                  101000              110000                  111000              111111
             encoding=uint8_t,
-        ),
+        )
     ],
 )
 
@@ -655,18 +629,20 @@ RCCNCommand(
     name="PMIC_Set_V_Charge_Limit",
     short_description="Set the PMIC V Charge Limit",
     arguments=[
-        IntegerArgument(
-            name="VChargeLimit",
+        pmic_select_argument,
+        # IntegerArgument(
+        #     name="VChargeLimit",
+        #     encoding=uint8_t,
+        # ),
+        EnumeratedArgument(
+            name="V_Charge_Limit_Select",
+            choices= [[0, "Limit:3V840"], [1, "Limit:3V904"], [2, "Limit:4V032"], [3, "Limit:4V128"], [5, "Limit:4V256"], [6, "Limit:4V352"], [7, "Limit:4V416"], [8, "Limit:4V511"], [9, "Limit:4V608"]],
+            # REG06       # 0b000000          0b000100            0b001100               0b010010             0b011010            0b100000            0b100100        0b101010            0b110000
             encoding=uint8_t,
-        ),
+        )
     ],
 )
 
-pmic_select_argument = EnumeratedArgument(
-            name="PMIC_Select",
-            choices= [[0, "PMIC0"], [1, "PMIC1"]],
-            encoding=uint8_t,
-        )
 
 pmic_register_argument = IntegerArgument(
             name="PMIC_Register",
@@ -714,6 +690,215 @@ Container(
         int_parameter(eps_service, "PMIC_Register", "", "PMIC Register", uint8_t),
         int_parameter(eps_service, "PMIC_Value", "", "PMIC Register Content", uint8_t),  
     ]   
+)
+
+RCCNCommand(
+    system=eps_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 15},
+    name="RQ_EPS_Battery_Config",
+    short_description="Get EPS Battery Config Telemetry",
+)
+
+Container(
+    system=eps_service,
+    base="/PUS/pus-tm",
+    name="EPS_Battery_Config",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", eps_service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 15),
+    ),
+    entries=[
+        bool_parameter(eps_service, "PASS_SW0_Passivation_state", "Passivation mode 0 state, active/inactive"),
+        bool_parameter(eps_service, "PASS_SW0_Persitant", "Passivation mode 0 Persitant"),
+        bool_parameter(eps_service, "PASS_SW1_Passivation_state", "Passivation mode 1 state, active/inactive"),
+        bool_parameter(eps_service, "PASS_SW1_Persitant", "Passivation mode 1 Persitant"),
+    ]   
+)
+
+RCCNCommand(
+    system=eps_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 16},
+    name="Set_Passivation_Sw_State",
+    short_description="Set the Passivation Switch State",
+    arguments=[
+        EnumeratedArgument(
+            name="Switch_Select",
+            choices=  [[0, "Switch_0"], [1, "Switch_1"]],
+            encoding=uint8_t,
+        ),
+        BooleanArgument(
+            name="Passivation_State",
+            encoding=bool_t,
+            short_description="False: Battery charging active (NO EoL-PASSIVATION), \nTrue: Battery charging inactive (EoL-PASSIVATION)"
+        ),
+        BooleanArgument(
+            name="Persitant",
+            encoding=bool_t,
+        ),
+    ]
+)
+
+integer_type = IntegerDataType(
+    encoding=uint8_t,
+    signed=True,
+)
+
+RCCNCommand(
+    system=eps_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 17},
+    name="Set_Register",
+    short_description="Set a Register",
+    arguments=[
+        IntegerArgument(
+            name="Address",
+            encoding=uint16_t
+        ),
+        IntegerArgument(
+            name="Register",
+            encoding=uint8_t
+        ),
+        IntegerArgument(
+            name="Length",
+            encoding=uint8_t
+        ),
+        IntegerArgument(name="Byte00", encoding=uint8_t),
+        IntegerArgument(name="Byte01", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte02", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte03", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte04", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte05", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte06", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte07", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte08", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte09", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte10", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte11", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte12", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte13", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte14", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte15", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte16", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte17", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte18", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte19", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte20", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte21", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte22", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte23", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte24", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte25", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte26", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte27", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte28", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte29", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte30", encoding=uint8_t, default=0),
+        IntegerArgument(name="Byte31", encoding=uint8_t, default=0),
+        
+    ],
+)
+
+RCCNCommand(
+    system=eps_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 18},
+    name="Get_Register",
+    short_description="Get a Register",
+    arguments=[
+        IntegerArgument(
+            name="Adress",
+            encoding=uint16_t,
+        ),
+        IntegerArgument(
+            name="Register",
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Length",
+            encoding=uint8_t,
+        ),
+    ],
+)
+
+Container(
+    system=eps_service,
+    base="/PUS/pus-tm",
+    name="Register_Value_TM",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", eps_service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 18),
+    ),
+    entries=[
+        int_parameter(eps_service, "Address", "", "I2C Adress", uint16_t),
+        int_parameter(eps_service, "Register", "", "Register", uint8_t),
+        # ParameterEntry(IntegerParameter(system=service, name="n", encoding=uint8_t)),
+        ParameterEntry(
+            IntegerParameter(
+                system=eps_service,
+                name="n",
+                encoding=uint8_t
+            )
+        ),
+        ParameterEntry(
+            ArrayParameter(
+                system=eps_service,
+                name="ReadRegisterValues",
+                length=DynamicInteger("n"),
+                data_type=IntegerDataType(
+                    encoding=uint8_t,
+                    signed=True,
+                ),
+            )
+        )
+    ]   
+)
+
+solar_panels = ["x-", "z+", "y-", "x+", "x+", "x+", "x+", "x+"]
+
+
+RCCNCommand(
+    system=eps_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 19},
+    name="RQ_EPS_CSA_SOL",
+    short_description="Request EPS_CSA_SOL Telemetry",
+)
+
+Container(
+    system=eps_service,
+    base="/PUS/pus-tm",
+    name="EPS_CSA_SOL",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", eps_service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 19),
+    ),
+    entries=[
+        *multi_int_parameter(eps_service, "CSA_SOL", 8, "mA", short_description_base = "Analog solar input current - Direction (TBC): ", description_list = solar_panels),
+    ]
+)
+
+RCCNCommand(
+    system=eps_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 20},
+    name="RQ_EPS_TEMP_ALX_SOL",
+    short_description="Request OPT_EPS_SOL Telemetry",
+)
+
+Container(
+    system=eps_service,
+    base="/PUS/pus-tm",
+    name="EPS_TEMP_ALX_SOL",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", eps_service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 20),
+    ),
+    entries=[
+        *multi_int_parameter(eps_service, "ATEMP_SOL", 7, "Deci Celcius", "Analog temperature of solar panel - Direction (TBC):", solar_panels, int16_t),
+        *multi_int_parameter(eps_service, "ALX_SOL", 7, "light intensity", "Analog solar panel illuminance - Direction (TBC):", solar_panels, int16_t)
+    ]
 )
 
 RTC_service = Service(name="RTC", system=app)
@@ -853,6 +1038,9 @@ Container(
         int_parameter(RTC_service, "Value",  "", "Register Value", uint8_t),
     ]
 )
+
+
+
 
 # app.generate_rccn_code()
 with open("bix1_tmtc.xml", "wt") as f:

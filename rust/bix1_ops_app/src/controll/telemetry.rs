@@ -150,3 +150,79 @@ pub enum PMICSelect {
     PMIC0 = 0,
 	PMIC1 = 1,
 }
+
+#[derive(ServiceTelemetry, BitStruct, Debug)]
+#[subtype(15)]
+pub struct EPS_Battery_Config {
+	#[bits(8)]
+	pub pass_switch0_passivation_state: bool,
+	#[bits(8)]
+	pub pass_switch0_persistant: bool,
+	#[bits(8)]
+	pub pass_switch1_passivation_state: bool,
+	#[bits(8)]
+	pub pass_switch1_persistant: bool,
+}
+
+#[derive(ServiceTelemetry, BitStruct, Debug)]
+#[subtype(18)]
+pub struct RegisterValueTM {
+	#[bits(16)]
+	pub address: u16,
+	#[bits(8)]
+	pub register: u8,
+	#[length_prefixed_array(length_bits=8, element="bits(8)")]
+    pub values: Vec<u8>,
+}
+#[derive(ServiceTelemetry, BitStruct, Debug)]
+#[subtype(19)]
+pub struct EPS_CSA_SOL {
+	#[bits(16)]
+	pub csa_sol0: i16,
+	#[bits(16)]
+	pub csa_sol1: i16,
+	#[bits(16)]
+	pub csa_sol2: i16,
+	#[bits(16)]
+	pub csa_sol3: i16,
+	#[bits(16)]
+	pub csa_sol4: i16,
+	#[bits(16)]
+	pub csa_sol5: i16,
+	#[bits(16)]
+	pub csa_sol6: i16,
+	#[bits(16)]
+	pub csa_sol7: i16,
+}
+#[derive(ServiceTelemetry, BitStruct, Debug)]
+#[subtype(20)]
+pub struct EPS_TEMP_ALX_SOL {
+	#[bits(16)]
+	pub atemp_sol0: i16,
+	#[bits(16)]
+	pub atemp_sol1: i16,
+	#[bits(16)]
+	pub atemp_sol2: i16,
+	#[bits(16)]
+	pub atemp_sol3: i16,
+	#[bits(16)]
+	pub atemp_sol4: i16,
+	#[bits(16)]
+	pub atemp_sol5: i16,
+	#[bits(16)]
+	pub atemp_sol6: i16,
+	#[bits(16)]
+	pub alx_sol0: i16,
+	#[bits(16)]
+	pub alx_sol1: i16,
+	#[bits(16)]
+	pub alx_sol2: i16,
+	#[bits(16)]
+	pub alx_sol3: i16,
+	#[bits(16)]
+	pub alx_sol4: i16,
+	#[bits(16)]
+	pub alx_sol5: i16,
+	#[bits(16)]
+	pub alx_sol6: i16,
+}

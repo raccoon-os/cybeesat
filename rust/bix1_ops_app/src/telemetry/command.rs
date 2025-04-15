@@ -9,8 +9,6 @@ pub enum Command {
     RqOptEpsRtc,
     #[subservice(8)]
     RqCom,
-    #[subservice(2)]
-    RqEpsCsaSol,
     #[subservice(5)]
     RqImu,
     #[subservice(6)]
@@ -21,8 +19,6 @@ pub enum Command {
     RqOptEpsBattery,
     #[subservice(14)]
     RqOptEpsBus,
-    #[subservice(11)]
-    RqOptEpsSol,
     #[subservice(15)]
     RqOptObcCert,
     #[subservice(17)]

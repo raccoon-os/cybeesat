@@ -1,3 +1,4 @@
+use std::io::Read;
 use std::process::Command;
 use num_traits::FromPrimitive;
 use rccn_usr::service::{AcceptanceResult, AcceptedTc, PusService};
@@ -8,12 +9,14 @@ use std::fs;
 use super::telemetry;
 use machine_info::Machine;
 use i2cdev::linux::{LinuxI2CBus, LinuxI2CDevice};
-use i2cdev::core::I2CDevice;
+use i2cdev::core::{I2CDevice, I2CTransfer};
 use i2cdev::linux::LinuxI2CError;
 use thiserror::Error;
 use log::{debug, info, kv::value, warn};
 use std::{thread, time};
-
+use crate::controll::command::PMICSelect;
+use crate::controll::tla2528::lib::Tla2528;
+use crate::controll::tla2528::channel::Channel;
 #[derive(Error, Debug)]
 pub enum LocalError {
     #[error("Error during Register Conversion: {0}")]
@@ -50,6 +53,12 @@ pub struct EpsCtrlService{
     dev_i2c_switch: LinuxI2CDevice,
     dev_pmic: LinuxI2CDevice,
     dev_fuel_gauge: LinuxI2CDevice,
+    dev_passivation_switch0: LinuxI2CDevice,
+    dev_passivation_switch1: LinuxI2CDevice,
+    dev_adc0: LinuxI2CDevice,
+    dev_adc1: LinuxI2CDevice,
+    dev_adc2: LinuxI2CDevice,
+
 }
 
 impl EpsCtrlService {
@@ -116,13 +125,48 @@ impl EpsCtrlService {
         };
 
         let mut dev_fuel_gauge = match LinuxI2CDevice::new("/dev/i2c-0", 0x36) {
-                Err(e) => {
-                    panic!("error creating i2c dev {e:?}")
-                },
-                Ok(dev) => {dev}
-            };
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
 
-        Self { 
+        let mut dev_passivation_switch0 = match LinuxI2CDevice::new("/dev/i2c-0", 0x18) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+
+        let mut dev_passivation_switch1 = match LinuxI2CDevice::new("/dev/i2c-0", 0x1A) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+
+        let mut dev_adc1 = match LinuxI2CDevice::new("/dev/i2c-0", 0x13) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+
+        let mut dev_adc2 = match LinuxI2CDevice::new("/dev/i2c-0", 0x14) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+
+        let mut dev_adc0 = match LinuxI2CDevice::new("/dev/i2c-0", 0x17) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+
+        let mut res = Self { 
             dev_ina_bus0_3v3: dev_ina_bus0_3v3,
             dev_ina_bus1_3v3: dev_ina_bus1_3v3,
             dev_ina_bus0_5v: dev_ina_bus0_5v,
@@ -134,9 +178,44 @@ impl EpsCtrlService {
             dev_ina_user_unreg: dev_ina_user_unreg,
             dev_i2c_switch: dev_i2c_switch,
             dev_pmic: dev_pmic,
-            dev_fuel_gauge: dev_fuel_gauge
-        }
+            dev_fuel_gauge: dev_fuel_gauge,
+            dev_passivation_switch0: dev_passivation_switch0,
+            dev_passivation_switch1: dev_passivation_switch1,
+            dev_adc0: dev_adc0,
+            dev_adc1: dev_adc1,
+            dev_adc2: dev_adc2
+        };
+
+        // Turning off watchdogs of PMICs
+        res.switch_pmic_fg_i2c_bus(PMICSelect::PMIC0);
+        res.dev_pmic.smbus_write_i2c_block_data(0x04, &[0b10001101]).unwrap();
+        res.switch_pmic_fg_i2c_bus(PMICSelect::PMIC1);
+        res.dev_pmic.smbus_write_i2c_block_data(0x04, &[0b10001101]).unwrap();
+
+
+        return res
     }
+
+    fn switch_pmic_fg_i2c_bus(&mut self, pmic: command::PMICSelect) -> bool{
+        match pmic{
+            command::PMICSelect::PMIC0 => {
+                // Set i2c bus to pmic0
+                match write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error while setting INA device to PMIC0"); return false}
+                }
+            },
+            command::PMICSelect::PMIC1 => {
+                // Set i2c bus to pmic0
+                match write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x05){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error while setting INA device to PMIC1"); return false}
+                }
+            }
+        }
+        true
+    }
+
 }
 
 fn init_i2c_device(path: &str, address: u16) -> Result<LinuxI2CDevice, LinuxI2CError>{
@@ -165,6 +244,18 @@ fn write_i2c_device_register_block(address: u16, register: u8, value: u16) -> Re
     Ok(())
 }
 
+fn write_i2c_device_register_block_vec(address: u16, register: u8, values: Vec<u8>) -> Result<(), LinuxI2CError>{
+    let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
+        Err(e) => {
+            return Err(e)
+        },
+        Ok(dev) => {dev}
+    };
+
+    let res = dev_ina.smbus_write_i2c_block_data(register as u8, &values);
+    Ok(())
+}
+
 fn read_i2c_device_register_block(address: u16, register: u8) -> Result<u16, LinuxI2CError>{
     let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
         Err(e) => {
@@ -180,7 +271,22 @@ fn read_i2c_device_register_block(address: u16, register: u8) -> Result<u16, Lin
     };
     thread::sleep(time::Duration::from_micros(INA209DelayMicroSeconds));
     res
+}
 
+fn read_i2c_device_register_block_vec(address: u16, register: u8, len: u8) -> Result<Vec<u8>, LinuxI2CError>{
+    let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
+        Err(e) => {
+            return Err(e)
+        },
+        Ok(dev) => {dev}
+    };
+
+    let res = match dev_ina.smbus_read_i2c_block_data(register as u8, len){
+        Ok(values) => {return Ok(values)},
+        Err(e) => Err(e)
+
+    };
+    res
 }
 
 fn read_i2c_ina_device_block(dev: &mut LinuxI2CDevice, register: u8) -> Result<Vec<u8>, LinuxI2CError>{
@@ -189,7 +295,7 @@ fn read_i2c_ina_device_block(dev: &mut LinuxI2CDevice, register: u8) -> Result<V
     res
 }
 
-fn write_i2c_ina_device_block(dev: &mut LinuxI2CDevice, register: u8, value: u16) -> Result<(), LinuxI2CError>{
+pub fn write_i2c_ina_device_block(dev: &mut LinuxI2CDevice, register: u8, value: u16) -> Result<(), LinuxI2CError>{
     // dev.smbus_read_i2c_block_data(register, len)
     let values: [u8; 2] = [(value >> 8) as u8, (value & 0xFF) as u8];
     let res = dev.smbus_write_i2c_block_data(register, &values);
@@ -197,7 +303,7 @@ fn write_i2c_ina_device_block(dev: &mut LinuxI2CDevice, register: u8, value: u16
     res
 }
 
-fn convert_bus_voltage(register_value: u32) -> u32{
+pub fn convert_bus_voltage(register_value: u32) -> u32{
     // Constants from the table
     const OFFSET_MV: u32  = 2600;  // Offset in millivolts
     // const RANGE_MV: u32 = 12700; // Voltage range in millivolts (15300mV - 2600mV)
@@ -217,7 +323,7 @@ fn convert_bus_voltage(register_value: u32) -> u32{
     return voltage_mv
 }
 
-fn convert_battery_voltage(register_value: u32) -> u32{
+pub fn convert_battery_voltage(register_value: u32) -> u32{
     // Constants from the table
     const OFFSET_MV: u32 = 2304;  // Offset in millivolts
     const RANGE_MV: u32 = 2544;   // Voltage range in millivolts (4848mV - 2304mV)
@@ -234,7 +340,7 @@ fn convert_battery_voltage(register_value: u32) -> u32{
     return voltage_mv
 }
 
-fn convert_battery_charge_current(register_value: u32) -> u32 {
+pub fn convert_battery_charge_current(register_value: u32) -> u32 {
     // Bit weights (current contributions in mA)
     let bit_weights: [u32; 7] = [50, 100, 200, 400, 800, 1600, 3200];
     
@@ -250,6 +356,48 @@ fn convert_battery_charge_current(register_value: u32) -> u32 {
     }
     
     return current_ma
+}
+
+// fn read_adc_register(dev: &mut LinuxI2CDevice, register: u8) -> Result<Vec<u8>, LinuxI2CError>{
+//     dev.smbus_read_i2c_block_data(register, 1)
+//     dev.smbus_read_byte()
+// }
+
+fn write_adc_register(dev: &mut LinuxI2CDevice, register: u8, val: u8) -> Result<(), LinuxI2CError>{
+    let values= [val];
+    dev.smbus_write_i2c_block_data(register, &values)
+    // dev.transfer(msgs)
+}
+
+fn read_adc_channel(addr: u16, channel: Channel) -> u16{
+    let mut dev_adc0 = match LinuxI2CDevice::new("/dev/i2c-0", addr) {
+        Err(e) => {
+            panic!("error creating i2c dev {e:?}")
+        },
+        Ok(dev) => {dev}
+    };
+    let mut tla = Tla2528::new(dev_adc0);
+
+    tla.calibrate().unwrap();
+
+    tla.prepare_for_manual_mode().unwrap();
+    let val = tla.acquire_channel_data(channel).unwrap();
+    info!("Val: {:?}", val);
+    val
+}
+
+fn convert_csa_raw_to_ImA(v: u16)->i16{
+    let mV = ((v as i32)*3300)/0xFFF;
+    mV as i16
+}
+
+fn convert_alx_raw_to_dV(v: u16)->i16{
+    ((v as u32 * 3300)/0xFFF) as i16 // input mal 3,3 Volt in deivolt here multiplied by resolution of sensor
+}
+
+fn convert_atemp_raw_to_dC(t: u16) -> i16{ //returns deciCelsius
+    let mV = ((t as i32)*3300)/0xFFF;
+    ((mV-500)) as i16 // /10
 }
 
 impl PusService for EpsCtrlService {
@@ -284,7 +432,8 @@ impl PusService for EpsCtrlService {
                 }
 
                 // Set i2c bus to pmic0
-                write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
+                if !self.switch_pmic_fg_i2c_bus(command::PMICSelect::PMIC0){return Err(())}
+                // write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
                 
                 // Activate ADC
                 let mut pmic0_reg02 =  self.dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
@@ -332,7 +481,8 @@ impl PusService for EpsCtrlService {
                 };
 
                 // Set i2c bus to pmic1
-                write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x05).unwrap();
+                if !self.switch_pmic_fg_i2c_bus(command::PMICSelect::PMIC1){return Err(())}
+                // write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x05).unwrap();
 
                 // Activate ADC
                 let mut pmic1_reg02 =  self.dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
@@ -380,7 +530,8 @@ impl PusService for EpsCtrlService {
                 };
 
                 // Set i2c bus to pmic0
-                write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
+                if !self.switch_pmic_fg_i2c_bus(command::PMICSelect::PMIC0){return Err(())}
+                // write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
                 
                 Ok(telemetry::EPS_Battery_Status{
                     pmic0_vbus: pmic0_vsys as i16,
@@ -452,10 +603,6 @@ impl PusService for EpsCtrlService {
                 })
             }),
             command::Command::RqEpsUserPowerStatus => tc.handle_with_tm(||{
-                if false {
-                    return Err(());
-                }
-
                 Ok(telemetry::EPS_User_Power_Status{
                     v3_3_user_sw: match read_i2c_ina_device_block(&mut self.dev_ina_unreg_bus, InaRegisters::GPIO as u8){
                         Ok(v) => {
@@ -538,55 +685,182 @@ impl PusService for EpsCtrlService {
                 })
             }),
             command::Command::PMICSetIChargeLimit(args) => tc.handle(||{
-                true
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
+                match self.dev_pmic.smbus_write_i2c_block_data(0x04, &vals){
+                    Ok(_) => return true,
+                    Err(e) => {warn!("Error while setting INA device to PMIC0: {:?}", e); return false}
+                }
             }),
             command::Command::PMICSetIInputLimit(args) => tc.handle(||{
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
                 true
             }),
             command::Command::PMICSetVChargeLimit(args) => tc.handle(||{
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
                 true
             }),
             command::Command::PMICSetRegister(args) => tc.handle(||{
-                match args.pmic_select{
-                    command::PMICSelect::PMIC0 => {
-                        // Set i2c bus to pmic0
-                        write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
-                    },
-                    command::PMICSelect::PMIC1 => {
-                        // Set i2c bus to pmic0
-                        write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x05).unwrap();
-                    }
-                }
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
                 let vals: [u8; 1] = [args.pmic_value];
-                self.dev_pmic.smbus_write_i2c_block_data(args.pmic_register, &vals).unwrap();
-                true
+                match self.dev_pmic.smbus_write_i2c_block_data(args.pmic_register, &vals){
+                    Ok(_) => return true,
+                    Err(e) => {warn!("Error while setting INA device to PMIC0: {:?}", e); return false}
+                }
             }),
             command::Command::PMICGetRegister(args) => tc.handle_with_tm(||{
-                if false{
-                    return Err(())
-                }
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return Err(())}
 
-                match args.pmic_select{
-                    command::PMICSelect::PMIC0 => {
-                        // Set i2c bus to pmic0
-                        write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
-                    },
-                    command::PMICSelect::PMIC1 => {
-                        // Set i2c bus to pmic0
-                        write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x05).unwrap();
-                    }
-                }
-
-                let pmic_val_vec = self.dev_pmic.smbus_read_i2c_block_data(args.pmic_register, 1).unwrap(); 
+                let pmic_val_vec = match self.dev_pmic.smbus_read_i2c_block_data(args.pmic_register, 1){
+                    Ok(val) => val,
+                    Err(e) => {warn!("Error while setting INA device to PMIC1: {:?}", e); return Err(())}
+                }; 
 
                 Ok(telemetry::PMIC_Register_Value{
                     pmic_register: args.pmic_register,
                     pmic_select: telemetry::PMICSelect::PMIC0,
                     pmic_value: pmic_val_vec[0]
                 })
-            })
+            }),
+            command::Command::RqEpsBatteryConfig => tc.handle_with_tm(||{
+                if false{
+                    return Err(())
+                }
+
+                let sw0 = match self.dev_passivation_switch0.smbus_read_i2c_block_data(0x00, 2){
+                    Ok(v) => v,
+                    Err(e) => {warn!("Error while reading Passivation Switch 0 State: {:?}", e); return Err(())}
+                };
+                let sw1 = match self.dev_passivation_switch1.smbus_read_i2c_block_data(0x00, 2){
+                    Ok(v) => v,
+                    Err(e) => {warn!("Error while reading Passivation Switch 1 State: {:?}", e); return Err(())}
+                };
+
+                Ok(telemetry::EPS_Battery_Config{
+                    pass_switch0_passivation_state:      if sw0[0] == 0x00 {false} else if sw0[0] >= 0x20 {true} else {warn!("Error: Undefined Passivation Switch 0 State: {:?}",    sw0[0]); return Err(())},
+                    pass_switch0_persistant:  if sw0[1] == 0x00 {false} else if sw0[1] == 0x18 {true} else {warn!("Error: Undefined Passivation Switch 0 Volatile: {:?}", sw0[1]); return Err(())},
+                    pass_switch1_passivation_state:      if sw1[0] == 0x00 {false} else if sw1[0] >= 0x20 {true} else {warn!("Error: Undefined Passivation Switch 1 State: {:?}",    sw1[0]); return Err(())},
+                    pass_switch1_persistant:  if sw1[1] == 0x00 {false} else if sw1[1] == 0x18 {true} else {warn!("Error: Undefined Passivation Switch 1 Volatile: {:?}", sw1[1]); return Err(())},
+                })
+            }),
+            command::Command::SetPassivationSwState(args) => tc.handle(||{
+
+                let passivation_value = match args.switch_passivation_state{
+                        false => [0x00],
+                        true =>  [0x3F],
+                    };
+
+                match args.switch_select{
+                    command::SwitchSelect::Switch0 => {
+                        match self.dev_passivation_switch0.smbus_write_i2c_block_data(0x00, &passivation_value) {
+                            Ok(_) => {},
+                            Err(e) => {warn!("Error while setting Passivation Switch 0: {:?}", e); return false}
+                        }
+                        match self.dev_passivation_switch0.smbus_write_i2c_block_data(0x20, &passivation_value) {
+                            Ok(_) => true,
+                            Err(e) => {warn!("Error while setting Passivation Switch 0: {:?}", e); return false}
+                        }
+                    }
+                    command::SwitchSelect::Switch1 => {
+                        match self.dev_passivation_switch1.smbus_write_i2c_block_data(0x00, &passivation_value) {
+                            Ok(_) => {},
+                            Err(e) => {warn!("Error while setting Passivation Switch 1: {:?}", e); return false}
+                        }
+                        match self.dev_passivation_switch1.smbus_write_i2c_block_data(0x20, &passivation_value) {
+                            Ok(_) => true,
+                            Err(e) => {warn!("Error while setting Passivation Switch 1: {:?}", e); return false}
+                        }
+                    },
+                }
+            }), 
+            command::Command::SetRegister(args) => tc.handle(||{
+                let mut vals = vec!();
+                if args.length >= 1 {vals.push(args.byte00);}
+                if args.length >= 2 {vals.push(args.byte01);}
+                if args.length >= 3 {vals.push(args.byte02);}
+                if args.length >= 4 {vals.push(args.byte03);}
+                if args.length >= 5 {vals.push(args.byte04);}
+                if args.length >= 6 {vals.push(args.byte05);}
+                if args.length >= 7 {vals.push(args.byte06);}
+                if args.length >= 8 {vals.push(args.byte07);}
+                if args.length >= 9 {vals.push(args.byte08);}
+                if args.length >= 10 {vals.push(args.byte09);}
+                if args.length >= 11 {vals.push(args.byte10);}
+                if args.length >= 12 {vals.push(args.byte11);}
+                if args.length >= 13 {vals.push(args.byte12);}
+                if args.length >= 14 {vals.push(args.byte13);}
+                if args.length >= 15 {vals.push(args.byte14);}
+                if args.length >= 16 {vals.push(args.byte15);}
+                if args.length >= 17 {vals.push(args.byte16);}
+                if args.length >= 18 {vals.push(args.byte17);}
+                if args.length >= 19 {vals.push(args.byte18);}
+                if args.length >= 20 {vals.push(args.byte19);}
+                if args.length >= 21 {vals.push(args.byte20);}
+                if args.length >= 22 {vals.push(args.byte21);}
+                if args.length >= 23 {vals.push(args.byte22);}
+                if args.length >= 24 {vals.push(args.byte23);}
+                if args.length >= 25 {vals.push(args.byte24);}
+                if args.length >= 26 {vals.push(args.byte25);}
+                if args.length >= 27 {vals.push(args.byte26);}
+                if args.length >= 28 {vals.push(args.byte27);}
+                if args.length >= 29 {vals.push(args.byte28);}
+                if args.length >= 30 {vals.push(args.byte29);}
+                if args.length >= 31 {vals.push(args.byte30);}
+                if args.length >= 32 {vals.push(args.byte31);}
+                if args.length >= 33 {warn!("Warning: Length set too big. Max 32")}
+                match write_i2c_device_register_block_vec(args.adress, args.register, vals){
+                    Ok(_) => return true,
+                    Err(e) => {warn!("Error during Set Register Write Process: {:?}", e); return false}
+                };
+            }),
+            command::Command::GetRegister(args) => tc.handle_with_tm(||{
+                Ok(telemetry::RegisterValueTM{
+                    address: args.address,
+                    register: args.register,
+                    values: match read_i2c_device_register_block_vec(args.address, args.register, args.length){
+                        Ok(v) => {debug!("Length: {:?}, Vector: {:?}", v.len(), v); v},
+                        Err(e) => {warn!("Error during Get Register Read Process: {:?}", e); return Err(())}
+                    },
+                })
+            }),
+            command::Command::RqEpsCsaSol => tc.handle_with_tm(||{
+                if false {
+                    return Err(());
+                }
+
+                Ok(telemetry::EPS_CSA_SOL{
+                    csa_sol0: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel3)),
+                    csa_sol1: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel2)),
+                    csa_sol2: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel1)),
+                    csa_sol3: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel0)),
+                    csa_sol4: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel7)),
+                    csa_sol5: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel6)),
+                    csa_sol6: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel5)),
+                    csa_sol7: convert_csa_raw_to_ImA(read_adc_channel(0x17, Channel::Channel4)) 
+                })
+            }),
+            command::Command::RqTempAlxSol => tc.handle_with_tm(||{
+                if false {
+                    return Err(());
+                }
+
+                Ok(telemetry::EPS_TEMP_ALX_SOL{
+                    atemp_sol0: convert_atemp_raw_to_dC(read_adc_channel(0x13, Channel::Channel1)),
+                    atemp_sol1: convert_atemp_raw_to_dC(read_adc_channel(0x13, Channel::Channel3)),
+                    atemp_sol2: convert_atemp_raw_to_dC(read_adc_channel(0x13, Channel::Channel5)),
+                    atemp_sol3: convert_atemp_raw_to_dC(read_adc_channel(0x13, Channel::Channel7)),
+                    atemp_sol4: convert_atemp_raw_to_dC(read_adc_channel(0x14, Channel::Channel7)),
+                    atemp_sol5: convert_atemp_raw_to_dC(read_adc_channel(0x14, Channel::Channel5)),
+                    atemp_sol6: convert_atemp_raw_to_dC(read_adc_channel(0x14, Channel::Channel3)),
+                    alx_sol0: convert_alx_raw_to_dV(read_adc_channel(0x13, Channel::Channel0) ),
+                    alx_sol1: convert_alx_raw_to_dV(read_adc_channel(0x13, Channel::Channel2) ),
+                    alx_sol2: convert_alx_raw_to_dV(read_adc_channel(0x13, Channel::Channel4) ),
+                    alx_sol3: convert_alx_raw_to_dV(read_adc_channel(0x13, Channel::Channel6) ),
+                    alx_sol4: convert_alx_raw_to_dV(read_adc_channel(0x14, Channel::Channel6) ),
+                    alx_sol5: convert_alx_raw_to_dV(read_adc_channel(0x14, Channel::Channel4) ),
+                    alx_sol6: convert_alx_raw_to_dV(read_adc_channel(0x14, Channel::Channel2) )
+                })
+            }),
         }
-            
     }
     
     fn service() -> u8 {

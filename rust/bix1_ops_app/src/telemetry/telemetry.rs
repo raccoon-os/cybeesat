@@ -29,47 +29,9 @@ pub enum Vcom1Stat {
 }
 
 
-#[derive(FromPrimitive, ToPrimitive, Debug)]
-pub enum Pmic1Stat {
-	charging = 0,
-	not_charging = 1,
-	charge_terminated = 2,
-}
 
-#[derive(ServiceTelemetry, BitStruct, Debug)]
-#[subtype(1)]
-pub struct EPS_CSA_SOL {
-	#[bits(16)]
-	pub csa_sol0: i16,
-	#[bits(16)]
-	pub csa_sol1: i16,
-	#[bits(16)]
-	pub csa_sol2: i16,
-	#[bits(16)]
-	pub csa_sol3: i16,
-	#[bits(16)]
-	pub csa_sol4: i16,
-	#[bits(16)]
-	pub csa_sol5: i16,
-	#[bits(16)]
-	pub csa_sol6: i16,
-	#[bits(16)]
-	pub csa_sol7: i16,
-}
-#[derive(ServiceTelemetry, BitStruct, Debug)]
-#[subtype(5)]
-pub struct EPS_TEMP {
-	#[bits(8)]
-	pub pcb_dtemp: i8,
-	#[bits(16)]
-	pub pcb_atemp0: i16,
-	#[bits(16)]
-	pub pcb_atemp1: i16,
-	#[bits(16)]
-	pub pcb_atemp2: i16,
-	#[bits(16)]
-	pub pcb_atemp3: i16,
-}
+
+
 
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(9)]
@@ -250,38 +212,6 @@ pub struct OPT_EPS_RTC {
 	pub eps_rtc_control4: i16,
 	#[bits(16)]
 	pub eps_rtc_control5: i16,
-}
-#[derive(ServiceTelemetry, BitStruct, Debug)]
-#[subtype(11)]
-pub struct OPT_EPS_SOL {
-	#[bits(8)]
-	pub atemp_sol0: i8,
-	#[bits(8)]
-	pub atemp_sol1: i8,
-	#[bits(8)]
-	pub atemp_sol2: i8,
-	#[bits(8)]
-	pub atemp_sol3: i8,
-	#[bits(8)]
-	pub atemp_sol4: i8,
-	#[bits(8)]
-	pub atemp_sol5: i8,
-	#[bits(8)]
-	pub atemp_sol6: i8,
-	#[bits(8)]
-	pub alx_sol0: i8,
-	#[bits(8)]
-	pub alx_sol1: i8,
-	#[bits(8)]
-	pub alx_sol2: i8,
-	#[bits(8)]
-	pub alx_sol3: i8,
-	#[bits(8)]
-	pub alx_sol4: i8,
-	#[bits(8)]
-	pub alx_sol5: i8,
-	#[bits(8)]
-	pub alx_sol6: i8,
 }
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(15)]
