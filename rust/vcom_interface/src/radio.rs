@@ -98,6 +98,8 @@ pub fn run(bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
 
     //radio.start_tx(tx_buf).unwrap();
 
+    let mut tx = false;
+
     loop {
         {
             /*
@@ -131,14 +133,17 @@ pub fn run(bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
             }
         }
 
-        match bytes_tx.try_recv() {
-            Ok(msg) => {
-                tx_buf.copy_from_slice(msg.as_slice());
-                radio.start_tx(&tx_buf).unwrap();
-                println!("transmitting!");
-            }
-            Err(e) => {
-                // No TX message queued
+        if !tx { 
+            match bytes_tx.try_recv() {
+                Ok(msg) => {
+                    tx_buf.copy_from_slice(msg.as_slice());
+                    radio.start_tx(&tx_buf).unwrap();
+                    tx = true;
+                    println!("transmitting!");
+                },
+                Err(e) => {
+                    // No TX message queued
+                }
             }
         }
 
@@ -146,6 +151,7 @@ pub fn run(bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
             thread::sleep(Duration::from_millis(1000));
             //radio.start_tx(tx_buf).unwrap();
             radio.start_rx(Some(255), false).unwrap();
+            tx = false;
             println!("receiving!");
         }
 
