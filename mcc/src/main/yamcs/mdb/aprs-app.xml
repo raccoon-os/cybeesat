@@ -1,0 +1,274 @@
+<?xml version="1.0" ?>
+<!--
+This file was automatically generated with Yamcs PyMDB.
+See https://github.com/yamcs/pymdb
+-->
+<SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" name="APRSService">
+  <TelemetryMetaData>
+    <ParameterTypeSet>
+      <StringParameterType name="BEACON_MESSAGE">
+        <StringDataEncoding encoding="US-ASCII">
+          <Variable maxSizeInBits="8388608">
+            <DynamicValue>
+              <ParameterInstanceRef parameterRef="_yamcs_ignore"/>
+            </DynamicValue>
+            <TerminationChar>00</TerminationChar>
+          </Variable>
+        </StringDataEncoding>
+      </StringParameterType>
+      <IntegerParameterType name="BEACON_TIME" signed="true" sizeInBits="32">
+        <UnitSet>
+          <Unit form="calibrated">seconds</Unit>
+        </UnitSet>
+        <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+      </IntegerParameterType>
+      <StringParameterType name="CALLSIGN">
+        <StringDataEncoding encoding="US-ASCII">
+          <Variable maxSizeInBits="8388608">
+            <DynamicValue>
+              <ParameterInstanceRef parameterRef="_yamcs_ignore"/>
+            </DynamicValue>
+            <TerminationChar>00</TerminationChar>
+          </Variable>
+        </StringDataEncoding>
+      </StringParameterType>
+      <BooleanParameterType name="DIGI1_ENABLED" zeroStringValue="False" oneStringValue="True">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+      </BooleanParameterType>
+      <BooleanParameterType name="HIGH_POWER" zeroStringValue="False" oneStringValue="True">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+      </BooleanParameterType>
+    </ParameterTypeSet>
+    <ParameterSet>
+      <Parameter name="BEACON_MESSAGE" parameterTypeRef="BEACON_MESSAGE">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+      <Parameter name="BEACON_TIME" parameterTypeRef="BEACON_TIME">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+      <Parameter name="CALLSIGN" parameterTypeRef="CALLSIGN">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+      <Parameter name="DIGI1_ENABLED" parameterTypeRef="DIGI1_ENABLED">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+      <Parameter name="HIGH_POWER" parameterTypeRef="HIGH_POWER">
+        <ParameterProperties dataSource="telemetered" persistence="true"/>
+      </Parameter>
+    </ParameterSet>
+    <ContainerSet>
+      <SequenceContainer name="APRSTelemetry" abstract="false">
+        <EntryList>
+          <ParameterRefEntry parameterRef="CALLSIGN">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+          <ParameterRefEntry parameterRef="BEACON_TIME">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+          <ParameterRefEntry parameterRef="BEACON_MESSAGE">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+          <ParameterRefEntry parameterRef="HIGH_POWER">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+          <ParameterRefEntry parameterRef="DIGI1_ENABLED">
+            <LocationInContainerInBits referenceLocation="previousEntry">
+              <FixedValue>0</FixedValue>
+            </LocationInContainerInBits>
+          </ParameterRefEntry>
+        </EntryList>
+        <BaseContainer containerRef="/PUS/pus-tm">
+          <RestrictionCriteria>
+            <BooleanExpression>
+              <ANDedConditions>
+                <Condition>
+                  <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                  <ComparisonOperator>==</ComparisonOperator>
+                  <Value>142</Value>
+                </Condition>
+                <Condition>
+                  <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                  <ComparisonOperator>==</ComparisonOperator>
+                  <Value>1</Value>
+                </Condition>
+              </ANDedConditions>
+            </BooleanExpression>
+          </RestrictionCriteria>
+        </BaseContainer>
+      </SequenceContainer>
+    </ContainerSet>
+  </TelemetryMetaData>
+  <CommandMetaData>
+    <ArgumentTypeSet>
+      <IntegerArgumentType name="SetBeaconInterval__Interval" signed="true" sizeInBits="32">
+        <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+      </IntegerArgumentType>
+      <StringArgumentType name="SetBeaconMessage__MESSAGE">
+        <StringDataEncoding encoding="US-ASCII">
+          <Variable maxSizeInBits="8388608">
+            <DynamicValue>
+              <ParameterInstanceRef parameterRef="_yamcs_ignore"/>
+            </DynamicValue>
+            <TerminationChar>00</TerminationChar>
+          </Variable>
+        </StringDataEncoding>
+      </StringArgumentType>
+      <StringArgumentType name="SetCallsign__CALLSIGN">
+        <StringDataEncoding encoding="US-ASCII">
+          <Variable maxSizeInBits="8388608">
+            <DynamicValue>
+              <ParameterInstanceRef parameterRef="_yamcs_ignore"/>
+            </DynamicValue>
+            <TerminationChar>00</TerminationChar>
+          </Variable>
+        </StringDataEncoding>
+      </StringArgumentType>
+      <BooleanArgumentType name="SetPowerMode__DIGI1_ENABLE" zeroStringValue="False" oneStringValue="True">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+      </BooleanArgumentType>
+      <BooleanArgumentType name="SetPowerMode__DIGI2_ENABLE" zeroStringValue="False" oneStringValue="True">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+      </BooleanArgumentType>
+      <BooleanArgumentType name="SetPowerMode__HIGH_POWER_MODE" zeroStringValue="False" oneStringValue="True">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+      </BooleanArgumentType>
+    </ArgumentTypeSet>
+    <MetaCommandSet>
+      <MetaCommand name="GetTelemetry" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="5"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <CommandContainer name="GetTelemetry">
+          <EntryList/>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="SetBeaconInterval" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="1"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="Interval" argumentTypeRef="SetBeaconInterval__Interval"/>
+        </ArgumentList>
+        <CommandContainer name="SetBeaconInterval">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="Interval">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="SetBeaconMessage" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="3"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="MESSAGE" argumentTypeRef="SetBeaconMessage__MESSAGE"/>
+        </ArgumentList>
+        <CommandContainer name="SetBeaconMessage">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="MESSAGE">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="SetCallsign" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="4"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="CALLSIGN" argumentTypeRef="SetCallsign__CALLSIGN"/>
+        </ArgumentList>
+        <CommandContainer name="SetCallsign">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="CALLSIGN">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="SetPowerMode" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="2"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="DIGI1_ENABLE" argumentTypeRef="SetPowerMode__DIGI1_ENABLE"/>
+          <Argument name="DIGI2_ENABLE" argumentTypeRef="SetPowerMode__DIGI2_ENABLE"/>
+          <Argument name="HIGH_POWER_MODE" argumentTypeRef="SetPowerMode__HIGH_POWER_MODE"/>
+        </ArgumentList>
+        <CommandContainer name="SetPowerMode">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="DIGI1_ENABLE">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+            <ArgumentRefEntry argumentRef="DIGI2_ENABLE">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+            <ArgumentRefEntry argumentRef="HIGH_POWER_MODE">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="base" abstract="true">
+        <BaseMetaCommand metaCommandRef="/PUS/pus-tc">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="type" argumentValue="142"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <CommandContainer name="base">
+          <EntryList/>
+          <BaseContainer containerRef="/PUS/pus-tc"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+    </MetaCommandSet>
+  </CommandMetaData>
+</SpaceSystem>
+

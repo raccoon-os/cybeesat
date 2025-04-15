@@ -1,0 +1,17 @@
+[package]
+name = "aprs_app"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.97"
+atoi = "2.0.0"
+env_logger = { version = "0.11.7", default-features = false, features = ["color", "humantime"] }
+num-derive = "0.4.2"
+num-traits = "0.2.19"
+rccn_usr = { workspace = true }
+rccn_usr_bitstruct_derive = { workspace = true }
+rccn_usr_pus_macros = { workspace = true }
+regex = { version = "1.11.1", default-features = false, features = ["std"] }
+satrs = "0.2.1"
+serial2 = "0.2.29"

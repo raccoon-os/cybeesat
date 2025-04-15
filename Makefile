@@ -19,8 +19,8 @@ deploy:
 	./cross.sh cargo install --path rust/boot_app boot_app
 	./cross.sh cargo install --path rust/deploy_app deploy_app
 	./cross.sh cargo install --path rust/diagnosis_app diagnosis_app
+	./cross.sh cargo install --path rust/aprs_app aprs_app
 	# ./cross.sh cargo install --path rust/health_app health_app
-	./cross.sh cargo install zenohd
 
 	cp python/antenna_control.py install/usr/bin
 

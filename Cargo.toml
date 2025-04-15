@@ -8,6 +8,7 @@ members = [
     "rust/rccn-usr/src/rccn_usr_example_app",
     "rust/boot_app",
     "rust/bix1_ops_app",
+    "rust/aprs_app",
     "rust/rccn-usr/src/rccn_usr_launch", 
     "rust/rccn-usr/src/rccn_usr_cfdp", 
     "rust/rccn-usr/src/rccn_usr_update", 
@@ -16,7 +17,7 @@ members = [
     "rust/deploy_app", 
     "rust/diagnosis_app", 
     "rust/vcom_interface"
-]
+, "rust/aprs_app"]
 
 [workspace.dependencies]
 rccn_usr = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
