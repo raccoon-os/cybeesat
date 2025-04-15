@@ -277,8 +277,8 @@
 							</InputSet>
 
 						</CustomAlgorithm>
-						<!-- This says that the algorithm will run for maximum 5 seconds from when the command is sent -->
-						<CheckWindow timeToStopChecking="PT5S" />
+						<!-- This says that the algorithm will run for maximum 15 seconds from when the command is sent -->
+						<CheckWindow timeToStopChecking="PT15S" />
 					</ReceivedVerifier>
 					<ExecutionVerifier name="Started">
 						<CustomAlgorithm name="alg_verif_started" shortDescription="Verify the PUS start">
@@ -306,7 +306,7 @@
 								<InputParameterInstanceRef parameterRef="tc-ack-start-failure-code" inputName="errorCode" />
 							</InputSet>
 						</CustomAlgorithm>
-						<CheckWindow timeToStopChecking="PT5S" timeWindowIsRelativeTo="commandRelease" />
+						<CheckWindow timeToStopChecking="PT30S" timeWindowIsRelativeTo="timeLastVerifierPassed" />
 					</ExecutionVerifier>
 					<CompleteVerifier name="Complete">
 						<CustomAlgorithm name="alg_verif_completed" shortDescription="Verify the PUS completion">
@@ -335,7 +335,7 @@
 							</InputSet>
 
 						</CustomAlgorithm>
-						<CheckWindow timeToStopChecking="PT90S" timeWindowIsRelativeTo="commandRelease" />
+						<CheckWindow timeToStopChecking="PT90S" timeWindowIsRelativeTo="timeLastVerifierPassed" />
 					</CompleteVerifier>
 				</VerifierSet>
 			</MetaCommand>
