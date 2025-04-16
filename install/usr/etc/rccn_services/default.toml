@@ -1,0 +1,10 @@
+stdout-rotate-size = "50 KB"
+stdout-should-append-timestamp-to-filename = true
+
+[restart]
+strategy = "always"
+backoff = "5s"
+attempts = 3 
+
+[environment]
+keep-env = false

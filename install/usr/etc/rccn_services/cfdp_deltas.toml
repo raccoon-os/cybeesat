@@ -1,0 +1,2 @@
+name = "cfdp_deltas"
+command = "rccn_usr_cfdp --entity-id 4 --filestore-path /var/deltas"

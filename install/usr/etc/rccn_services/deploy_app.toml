@@ -1,0 +1,2 @@
+name = "deploy_app"
+command = "deploy_app"

@@ -1,0 +1,48 @@
+app:
+  app_id: 56
+  vc_id: 0
+
+link:
+  spacecraft_id: 0xAB
+  in:
+    frame_kind: 
+      kind: tc
+    transport:
+      kind: zenoh
+      key_sub: fec_rx
+
+  out:
+    frame_kind: 
+      kind: uslp
+      sd_id: false
+      construction_rule: 0
+      vc_frame_cnt_len: 1
+
+    max_data_rate: 9000
+    transport:
+      kind: zenoh
+      key_pub: fec_tx
+
+virtual_channels:
+  - id: 0
+    name: bus_realtime
+    packet: spacepacket
+    message_interval: 1000
+    farm1: {}
+    tx_transport:
+      kind: zenoh
+      key_pub: vc/bus_realtime/rx
+    rx_transport:
+      kind: zenoh
+      key_sub: vc/bus_realtime/tx
+  - id: 1
+    name: cfdp
+    packet: raw
+    message_interval: 1000  
+    # farm1: {}
+    tx_transport:
+      kind: zenoh
+      key_pub: vc/1/raw/rx
+    rx_transport:
+      kind: zenoh
+      key_sub: vc/1/raw/tx

@@ -1,0 +1,3 @@
+name = "example_app"
+command = "rccn_usr_example_app --parameter foo --other 2"
+autostart = true

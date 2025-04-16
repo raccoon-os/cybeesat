@@ -1,0 +1,2 @@
+name = "cfdp_log"
+command = "rccn_usr_cfdp --entity-id 3 --filestore-path /var/log/rccn"

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:        rccn_launch
+# Required-Start:  $network $remote_fs $syslog
+# Required-Stop:   $network $remote_fs $syslog
+# Default-Start:   2 3 4 5
+# Default-Stop:
+# Short-Description: Starts RCCN services
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/bin:/usr/sbin
+
+case "$1" in 
+    start) 
+        mkdir /var/log/rccn
+        
+        # Enable multicast on lo
+        ip link set lo multicast on
+        ip route add 224.0.0.224 dev lo
+
+        nohup rccn_usr_launch -s /usr/etc/rccn_services -l /var/log/rccn 2>&1 >/dev/null &
+        ;;
+    *)
+        echo "Usage: rccn_usr_launch { start }" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

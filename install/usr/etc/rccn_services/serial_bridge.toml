@@ -1,0 +1,2 @@
+name = "serial_bridge"
+command = "serial_bridge --port /dev/ttyS2 --baud 115200"
