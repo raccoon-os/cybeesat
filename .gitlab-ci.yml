@@ -4,4 +4,6 @@ stages:
 build-job:
   stage: build
   script:
+    - git submodule init
+    - git submodule update
     - make deploy
