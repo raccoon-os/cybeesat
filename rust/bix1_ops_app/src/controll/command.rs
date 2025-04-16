@@ -116,6 +116,8 @@ pub struct PMICSetIInputLimitArgs {
 #[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
 #[repr(u8)]
 pub enum PMICSetIInputLimitSelect {
+    Limit100mA = 0b000010,
+    Limit200mA = 0b000100,
     Limit400mA = 0b001000,
 	Limit800mA = 0b010000,
     Limit1400mA = 0b011100,
@@ -191,6 +193,8 @@ pub enum SwitchSelect {
 
 #[derive(BitStruct, Debug)]
 pub struct SetRegisterArgs {
+    #[bits(8)]
+    pub i2c_bus: I2CSelect,
     #[bits(16)]
     pub adress: u16,
     #[bits(8)]
@@ -265,10 +269,19 @@ pub struct SetRegisterArgs {
 
 #[derive(BitStruct, Debug)]
 pub struct GetRegisterArgs {
+    #[bits(8)]
+    pub i2c_bus: I2CSelect,
     #[bits(16)]
     pub address: u16,
     #[bits(8)]
     pub register: u8,
     #[bits(8)]
     pub length: u8,
+}
+
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[repr(u8)]
+pub enum I2CSelect {
+    I2C0 = 0,
+	I2C1 = 1,
 }

@@ -248,8 +248,8 @@ fn write_i2c_device_register_block(address: u16, register: u8, value: u16) -> Re
     Ok(())
 }
 
-fn write_i2c_device_register_block_vec(address: u16, register: u8, values: Vec<u8>) -> Result<(), LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
+fn write_i2c_device_register_block_vec(bus: u8, address: u16, register: u8, values: Vec<u8>) -> Result<(), LinuxI2CError>{
+    let mut dev_ina = match LinuxI2CDevice::new(format!("/dev/i2c-{bus}"), address) {
         Err(e) => {
             return Err(e)
         },
@@ -277,8 +277,8 @@ fn read_i2c_device_register_block(address: u16, register: u8) -> Result<u16, Lin
     res
 }
 
-fn read_i2c_device_register_block_vec(address: u16, register: u8, len: u8) -> Result<Vec<u8>, LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
+fn read_i2c_device_register_block_vec(bus: u8, address: u16, register: u8, len: u8) -> Result<Vec<u8>, LinuxI2CError>{
+    let mut dev_ina = match LinuxI2CDevice::new(format!("/dev/i2c-{bus}"), address) {
         Err(e) => {
             return Err(e)
         },
@@ -735,6 +735,8 @@ impl PusService for EpsCtrlService {
                 };
 
                 let target_val = match args.input_limit{
+                    command::PMICSetIInputLimitSelect::Limit100mA => args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit200mA => args.input_limit.to_u8().unwrap(),
                     command::PMICSetIInputLimitSelect::Limit400mA => args.input_limit.to_u8().unwrap(),
                     command::PMICSetIInputLimitSelect::Limit800mA => args.input_limit.to_u8().unwrap(),
                     command::PMICSetIInputLimitSelect::Limit1400mA=> args.input_limit.to_u8().unwrap(),
@@ -971,16 +973,17 @@ impl PusService for EpsCtrlService {
                 if args.length >= 31 {vals.push(args.byte30);}
                 if args.length >= 32 {vals.push(args.byte31);}
                 if args.length >= 33 {warn!("Warning: Length set too big. Max 32")}
-                match write_i2c_device_register_block_vec(args.adress, args.register, vals){
+                match write_i2c_device_register_block_vec(args.i2c_bus.to_u8().unwrap(), args.adress, args.register, vals){
                     Ok(_) => return true,
                     Err(e) => {warn!("Error during Set Register Write Process: {:?}", e); return false}
                 };
             }),
             command::Command::GetRegister(args) => tc.handle_with_tm(||{
                 Ok(telemetry::RegisterValueTM{
+                    i2c_bus: telemetry::I2CSelect::from_u8(args.i2c_bus.to_u8().unwrap()).unwrap(),
                     address: args.address,
                     register: args.register,
-                    values: match read_i2c_device_register_block_vec(args.address, args.register, args.length){
+                    values: match read_i2c_device_register_block_vec(args.i2c_bus.to_u8().unwrap(), args.address, args.register, args.length){
                         Ok(v) => {debug!("Length: {:?}, Vector: {:?}", v.len(), v); v},
                         Err(e) => {warn!("Error during Get Register Read Process: {:?}", e); return Err(())}
                     },

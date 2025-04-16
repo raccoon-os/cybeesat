@@ -190,6 +190,8 @@ pub enum PMIC0IChargeLimitSelect {
 #[derive(FromPrimitive, ToPrimitive, Debug)]
 #[repr(u8)]
 pub enum PMIC0SetIInputLimitSelect {
+	Limit100mA = 0b000010,
+	Limit200mA = 0b000100,
     Limit400mA = 0b001000,
 	Limit800mA = 0b010000,
     Limit1400mA = 0b011100,
@@ -229,6 +231,8 @@ pub enum PMIC1IChargeLimitSelect {
 #[derive(FromPrimitive, ToPrimitive, Debug)]
 #[repr(u8)]
 pub enum PMIC1SetIInputLimitSelect {
+	Limit100mA = 0b000010,
+	Limit200mA = 0b000100,
     Limit400mA = 0b001000,
 	Limit800mA = 0b010000,
     Limit1400mA = 0b011100,
@@ -257,12 +261,20 @@ pub enum PMIC1SetVChargeLimit {
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(18)]
 pub struct RegisterValueTM {
+	#[bits(8)]
+	pub i2c_bus: I2CSelect,
 	#[bits(16)]
 	pub address: u16,
 	#[bits(8)]
 	pub register: u8,
 	#[length_prefixed_array(length_bits=8, element="bits(8)")]
     pub values: Vec<u8>,
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+pub enum I2CSelect {
+    I2C0 = 0,
+	I2C1 = 1,
 }
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(19)]
@@ -316,3 +328,4 @@ pub struct EPS_TEMP_ALX_SOL {
 	#[bits(16)]
 	pub alx_sol6: i16,
 }
+

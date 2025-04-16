@@ -40,7 +40,7 @@ pub struct RtcSetTimeArgs {
     pub year: u8
 }
 
-#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive, Clone)]
 #[repr(u8)]
 pub enum WeekDayEnum {
     Sunday = 0b000,

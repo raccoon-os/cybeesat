@@ -180,6 +180,13 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <EnumeratedParameterType name="I2C_Bus">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="I2C_0"/>
+            <Enumeration value="1" label="I2C_1"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
         <BooleanParameterType name="PASS_SW0_Passivation_state" zeroStringValue="False" oneStringValue="True">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </BooleanParameterType>
@@ -250,6 +257,8 @@ See https://github.com/yamcs/pymdb
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
             <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="2" label="Limit_100mA"/>
+            <Enumeration value="4" label="Limit_200mA"/>
             <Enumeration value="8" label="Limit_400mA"/>
             <Enumeration value="16" label="Limit_800mA"/>
             <Enumeration value="28" label="Limit_1400mA"/>
@@ -317,6 +326,8 @@ See https://github.com/yamcs/pymdb
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
             <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="2" label="Limit_100mA"/>
+            <Enumeration value="4" label="Limit_200mA"/>
             <Enumeration value="8" label="Limit_400mA"/>
             <Enumeration value="16" label="Limit_800mA"/>
             <Enumeration value="28" label="Limit_1400mA"/>
@@ -606,6 +617,9 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="FG1_VBAT" parameterTypeRef="FG1_VBAT" shortDescription="Fuel gauge 1 battery voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="I2C_Bus" parameterTypeRef="I2C_Bus" shortDescription="I2C Bus">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="PASS_SW0_Passivation_state" parameterTypeRef="PASS_SW0_Passivation_state" shortDescription="Passivation mode 0 state, active/inactive">
@@ -1359,6 +1373,11 @@ See https://github.com/yamcs/pymdb
         </SequenceContainer>
         <SequenceContainer name="Register_Value_TM" abstract="false">
           <EntryList>
+            <ParameterRefEntry parameterRef="I2C_Bus">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
             <ParameterRefEntry parameterRef="Address">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
@@ -1409,6 +1428,13 @@ See https://github.com/yamcs/pymdb
         <IntegerArgumentType name="Get_Power_Sensor_Register__Register" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
+        <EnumeratedArgumentType name="Get_Register__I2C_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="I2C_0"/>
+            <Enumeration value="1" label="I2C_1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <IntegerArgumentType name="Get_Register__Adress" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerArgumentType>
@@ -1455,6 +1481,9 @@ See https://github.com/yamcs/pymdb
         <EnumeratedArgumentType name="PMIC_Set_I_Input_Limit__I_Input_Limit_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
+            <Enumeration value="2" label="Limit_100mA"/>
+            <Enumeration value="4" label="Limit_200mA"/>
+            <Enumeration value="8" label="Limit_400mA"/>
             <Enumeration value="8" label="Limit_400mA"/>
             <Enumeration value="16" label="Limit_800mA"/>
             <Enumeration value="28" label="Limit_1400mA"/>
@@ -1529,6 +1558,13 @@ See https://github.com/yamcs/pymdb
         <IntegerArgumentType name="Set_Power_Sensor_Register__Value" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerArgumentType>
+        <EnumeratedArgumentType name="Set_Register__I2C_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="I2C_0"/>
+            <Enumeration value="1" label="I2C_1"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <IntegerArgumentType name="Set_Register__Address" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerArgumentType>
@@ -1673,12 +1709,18 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <ArgumentList>
+            <Argument name="I2C_Select" argumentTypeRef="Get_Register__I2C_Select"/>
             <Argument name="Adress" argumentTypeRef="Get_Register__Adress"/>
             <Argument name="Register" argumentTypeRef="Get_Register__Register"/>
             <Argument name="Length" argumentTypeRef="Get_Register__Length"/>
           </ArgumentList>
           <CommandContainer name="Get_Register">
             <EntryList>
+              <ArgumentRefEntry argumentRef="I2C_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="Adress">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
@@ -2096,6 +2138,7 @@ See https://github.com/yamcs/pymdb
             </ArgumentAssignmentList>
           </BaseMetaCommand>
           <ArgumentList>
+            <Argument name="I2C_Select" argumentTypeRef="Set_Register__I2C_Select"/>
             <Argument name="Address" argumentTypeRef="Set_Register__Address"/>
             <Argument name="Register" argumentTypeRef="Set_Register__Register"/>
             <Argument name="Length" argumentTypeRef="Set_Register__Length"/>
@@ -2134,6 +2177,11 @@ See https://github.com/yamcs/pymdb
           </ArgumentList>
           <CommandContainer name="Set_Register">
             <EntryList>
+              <ArgumentRefEntry argumentRef="I2C_Select">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
               <ArgumentRefEntry argumentRef="Address">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
@@ -2715,37 +2763,37 @@ See https://github.com/yamcs/pymdb
       <ParameterTypeSet>
         <IntegerParameterType name="ACCEL0_X" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">g</Unit>
+            <Unit form="calibrated">milli g(m/s2)</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ACCEL0_Y" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">g</Unit>
+            <Unit form="calibrated">milli g(m/s2)</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ACCEL0_Z" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">g</Unit>
+            <Unit form="calibrated">milli g(m/s2)</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ACCEL1_X" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">g</Unit>
+            <Unit form="calibrated">milli g(m/s2)</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ACCEL1_Y" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">g</Unit>
+            <Unit form="calibrated">milli g(m/s2)</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ACCEL1_Z" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">g</Unit>
+            <Unit form="calibrated">milli g(m/s2)</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -2864,6 +2912,12 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <IntegerParameterType name="GYRO0_TEMP" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celsius</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
         <IntegerParameterType name="GYRO0_X_SENS" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Deg/s</Unit>
@@ -2879,6 +2933,12 @@ See https://github.com/yamcs/pymdb
         <IntegerParameterType name="GYRO0_Z_SENS" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">Deg/s</Unit>
+          </UnitSet>
+          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+        </IntegerParameterType>
+        <IntegerParameterType name="GYRO1_TEMP" signed="true" sizeInBits="32">
+          <UnitSet>
+            <Unit form="calibrated">Celsius</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -2908,39 +2968,39 @@ See https://github.com/yamcs/pymdb
         </IntegerParameterType>
         <IntegerParameterType name="MAG0_X" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Micro Tesla</Unit>
+            <Unit form="calibrated">Nano Tesla</Unit>
           </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+          <IntegerDataEncoding sizeInBits="32" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="MAG0_Y" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Micro Tesla</Unit>
+            <Unit form="calibrated">Nano Tesla</Unit>
           </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+          <IntegerDataEncoding sizeInBits="32" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="MAG0_Z" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Micro Tesla</Unit>
+            <Unit form="calibrated">Nano Tesla</Unit>
           </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+          <IntegerDataEncoding sizeInBits="32" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="MAG1_X" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Micro Tesla</Unit>
+            <Unit form="calibrated">Nano Tesla</Unit>
           </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+          <IntegerDataEncoding sizeInBits="32" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="MAG1_Y" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Micro Tesla</Unit>
+            <Unit form="calibrated">Nano Tesla</Unit>
           </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+          <IntegerDataEncoding sizeInBits="32" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="MAG1_Z" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Micro Tesla</Unit>
+            <Unit form="calibrated">Nano Tesla</Unit>
           </UnitSet>
-          <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
+          <IntegerDataEncoding sizeInBits="32" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="OBC_CPU_UTIL" signed="true" sizeInBits="32">
           <UnitSet>
@@ -3256,6 +3316,9 @@ See https://github.com/yamcs/pymdb
         <Parameter name="FG1_THERM" parameterTypeRef="FG1_THERM" shortDescription="Fuel gauge 1 Thermistor">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="GYRO0_TEMP" parameterTypeRef="GYRO0_TEMP" shortDescription="Sensor 0 Temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="GYRO0_X_SENS" parameterTypeRef="GYRO0_X_SENS" shortDescription="Angular rate X-axis Sensor 0">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -3263,6 +3326,9 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="GYRO0_Z_SENS" parameterTypeRef="GYRO0_Z_SENS" shortDescription="Angular rate Z-axis Sensor 0">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="GYRO1_TEMP" parameterTypeRef="GYRO1_TEMP" shortDescription="Sensor 1 Temperature">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="GYRO1_X_SENS" parameterTypeRef="GYRO1_X_SENS" shortDescription="Angular rate X-axis Sensor 1">
@@ -3465,8 +3531,13 @@ See https://github.com/yamcs/pymdb
             </RestrictionCriteria>
           </BaseContainer>
         </SequenceContainer>
-        <SequenceContainer name="IMU" abstract="false">
+        <SequenceContainer name="GYRO_ACCEL_TM" abstract="false">
           <EntryList>
+            <ParameterRefEntry parameterRef="GYRO0_TEMP">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
             <ParameterRefEntry parameterRef="GYRO0_X_SENS">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
@@ -3497,17 +3568,7 @@ See https://github.com/yamcs/pymdb
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="MAG0_X">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="MAG0_Y">
-              <LocationInContainerInBits referenceLocation="previousEntry">
-                <FixedValue>0</FixedValue>
-              </LocationInContainerInBits>
-            </ParameterRefEntry>
-            <ParameterRefEntry parameterRef="MAG0_Z">
+            <ParameterRefEntry parameterRef="GYRO1_TEMP">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
@@ -3542,6 +3603,43 @@ See https://github.com/yamcs/pymdb
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
             </ParameterRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="/PUS/pus-tm">
+            <RestrictionCriteria>
+              <BooleanExpression>
+                <ANDedConditions>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/type" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>77</Value>
+                  </Condition>
+                  <Condition>
+                    <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
+                    <ComparisonOperator>==</ComparisonOperator>
+                    <Value>9</Value>
+                  </Condition>
+                </ANDedConditions>
+              </BooleanExpression>
+            </RestrictionCriteria>
+          </BaseContainer>
+        </SequenceContainer>
+        <SequenceContainer name="MAG_TM" abstract="false">
+          <EntryList>
+            <ParameterRefEntry parameterRef="MAG0_X">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="MAG0_Y">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="MAG0_Z">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
             <ParameterRefEntry parameterRef="MAG1_X">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
@@ -3570,7 +3668,7 @@ See https://github.com/yamcs/pymdb
                   <Condition>
                     <ParameterInstanceRef parameterRef="/PUS/pus-tm/subtype" useCalibratedValue="true"/>
                     <ComparisonOperator>==</ComparisonOperator>
-                    <Value>9</Value>
+                    <Value>11</Value>
                   </Condition>
                 </ANDedConditions>
               </BooleanExpression>
@@ -4083,14 +4181,28 @@ See https://github.com/yamcs/pymdb
           <DefaultSignificance consequenceLevel="normal"/>
           <VerifierSet/>
         </MetaCommand>
-        <MetaCommand name="RQ_IMU" abstract="false" shortDescription="Request IMU Telemetry">
+        <MetaCommand name="RQ_GYRO_ACCEL_TM" abstract="false" shortDescription="Request GYRO_ACCEL_TM Telemetry">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
               <ArgumentAssignment argumentName="subtype" argumentValue="9"/>
               <ArgumentAssignment argumentName="apid" argumentValue="77"/>
             </ArgumentAssignmentList>
           </BaseMetaCommand>
-          <CommandContainer name="RQ_IMU">
+          <CommandContainer name="RQ_GYRO_ACCEL_TM">
+            <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="RQ_MAG_TM" abstract="false" shortDescription="Request Magnetic Field Telemetry">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="11"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <CommandContainer name="RQ_MAG_TM">
             <EntryList/>
             <BaseContainer containerRef="base"/>
           </CommandContainer>

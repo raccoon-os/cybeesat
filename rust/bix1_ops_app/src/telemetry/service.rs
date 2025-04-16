@@ -12,6 +12,8 @@ use log::{debug, info, warn};
 pub struct GetHealthService{
     i2c_bmm0: LinuxI2CDevice,
     i2c_bmm1: LinuxI2CDevice,
+    i2c_gyro0: LinuxI2CDevice,
+    i2c_gyro1: LinuxI2CDevice,
 }
 
 
@@ -30,9 +32,24 @@ impl GetHealthService {
             },
             Ok(dev) => {dev}
         };
+        let i2c_gyro0 = match LinuxI2CDevice::new("/dev/i2c-0", 0x6A) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+        let i2c_gyro1 = match LinuxI2CDevice::new("/dev/i2c-1", 0x6B) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+
         Self { 
             i2c_bmm0: i2c_bmm0,
-            i2c_bmm1: i2c_bmm1
+            i2c_bmm1: i2c_bmm1,
+            i2c_gyro0: i2c_gyro0,
+            i2c_gyro1: i2c_gyro1
         }
     }
 }
@@ -43,9 +60,7 @@ impl PusService for GetHealthService {
 
     fn handle_tc(&mut self, mut tc: AcceptedTc, cmd: Self::CommandT) -> AcceptanceResult {
         println!("PUS-Service: Command received.");
-        match cmd {
-
-            
+        match cmd {            
             command::Command::RqObcInfo => tc.handle_with_tm(||{
                 let mut m = Machine::new();
                 let a = m.system_info();
@@ -100,7 +115,81 @@ impl PusService for GetHealthService {
                     vcom1_rssi: 0
                 })
             }),
-            command::Command::RqImu => tc.handle_with_tm(||{
+            command::Command::RqGyroAccelTm => tc.handle_with_tm(||{
+                if false{
+                    return Err(())
+                }
+
+                // Enable Accelerometer
+                match self.i2c_gyro0.smbus_write_i2c_block_data(0x10, &[0x60]){
+                    Ok(_) => {}
+                    Err(e) => {warn!("Error during Gyro0 Reg. 0x10 Write Process: {:?}", e); return Err(())}
+                };
+                match self.i2c_gyro1.smbus_write_i2c_block_data(0x10, &[0x60]){
+                    Ok(_) => {}
+                    Err(e) => {warn!("Error during Gyro1 Reg. 0x10 Write Process: {:?}", e); return Err(())}
+                };
+
+                // Enable Gyroscope
+                match self.i2c_gyro0.smbus_write_i2c_block_data(0x11, &[0x60]){
+                    Ok(_) => {}
+                    Err(e) => {warn!("Error during Gyro0 Reg. 0x11 Write Process: {:?}", e); return Err(())}
+                };
+                match self.i2c_gyro1.smbus_write_i2c_block_data(0x11, &[0x60]){
+                    Ok(_) => {}
+                    Err(e) => {warn!("Error during Gyro1 Reg. 0x11 Write Process: {:?}", e); return Err(())}
+                };
+
+                // read values
+                let gyro0_vec = match self.i2c_gyro0.smbus_read_i2c_block_data(0x20, 14) {
+                    Ok(v) => v,
+                    Err(e) => {warn!("Error during Gyro0 14 entries from Reg. 0x20 Write Process: {:?}", e); return Err(())}
+                };
+
+                debug!("gyro0_vec: {:?}", gyro0_vec);
+
+                let gyro0_temp = ((gyro0_vec[1]  as i16) << 8)  | (gyro0_vec[0]  as i16);
+                let gyro0_X_G =  ((gyro0_vec[3]  as i16) << 8)  | (gyro0_vec[2]  as i16);
+                let gyro0_Y_G =  ((gyro0_vec[5]  as i16) << 8)  | (gyro0_vec[4]  as i16);
+                let gyro0_Z_G =  ((gyro0_vec[7]  as i16) << 8)  | (gyro0_vec[6]  as i16);
+                let gyro0_X_A =  ((gyro0_vec[9]  as i16) << 8)  | (gyro0_vec[8]  as i16);
+                let gyro0_Y_A =  ((gyro0_vec[11] as i16) << 8)  | (gyro0_vec[10] as i16);
+                let gyro0_Z_A =  ((gyro0_vec[13] as i16) << 8)  | (gyro0_vec[12] as i16);
+
+                let gyro1_vec = match self.i2c_gyro1.smbus_read_i2c_block_data(0x20, 14) {
+                    Ok(v) => v,
+                    Err(e) => {warn!("Error during Gyro1 14 entries from Reg. 0x20 Write Process: {:?}", e); return Err(())}
+                };
+
+                debug!("gyro_vec: {:?}", gyro1_vec);
+
+                let gyro1_temp = ((gyro1_vec[1]  as i16) << 8)  | (gyro1_vec[0]  as i16);
+                let gyro1_X_G =  ((gyro1_vec[3]  as i16) << 8)  | (gyro1_vec[2]  as i16);
+                let gyro1_Y_G =  ((gyro1_vec[5]  as i16) << 8)  | (gyro1_vec[4]  as i16);
+                let gyro1_Z_G =  ((gyro1_vec[7]  as i16) << 8)  | (gyro1_vec[6]  as i16);
+                let gyro1_X_A =  ((gyro1_vec[9]  as i16) << 8)  | (gyro1_vec[8]  as i16);
+                let gyro1_Y_A =  ((gyro1_vec[11] as i16) << 8)  | (gyro1_vec[10] as i16);
+                let gyro1_Z_A =  ((gyro1_vec[13] as i16) << 8)  | (gyro1_vec[12] as i16);
+
+                Ok(telemetry::GYROACCELTM{
+                    gyro0_temp: 25 + (gyro0_temp/ 256),
+                    gyro0_x_sens:   (((gyro0_X_G as i32)*875) / 100) as i16,
+                    gyro0_y_sens:   (((gyro0_Y_G as i32)*875) / 100) as i16,
+                    gyro0_z_sens:   (((gyro0_Z_G as i32)*875) / 100) as i16,
+                    accel0_x:       (((gyro0_X_A as i32)*122)/ 1000) as i16,
+                    accel0_y:       (((gyro0_Y_A as i32)*122)/ 1000) as i16,
+                    accel0_z:       (((gyro0_Z_A as i32)*122)/ 1000) as i16,
+                    gyro1_temp: 25 + (gyro1_temp/ 256), 
+                    gyro1_x_sens:   (((gyro1_X_G as i32)*875) / 100) as i16,
+                    gyro1_y_sens:   (((gyro1_Y_G as i32)*875) / 100) as i16,
+                    gyro1_z_sens:   (((gyro1_Z_G as i32)*875) / 100) as i16, //875
+                    accel1_x:       (((gyro1_X_A as i32)*122)/ 1000) as i16,
+                    accel1_y:       (((gyro1_Y_A as i32)*122)/ 1000) as i16,
+                    accel1_z:       (((gyro1_Z_A as i32)*122)/ 1000) as i16,
+                })
+            }),
+            command::Command::RqMagTm => tc.handle_with_tm(||{
+
 
                 match self.i2c_bmm0.smbus_write_i2c_block_data(0x4B, &[0b0000_0001]){
                     Ok(_) => {},
@@ -154,26 +243,13 @@ impl PusService for GetHealthService {
                 let y1 = if raw_y1 & (1 << 12) != 0 { raw_y1 | !0x1FFF } else { raw_y1 } as i32;
                 let z1 = if raw_z1 & (1 << 14) != 0 { raw_z1 | !0x7FFF } else { raw_z1 } as i32;
 
-
-                Ok(telemetry::IMU{
-                    gyro0_x_sens: 0,
-                    gyro0_y_sens: 0,
-                    gyro0_z_sens: 0,
-                    accel0_x: 0,
-                    accel0_y: 0,
-                    accel0_z: 0,
-                    mag0_x: x0 as i16,
-                    mag0_y: y0 as i16,
-                    mag0_z: z0 as i16,
-                    gyro1_x_sens: 0,
-                    gyro1_y_sens: 0,
-                    gyro1_z_sens: 0,
-                    accel1_x: 0,
-                    accel1_y: 0,
-                    accel1_z: 0,
-                    mag1_x: x1 as i16,
-                    mag1_y: y1 as i16,
-                    mag1_z: z1 as i16
+                Ok(telemetry::MAG{
+                    mag0_x: (x0*1000)/16,
+                    mag0_y: (y0*1000)/16,
+                    mag0_z: (z0*1000)/16,
+                    mag1_x: (x1*1000)/16,
+                    mag1_y: (y1*1000)/16,
+                    mag1_z: (z1*1000)/16
                 })
             }),
             command::Command::RqPayload => tc.handle_with_tm(||{

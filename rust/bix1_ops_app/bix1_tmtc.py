@@ -136,37 +136,33 @@ RCCNCommand(
     system=service,
     base=base_cmd,
     assignments={"subtype": 9},
-    name="RQ_IMU",
-    short_description="Request IMU Telemetry",
+    name="RQ_GYRO_ACCEL_TM",
+    short_description="Request GYRO_ACCEL_TM Telemetry",
 )
 
 Container(
     system=service,
     base="/PUS/pus-tm",
-    name="IMU",
+    name="GYRO_ACCEL_TM",
     condition=AndExpression(
         EqExpression("/PUS/pus-tm/type", service_type_id),
         EqExpression("/PUS/pus-tm/subtype", 9),
     ),
     entries=[
-        int_parameter(service, "GYRO0_X_SENS", "Deg/s", "Angular rate X-axis Sensor 0", int16_t),
-        int_parameter(service, "GYRO0_Y_SENS", "Deg/s", "Angular rate Y-axis Sensor 0", int16_t),
-        int_parameter(service, "GYRO0_Z_SENS", "Deg/s", "Angular rate Z-axis Sensor 0", int16_t),
-        int_parameter(service, "ACCEL0_X", "g", "Linear acceleration sensor X-axis measurement Sensor 0", int16_t),
-        int_parameter(service, "ACCEL0_Y", "g", "Linear acceleration sensor Y-axis measurement Sensor 0", int16_t),
-        int_parameter(service, "ACCEL0_Z", "g", "Linear acceleration sensor Z-axis measurement Sensor 0", int16_t),
-        int_parameter(service, "MAG0_X", "Micro Tesla", "Magnetic field measurement X-axis Sensor 0", int16_t),
-        int_parameter(service, "MAG0_Y", "Micro Tesla", "Magnetic field measurement Y-axis Sensor 0", int16_t),
-        int_parameter(service, "MAG0_Z", "Micro Tesla", "Magnetic field measurement Z-axis Sensor 0", int16_t),
-        int_parameter(service, "GYRO1_X_SENS", "Deg/s", "Angular rate X-axis Sensor 1", int16_t),
-        int_parameter(service, "GYRO1_Y_SENS", "Deg/s", "Angular rate Y-axis Sensor 1", int16_t),
-        int_parameter(service, "GYRO1_Z_SENS", "Deg/s", "Angular rate Z-axis Sensor 1", int16_t),
-        int_parameter(service, "ACCEL1_X", "g", "Linear acceleration sensor X-axis measurement Sensor 1", int16_t),
-        int_parameter(service, "ACCEL1_Y", "g", "Linear acceleration sensor Y-axis measurement Sensor 1", int16_t),
-        int_parameter(service, "ACCEL1_Z", "g", "Linear acceleration sensor Z-axis measurement Sensor 1", int16_t),
-        int_parameter(service, "MAG1_X", "Micro Tesla", "Magnetic field measurement X-axis Sensor 1", int16_t),
-        int_parameter(service, "MAG1_Y", "Micro Tesla", "Magnetic field measurement Y-axis Sensor 1", int16_t),
-        int_parameter(service, "MAG1_Z", "Micro Tesla", "Magnetic field measurement Z-axis Sensor 1", int16_t),
+        int_parameter(service, "GYRO0_TEMP", "Celsius", "Sensor 0 Temperature", int16_t),
+        int_parameter(service, "GYRO0_X_SENS", "milli Deg/s", "Angular rate X-axis Sensor 0", int16_t),
+        int_parameter(service, "GYRO0_Y_SENS", "milli Deg/s", "Angular rate Y-axis Sensor 0", int16_t),
+        int_parameter(service, "GYRO0_Z_SENS", "milli Deg/s", "Angular rate Z-axis Sensor 0", int16_t),
+        int_parameter(service, "ACCEL0_X", "milli g(m/s2)", "Linear acceleration sensor X-axis measurement Sensor 0", int16_t),
+        int_parameter(service, "ACCEL0_Y", "milli g(m/s2)", "Linear acceleration sensor Y-axis measurement Sensor 0", int16_t),
+        int_parameter(service, "ACCEL0_Z", "milli g(m/s2)", "Linear acceleration sensor Z-axis measurement Sensor 0", int16_t),
+        int_parameter(service, "GYRO1_TEMP", "Celsius", "Sensor 1 Temperature", int16_t),
+        int_parameter(service, "GYRO1_X_SENS", "milli Deg/s", "Angular rate X-axis Sensor 1", int16_t),
+        int_parameter(service, "GYRO1_Y_SENS", "milli Deg/s", "Angular rate Y-axis Sensor 1", int16_t),
+        int_parameter(service, "GYRO1_Z_SENS", "milli Deg/s", "Angular rate Z-axis Sensor 1", int16_t),
+        int_parameter(service, "ACCEL1_X", "milli g(m/s2)", "Linear acceleration sensor X-axis measurement Sensor 1", int16_t),
+        int_parameter(service, "ACCEL1_Y", "milli g(m/s2)", "Linear acceleration sensor Y-axis measurement Sensor 1", int16_t),
+        int_parameter(service, "ACCEL1_Z", "milli g(m/s2)", "Linear acceleration sensor Z-axis measurement Sensor 1", int16_t),
     ]   
 )
 
@@ -190,6 +186,32 @@ Container(
         int_parameter(service, "APRS_STAT0", "tbd", "APRS Module operational status 0", uint16_t),
         int_parameter(service, "APRS_STAT1", "tbd", "APRS Module operational status 1", uint16_t),
     ]
+)
+
+RCCNCommand(
+    system=service,
+    base=base_cmd,
+    assignments={"subtype": 11},
+    name="RQ_MAG_TM",
+    short_description="Request Magnetic Field Telemetry",
+)
+
+Container(
+    system=service,
+    base="/PUS/pus-tm",
+    name="MAG_TM",
+    condition=AndExpression(
+        EqExpression("/PUS/pus-tm/type", service_type_id),
+        EqExpression("/PUS/pus-tm/subtype", 11),
+    ),
+    entries=[
+        int_parameter(service, "MAG0_X", "Nano Tesla", "Magnetic field measurement X-axis Sensor 0", int32_t),
+        int_parameter(service, "MAG0_Y", "Nano Tesla", "Magnetic field measurement Y-axis Sensor 0", int32_t),
+        int_parameter(service, "MAG0_Z", "Nano Tesla", "Magnetic field measurement Z-axis Sensor 0", int32_t),
+        int_parameter(service, "MAG1_X", "Nano Tesla", "Magnetic field measurement X-axis Sensor 1", int32_t),
+        int_parameter(service, "MAG1_Y", "Nano Tesla", "Magnetic field measurement Y-axis Sensor 1", int32_t),
+        int_parameter(service, "MAG1_Z", "Nano Tesla", "Magnetic field measurement Z-axis Sensor 1", int32_t),
+    ]   
 )
 
 RCCNCommand(
@@ -615,7 +637,7 @@ RCCNCommand(
         # ),
         EnumeratedArgument(
             name="I_Input_Limit_Select",
-            choices= [[0b001000, "Limit_400mA"], [0b010000, "Limit_800mA"], [0b011100, "Limit_1400mA"], [0b101000, "Limit_2000mA"], [0b110000, "Limit_2400mA"], [0b111000, "Limit_2800mA"], [0b111111, "Limit_3250mA"]],
+            choices= [[0b000010, "Limit_100mA"], [0b000100, "Limit_200mA"], [0b001000, "Limit_400mA"],[0b001000, "Limit_400mA"], [0b010000, "Limit_800mA"], [0b011100, "Limit_1400mA"], [0b101000, "Limit_2000mA"], [0b110000, "Limit_2400mA"], [0b111000, "Limit_2800mA"], [0b111111, "Limit_3250mA"]],
             #  REG00 Val:       001000                  010000                   011100                               101000              110000                  111000              111111
             encoding=uint8_t,
         )
@@ -714,10 +736,10 @@ Container(
         bool_parameter(eps_service, "PASS_SW1_Passivation_state", "Passivation mode 1 state, active/inactive"),
         bool_parameter(eps_service, "PASS_SW1_Persitant", "Passivation mode 1 Persitant"),
         enum_parameter(eps_service, "PMIC0_I_Charge_Limit_Select", [[0xFF, "Undefined"], [0b0000100, "Limit_256mA"], [0b0001000, "Limit_512mA"], [0b0010000, "Limit_1024mA"], [0b0011000, "Limit_1536mA"], [0b0100000, "Limit_2048mA"]], "PMIC0 Selected Charge Current", uint8_t),
-        enum_parameter(eps_service, "PMIC0_I_Input_Limit_Select",  [[0xFF, "Undefined"], [0b001000, "Limit_400mA"],  [0b010000, "Limit_800mA"], [0b011100, "Limit_1400mA"], [0b101000, "Limit_2000mA"], [0b110000, "Limit_2400mA"], [0b111000, "Limit_2800mA"], [0b111111, "Limit_3250mA"]], "PMIC0 Selected Input Limit", uint8_t),
+        enum_parameter(eps_service, "PMIC0_I_Input_Limit_Select",  [[0xFF, "Undefined"], [0b000010, "Limit_100mA"], [0b000100, "Limit_200mA"], [0b001000, "Limit_400mA"],  [0b010000, "Limit_800mA"], [0b011100, "Limit_1400mA"], [0b101000, "Limit_2000mA"], [0b110000, "Limit_2400mA"], [0b111000, "Limit_2800mA"], [0b111111, "Limit_3250mA"]], "PMIC0 Selected Input Limit", uint8_t),
         enum_parameter(eps_service, "PMIC0_V_Charge_Limit_Select", [[0xFF, "Undefined"], [0b000000, "Limit_3V840"],  [0b000100, "Limit_3V904"], [0b001100, "Limit_4V032"], [0b010010, "Limit_4V128"], [0b010111, "Limit_4V208"], [0b100000, "Limit_4V352"], [0b100100, "Limit_4V416"], [0b101010, "Limit_4V511"], [0b110000, "Limit_4V608"]], "PMIC0 Selected Charge Voltage", uint8_t),
         enum_parameter(eps_service, "PMIC1_I_Charge_Limit_Select", [[0xFF, "Undefined"], [0b0000100, "Limit_256mA"], [0b0001000, "Limit_512mA"], [0b0010000, "Limit_1024mA"], [0b0011000, "Limit_1536mA"], [0b0100000, "Limit_2048mA"]], "PMIC1 Selected Charge Current", uint8_t),
-        enum_parameter(eps_service, "PMIC1_I_Input_Limit_Select",  [[0xFF, "Undefined"], [0b001000, "Limit_400mA"],  [0b010000, "Limit_800mA"], [0b011100, "Limit_1400mA"], [0b101000, "Limit_2000mA"], [0b110000, "Limit_2400mA"], [0b111000, "Limit_2800mA"], [0b111111, "Limit_3250mA"]], "PMIC1 Selected Input Limit", uint8_t),
+        enum_parameter(eps_service, "PMIC1_I_Input_Limit_Select",  [[0xFF, "Undefined"], [0b000010, "Limit_100mA"], [0b000100, "Limit_200mA"], [0b001000, "Limit_400mA"],  [0b010000, "Limit_800mA"], [0b011100, "Limit_1400mA"], [0b101000, "Limit_2000mA"], [0b110000, "Limit_2400mA"], [0b111000, "Limit_2800mA"], [0b111111, "Limit_3250mA"]], "PMIC1 Selected Input Limit", uint8_t),
         enum_parameter(eps_service, "PMIC1_V_Charge_Limit_Select", [[0xFF, "Undefined"], [0b000000, "Limit_3V840"],  [0b000100, "Limit_3V904"], [0b001100, "Limit_4V032"], [0b010010, "Limit_4V128"], [0b010111, "Limit_4V208"], [0b100000, "Limit_4V352"], [0b100100, "Limit_4V416"], [0b101010, "Limit_4V511"], [0b110000, "Limit_4V608"]], "PMIC1 Selected Charge Voltage", uint8_t),
     ]   
 )
@@ -758,6 +780,11 @@ RCCNCommand(
     name="Set_Register",
     short_description="Set a Register",
     arguments=[
+        EnumeratedArgument(
+            name="I2C_Select",
+            choices=  [[0, "I2C_0"], [1, "I2C_1"]],
+            encoding=uint8_t,
+        ),
         IntegerArgument(
             name="Address",
             encoding=uint16_t
@@ -813,6 +840,11 @@ RCCNCommand(
     name="Get_Register",
     short_description="Get a Register",
     arguments=[
+        EnumeratedArgument(
+            name="I2C_Select",
+            choices=  [[0, "I2C_0"], [1, "I2C_1"]],
+            encoding=uint8_t,
+        ),
         IntegerArgument(
             name="Adress",
             encoding=uint16_t,
@@ -837,6 +869,7 @@ Container(
         EqExpression("/PUS/pus-tm/subtype", 18),
     ),
     entries=[
+        enum_parameter(eps_service, "I2C_Bus", [[0, "I2C_0"], [1, "I2C_1"]], "I2C Bus", uint8_t),
         int_parameter(eps_service, "Address", "", "I2C Adress", uint16_t),
         int_parameter(eps_service, "Register", "", "Register", uint8_t),
         # ParameterEntry(IntegerParameter(system=service, name="n", encoding=uint8_t)),

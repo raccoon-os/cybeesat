@@ -5,27 +5,28 @@ use rccn_usr_pus_macros::ServiceCommand;
 
 #[derive(ServiceCommand)]
 pub enum Command {
-    #[subservice(12)]
-    RqOptEpsRtc,
+    #[subservice(7)]
+    RqUserDefinedTm,
     #[subservice(8)]
     RqCom,
     #[subservice(9)]
-    RqImu,
+    RqGyroAccelTm,
     #[subservice(6)]
     RqObcInfo,
-    #[subservice(16)]
-    RqOptCom,
+    #[subservice(10)]
+    RqPayload,
+    #[subservice(11)]
+    RqMagTm,
+    #[subservice(12)]
+    RqOptEpsRtc,
     #[subservice(13)]
     RqOptEpsBattery,
     #[subservice(14)]
     RqOptEpsBus,
     #[subservice(15)]
     RqOptObcCert,
+    #[subservice(16)]
+    RqOptCom,
     #[subservice(17)]
-    RqOptPayload,
-    #[subservice(10)]
-    RqPayload,
-    #[subservice(7)]
-    RqUserDefinedTm,
-     
+    RqOptPayload,     
 }

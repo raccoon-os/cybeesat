@@ -35,7 +35,9 @@ pub enum Vcom1Stat {
 
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(9)]
-pub struct IMU {
+pub struct GYROACCELTM {
+	#[bits(16)]
+	pub gyro0_temp: i16,
 	#[bits(16)]
 	pub gyro0_x_sens: i16,
 	#[bits(16)]
@@ -49,11 +51,7 @@ pub struct IMU {
 	#[bits(16)]
 	pub accel0_z: i16,
 	#[bits(16)]
-	pub mag0_x: i16,
-	#[bits(16)]
-	pub mag0_y: i16,
-	#[bits(16)]
-	pub mag0_z: i16,
+	pub gyro1_temp: i16,
 	#[bits(16)]
 	pub gyro1_x_sens: i16,
 	#[bits(16)]
@@ -66,13 +64,25 @@ pub struct IMU {
 	pub accel1_y: i16,
 	#[bits(16)]
 	pub accel1_z: i16,
-	#[bits(16)]
-	pub mag1_x: i16,
-	#[bits(16)]
-	pub mag1_y: i16,
-	#[bits(16)]
-	pub mag1_z: i16,
 }
+
+#[derive(ServiceTelemetry, BitStruct, Debug)]
+#[subtype(11)]
+pub struct MAG {
+	#[bits(32)]
+	pub mag0_x: i32,
+	#[bits(32)]
+	pub mag0_y: i32,
+	#[bits(32)]
+	pub mag0_z: i32,
+	#[bits(32)]
+	pub mag1_x: i32,
+	#[bits(32)]
+	pub mag1_y: i32,
+	#[bits(32)]
+	pub mag1_z: i32,
+}
+
 #[derive(ServiceTelemetry, BitStruct, Debug)]
 #[subtype(6)]
 pub struct OBC_INFO {
