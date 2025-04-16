@@ -6,14 +6,34 @@ use std::error::Error;
 use std::fs;
 use crate::telemetry::telemetry::{self, OPT_EPS_BUS, OPT_OBC_CERT, PAYLOAD};
 use machine_info::Machine;
+use i2cdev::{core::I2CDevice, linux::LinuxI2CDevice};
+use log::{debug, info, warn};
 
 pub struct GetHealthService{
+    i2c_bmm0: LinuxI2CDevice,
+    i2c_bmm1: LinuxI2CDevice,
 }
 
 
 impl GetHealthService {
     pub fn new() -> Self {
-        Self { }
+
+        let i2c_bmm0 = match LinuxI2CDevice::new("/dev/i2c-0", 0x10) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+        let i2c_bmm1 = match LinuxI2CDevice::new("/dev/i2c-1", 0x12) {
+            Err(e) => {
+                panic!("error creating i2c dev {e:?}")
+            },
+            Ok(dev) => {dev}
+        };
+        Self { 
+            i2c_bmm0: i2c_bmm0,
+            i2c_bmm1: i2c_bmm1
+        }
     }
 }
 
@@ -81,9 +101,59 @@ impl PusService for GetHealthService {
                 })
             }),
             command::Command::RqImu => tc.handle_with_tm(||{
-                if false {
-                    return Err(());
-                }
+
+                match self.i2c_bmm0.smbus_write_i2c_block_data(0x4B, &[0b0000_0001]){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error during writing to magnetometer 0: {:?}", e); return Err(())}
+                };
+
+                match self.i2c_bmm0.smbus_write_i2c_block_data(0x4C, &[0b0000_0000]){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error during writing to magnetometer 0: {:?}", e); return Err(())}
+                };
+
+                let mag0_vec = match self.i2c_bmm0.smbus_read_i2c_block_data(0x42, 8){
+                    Ok(v) => v,
+                    Err(e) => {warn!("Error during reading of magnetometer values: {:?}", e); return Err(())}
+                };
+
+                debug!("Mag0 Raw Readout: {:?}", mag0_vec);
+
+                let raw_x0 = ((mag0_vec[1] as i16) << 5) | ((mag0_vec[0] as i16) >> 3 & 0x1F);
+                let raw_y0 = ((mag0_vec[3] as i16) << 5) | ((mag0_vec[2] as i16) >> 3 & 0x1F);
+                let raw_z0 = ((mag0_vec[5] as i16) << 7) | ((mag0_vec[4] as i16) >> 1 & 0x7F);
+
+                let x0 = if raw_x0 & (1 << 12) != 0 { raw_x0 | !0x1FFF } else { raw_x0 } as i32;
+                let y0 = if raw_y0 & (1 << 12) != 0 { raw_y0 | !0x1FFF } else { raw_y0 } as i32;
+                let z0 = if raw_z0 & (1 << 14) != 0 { raw_z0 | !0x7FFF } else { raw_z0 } as i32;
+                
+                /////////////////////
+                 
+                match self.i2c_bmm1.smbus_write_i2c_block_data(0x4B, &[0b0000_0001]){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error during writing to magnetometer 1: {:?}", e); return Err(())}
+                };
+                
+                match self.i2c_bmm1.smbus_write_i2c_block_data(0x4C, &[0b0000_0000]){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error during writing to magnetometer 1: {:?}", e); return Err(())}
+                };
+
+                let mag1_vec = match self.i2c_bmm1.smbus_read_i2c_block_data(0x42, 8){
+                    Ok(v) => v,
+                    Err(e) => {warn!("Error during reading of magnetometer values: {:?}", e); return Err(())}
+                };
+
+                debug!("Mag1 Raw Readout: {:?}", mag1_vec);
+
+                let raw_x1 = ((mag1_vec[1] as i16) << 5) | ((mag1_vec[0] as i16) >> 3 & 0x1F);
+                let raw_y1 = ((mag1_vec[3] as i16) << 5) | ((mag1_vec[2] as i16) >> 3 & 0x1F);
+                let raw_z1 = ((mag1_vec[5] as i16) << 7) | ((mag1_vec[4] as i16) >> 1 & 0x7F);
+
+                let x1 = if raw_x1 & (1 << 12) != 0 { raw_x1 | !0x1FFF } else { raw_x1 } as i32;
+                let y1 = if raw_y1 & (1 << 12) != 0 { raw_y1 | !0x1FFF } else { raw_y1 } as i32;
+                let z1 = if raw_z1 & (1 << 14) != 0 { raw_z1 | !0x7FFF } else { raw_z1 } as i32;
+
 
                 Ok(telemetry::IMU{
                     gyro0_x_sens: 0,
@@ -92,18 +162,18 @@ impl PusService for GetHealthService {
                     accel0_x: 0,
                     accel0_y: 0,
                     accel0_z: 0,
-                    mag0_x: 0,
-                    mag0_y: 0,
-                    mag0_z: 0,
+                    mag0_x: x0 as i16,
+                    mag0_y: y0 as i16,
+                    mag0_z: z0 as i16,
                     gyro1_x_sens: 0,
                     gyro1_y_sens: 0,
                     gyro1_z_sens: 0,
                     accel1_x: 0,
                     accel1_y: 0,
                     accel1_z: 0,
-                    mag1_x: 0,
-                    mag1_y: 0,
-                    mag1_z: 0
+                    mag1_x: x1 as i16,
+                    mag1_y: y1 as i16,
+                    mag1_z: z1 as i16
                 })
             }),
             command::Command::RqPayload => tc.handle_with_tm(||{

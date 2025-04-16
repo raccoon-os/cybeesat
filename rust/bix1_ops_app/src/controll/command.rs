@@ -87,32 +87,65 @@ pub struct GetPowerSensorRegisterArgs {
     pub register: u8,
 }
 
-#[derive(BitStruct, Debug)]
+#[derive(BitStruct, Debug, Clone)]
 pub struct PMICSetIChargeLimitArgs {
     #[bits(8)]
     pub pmic_select: PMICSelect,
     #[bits(8)]
-    pub i_charge_limit: u8,
+    pub i_charge_limit: IChargeLimitSelect,
 }
 
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive, Clone)]
+#[repr(u8)]
+pub enum IChargeLimitSelect {
+    Limit256mA = 0b0000100,
+	Limit512mA = 0b0001000,
+    Limit1024mA = 0b0010000,
+    Limit1536mA = 0b0011000,
+    Limit2048mA = 0b0100000,
+}
 
 #[derive(BitStruct, Debug)]
 pub struct PMICSetIInputLimitArgs {
     #[bits(8)]
     pub pmic_select: PMICSelect,
     #[bits(8)]
-    pub input_limit: u8,
+    pub input_limit: PMICSetIInputLimitSelect,
 }
 
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[repr(u8)]
+pub enum PMICSetIInputLimitSelect {
+    Limit400mA = 0b001000,
+	Limit800mA = 0b010000,
+    Limit1400mA = 0b011100,
+    Limit2000mA = 0b101000,
+    Limit2400mA = 0b110000,
+    Limit2800mA = 0b111000,
+    Limit3250mA = 0b111111,
+}
 
 #[derive(BitStruct, Debug)]
 pub struct PMICSetVChargeLimitArgs {
     #[bits(8)]
     pub pmic_select: PMICSelect,
     #[bits(8)]
-    pub v_charge_limit: u8,
+    pub v_charge_limit: PMICSetVChargeLimit,
 }
 
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[repr(u8)]
+pub enum PMICSetVChargeLimit {
+    Limit3V840 = 0b000000,
+	Limit3V904 = 0b000100,
+    Limit4V032 = 0b001100,
+    Limit4V128 = 0b010010,
+    Limit4V208 = 0b010111,
+    Limit4V352 = 0b100000,
+    Limit4V416 = 0b100100,
+    Limit4V511 = 0b101010,
+    Limit4V608 = 0b110000,
+}
 
 #[derive(BitStruct, Debug)]
 pub struct PMICSetRegisterArgs {
@@ -124,7 +157,7 @@ pub struct PMICSetRegisterArgs {
     pub pmic_value: u8,
 }
 
-#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive, Clone)]
 #[repr(u8)]
 pub enum PMICSelect {
     PMIC0 = 0,

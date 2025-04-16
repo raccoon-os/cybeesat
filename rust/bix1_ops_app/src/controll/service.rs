@@ -1,6 +1,6 @@
 use std::io::Read;
 use std::process::Command;
-use num_traits::FromPrimitive;
+use num_traits::{FromPrimitive, ToPrimitive};
 use rccn_usr::service::{AcceptanceResult, AcceptedTc, PusService};
 use super::command;
 use anyhow::Result;
@@ -17,6 +17,10 @@ use std::{thread, time};
 use crate::controll::command::PMICSelect;
 use crate::controll::tla2528::lib::Tla2528;
 use crate::controll::tla2528::channel::Channel;
+use linux_embedded_hal::Delay;
+
+// use linux_embedded_hal::i2cdev::linux::
+
 #[derive(Error, Debug)]
 pub enum LocalError {
     #[error("Error during Register Conversion: {0}")]
@@ -188,9 +192,9 @@ impl EpsCtrlService {
 
         // Turning off watchdogs of PMICs
         res.switch_pmic_fg_i2c_bus(PMICSelect::PMIC0);
-        res.dev_pmic.smbus_write_i2c_block_data(0x04, &[0b10001101]).unwrap();
+        res.dev_pmic.smbus_write_i2c_block_data(0x07, &[0b10001101]).unwrap();
         res.switch_pmic_fg_i2c_bus(PMICSelect::PMIC1);
-        res.dev_pmic.smbus_write_i2c_block_data(0x04, &[0b10001101]).unwrap();
+        res.dev_pmic.smbus_write_i2c_block_data(0x07, &[0b10001101]).unwrap();
 
 
         return res
@@ -685,18 +689,123 @@ impl PusService for EpsCtrlService {
                 })
             }),
             command::Command::PMICSetIChargeLimit(args) => tc.handle(||{
-                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
-                match self.dev_pmic.smbus_write_i2c_block_data(0x04, &vals){
-                    Ok(_) => return true,
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select.clone()){return false}
+
+                let read_val =  match self.dev_pmic.smbus_read_i2c_block_data(0x04, 1){
+                    Ok(v) => v[0],
+                    Err(e) => {warn!("Error while reading register 0x04 from pmic {:?}: {:?}", args.pmic_select, e); return false}
+                };
+
+                let target_val = match args.i_charge_limit{
+                    command::IChargeLimitSelect::Limit256mA => args.i_charge_limit.to_u8().unwrap(),
+                    command::IChargeLimitSelect::Limit512mA => args.i_charge_limit.to_u8().unwrap(),
+                    command::IChargeLimitSelect::Limit1024mA=> args.i_charge_limit.to_u8().unwrap(),
+                    command::IChargeLimitSelect::Limit1536mA=> args.i_charge_limit.to_u8().unwrap(),
+                    command::IChargeLimitSelect::Limit2048mA=> args.i_charge_limit.to_u8().unwrap(),
+                    _                                       => {warn!("Value {:?} not allowed!", args.i_charge_limit); return false},
+                };
+
+                let set_val = (read_val & 0b1000_0000) | target_val;
+
+                match self.dev_pmic.smbus_write_i2c_block_data(0x04, &[set_val]){
+                    Ok(_) => {},
                     Err(e) => {warn!("Error while setting INA device to PMIC0: {:?}", e); return false}
                 }
+
+                let confirm_val =  match self.dev_pmic.smbus_read_i2c_block_data(0x04, 1){
+                    Ok(v) => v[0],
+                    Err(e) => {warn!("Error while reading register 0x04 from pmic {:?}: {:?}", args.pmic_select, e); return false}
+                };
+
+                if confirm_val == set_val{
+                    return true
+                }
+                else{
+                    warn!("Set Value does not Match Read Value");
+                    return false
+                }
+                
             }),
             command::Command::PMICSetIInputLimit(args) => tc.handle(||{
-                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
-                true
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select.clone()){return false}
+
+                let read_val =  match self.dev_pmic.smbus_read_i2c_block_data(0x00, 1){
+                    Ok(v) => v[0],
+                    Err(e) => {warn!("Error while reading register 0x00 from pmic {:?}: {:?}", args.pmic_select, e); return false}
+                };
+
+                let target_val = match args.input_limit{
+                    command::PMICSetIInputLimitSelect::Limit400mA => args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit800mA => args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit1400mA=> args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit2000mA=> args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit2400mA=> args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit2800mA=> args.input_limit.to_u8().unwrap(),
+                    command::PMICSetIInputLimitSelect::Limit3250mA=> args.input_limit.to_u8().unwrap(),
+                    _                                       => {warn!("Value {:?} not allowed!", args.input_limit); return false},
+                };
+
+                let set_val = (read_val & 0b1100_0000) | target_val;
+
+                match self.dev_pmic.smbus_write_i2c_block_data(0x00, &[set_val]){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error while setting INA device to PMIC0: {:?}", e); return false}
+                }
+
+                let confirm_val =  match self.dev_pmic.smbus_read_i2c_block_data(0x00, 1){
+                    Ok(v) => v[0],
+                    Err(e) => {warn!("Error while reading register 0x00 from pmic {:?}: {:?}", args.pmic_select, e); return false}
+                };
+
+                if confirm_val == set_val{
+                    return true
+                }
+                else{
+                    warn!("Set Value does not Match Read Value");
+                    return false
+                }
             }),
             command::Command::PMICSetVChargeLimit(args) => tc.handle(||{
-                if !self.switch_pmic_fg_i2c_bus(args.pmic_select){return false}
+                if !self.switch_pmic_fg_i2c_bus(args.pmic_select.clone()){return false}
+
+                let read_val =  match self.dev_pmic.smbus_read_i2c_block_data(0x06, 1){
+                    Ok(v) => v[0],
+                    Err(e) => {warn!("Error while reading register 0x06 from pmic {:?}: {:?}", args.pmic_select, e); return false}
+                };
+
+                let target_val = match args.v_charge_limit{
+                    command::PMICSetVChargeLimit::Limit3V840 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit3V904 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V032 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V128 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V208 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V352 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V416 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V511 => args.v_charge_limit.to_u8().unwrap(),
+                    command::PMICSetVChargeLimit::Limit4V608 => args.v_charge_limit.to_u8().unwrap(),
+                    _                                       => {warn!("Value {:?} not allowed!", args.v_charge_limit); return false},
+                };
+
+                let set_val = (read_val & 0b0000_0011) | target_val << 2;
+
+                match self.dev_pmic.smbus_write_i2c_block_data(0x06, &[set_val]){
+                    Ok(_) => {},
+                    Err(e) => {warn!("Error while setting INA device to PMIC0: {:?}", e); return false}
+                }
+
+                let confirm_val =  match self.dev_pmic.smbus_read_i2c_block_data(0x06, 1){
+                    Ok(v) => v[0],
+                    Err(e) => {warn!("Error while reading register 0x06 from pmic {:?}: {:?}", args.pmic_select, e); return false}
+                };
+
+                if confirm_val == set_val{
+                    debug!("Confirm Val: {:X?} - Set_Val: {:X?} - Orig_Val: {:X?}", confirm_val, set_val, read_val);
+                    return true
+                }
+                else{
+                    warn!("Set Value does not Match Read Value");
+                    return false
+                }
                 true
             }),
             command::Command::PMICSetRegister(args) => tc.handle(||{
@@ -735,12 +844,67 @@ impl PusService for EpsCtrlService {
                     Err(e) => {warn!("Error while reading Passivation Switch 1 State: {:?}", e); return Err(())}
                 };
 
+                if !self.switch_pmic_fg_i2c_bus(PMICSelect::PMIC0){return Err(())}
+
+                let val_pmic0_i_charge =  match self.dev_pmic.smbus_read_i2c_block_data(0x04, 1){
+                    Ok(v) => v[0] & 0b1111111,
+                    Err(e) => {warn!("Error while reading register 0x04 from pmic {:?}: {:?}", PMICSelect::PMIC0, e); return Err(())}
+                };
+
+                debug!{"val_pmic0_i_charge: {:?}", val_pmic0_i_charge};
+
+                let val_pmic0_in_curr =  match self.dev_pmic.smbus_read_i2c_block_data(0x00, 1){
+                    Ok(v) => v[0] & 0b00111111,
+                    Err(e) => {warn!("Error while reading register 0x00 from pmic {:?}: {:?}", PMICSelect::PMIC0, e); return Err(())}
+                };
+
+                debug!{"val_pmic0_in_curr: {:?}", val_pmic0_in_curr};
+
+                let val_pmic0_v_charge =  match self.dev_pmic.smbus_read_i2c_block_data(0x06, 1){
+                    Ok(v) => (v[0] & 0b11111100) >> 2,
+                    Err(e) => {warn!("Error while reading register 0x04 from pmic {:?}: {:?}", PMICSelect::PMIC0, e); return Err(())}
+                };
+
+                debug!{"val_pmic0_v_charge: {:?}", val_pmic0_v_charge};
+
+                if !self.switch_pmic_fg_i2c_bus(PMICSelect::PMIC1){return Err(())}
+
+                let val_pmic1_i_charge =  match self.dev_pmic.smbus_read_i2c_block_data(0x04, 1){
+                    Ok(v) => v[0] & 0b1111111,
+                    Err(e) => {warn!("Error while reading register 0x04 from pmic {:?}: {:?}", PMICSelect::PMIC1, e); return Err(())}
+                };
+
+                debug!{"val_pmic1_i_charge: {:?}", val_pmic1_i_charge};
+
+                let val_pmic1_in_curr =  match self.dev_pmic.smbus_read_i2c_block_data(0x00, 1){
+                    Ok(v) => v[0] & 0b00111111,
+                    Err(e) => {warn!("Error while reading register 0x00 from pmic {:?}: {:?}", PMICSelect::PMIC1, e); return Err(())}
+                };
+
+                debug!{"val_pmic1_in_curr: {:?}", val_pmic1_in_curr};
+
+                let val_pmic1_v_charge =  match self.dev_pmic.smbus_read_i2c_block_data(0x06, 1){
+                    Ok(v) => ( v[0] & 0b11111100) >> 2,
+                    Err(e) => {warn!("Error while reading register 0x06 from pmic {:?}: {:?}", PMICSelect::PMIC1, e); return Err(())}
+                };
+
+                debug!{"val_pmic1_v_charge: {:?}", val_pmic1_v_charge};
+
                 Ok(telemetry::EPS_Battery_Config{
-                    pass_switch0_passivation_state:      if sw0[0] == 0x00 {false} else if sw0[0] >= 0x20 {true} else {warn!("Error: Undefined Passivation Switch 0 State: {:?}",    sw0[0]); return Err(())},
-                    pass_switch0_persistant:  if sw0[1] == 0x00 {false} else if sw0[1] == 0x18 {true} else {warn!("Error: Undefined Passivation Switch 0 Volatile: {:?}", sw0[1]); return Err(())},
-                    pass_switch1_passivation_state:      if sw1[0] == 0x00 {false} else if sw1[0] >= 0x20 {true} else {warn!("Error: Undefined Passivation Switch 1 State: {:?}",    sw1[0]); return Err(())},
-                    pass_switch1_persistant:  if sw1[1] == 0x00 {false} else if sw1[1] == 0x18 {true} else {warn!("Error: Undefined Passivation Switch 1 Volatile: {:?}", sw1[1]); return Err(())},
+                    pass_switch0_passivation_state: if sw0[0] == 0x00 {false} else if sw0[0] >= 0x20 {true} else {warn!("Error: Undefined Passivation Switch 0 State: {:?}",    sw0[0]); return Err(())},
+                    pass_switch0_persistant:        if sw0[1] == 0x00 {false} else if sw0[1] == 0x18 {true} else {warn!("Error: Undefined Passivation Switch 0 Volatile: {:?}", sw0[1]); return Err(())},
+                    pass_switch1_passivation_state: if sw1[0] == 0x00 {false} else if sw1[0] >= 0x20 {true} else {warn!("Error: Undefined Passivation Switch 1 State: {:?}",    sw1[0]); return Err(())},
+                    pass_switch1_persistant:        if sw1[1] == 0x00 {false} else if sw1[1] == 0x18 {true} else {warn!("Error: Undefined Passivation Switch 1 Volatile: {:?}", sw1[1]); return Err(())},
+                    pmic0_i_charge_limit_select:    match telemetry::PMIC0IChargeLimitSelect::from_u8(val_pmic0_i_charge)   {Some(v)=> v, _=> telemetry::PMIC0IChargeLimitSelect::Undefined},
+                    pmic0_i_input_limit_select:     match telemetry::PMIC0SetIInputLimitSelect::from_u8(val_pmic0_in_curr)  {Some(v)=> v, _=> telemetry::PMIC0SetIInputLimitSelect::Undefined},
+                    pmic0_v_charge_limit_select:    match telemetry::PMIC0SetVChargeLimit::from_u8(val_pmic0_v_charge)      {Some(v)=> v, _=> telemetry::PMIC0SetVChargeLimit::Undefined},
+                    pmic1_i_charge_limit_select:    match telemetry::PMIC1IChargeLimitSelect::from_u8(val_pmic1_i_charge)   {Some(v)=> v, _=> telemetry::PMIC1IChargeLimitSelect::Undefined},
+                    pmic1_i_input_limit_select:     match telemetry::PMIC1SetIInputLimitSelect::from_u8(val_pmic1_in_curr)  {Some(v)=> v, _=> telemetry::PMIC1SetIInputLimitSelect::Undefined},
+                    pmic1_v_charge_limit_select:    match telemetry::PMIC1SetVChargeLimit::from_u8(val_pmic1_v_charge)      {Some(v)=> v, _=> telemetry::PMIC1SetVChargeLimit::Undefined},
                 })
+
+
+
             }),
             command::Command::SetPassivationSwState(args) => tc.handle(||{
 

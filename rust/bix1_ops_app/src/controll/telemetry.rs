@@ -162,6 +162,96 @@ pub struct EPS_Battery_Config {
 	pub pass_switch1_passivation_state: bool,
 	#[bits(8)]
 	pub pass_switch1_persistant: bool,
+	#[bits(8)]
+	pub pmic0_i_charge_limit_select: PMIC0IChargeLimitSelect ,
+	#[bits(8)]
+	pub pmic0_i_input_limit_select: PMIC0SetIInputLimitSelect,
+	#[bits(8)]
+	pub pmic0_v_charge_limit_select: PMIC0SetVChargeLimit,
+	#[bits(8)]
+	pub pmic1_i_charge_limit_select: PMIC1IChargeLimitSelect ,
+	#[bits(8)]
+	pub pmic1_i_input_limit_select: PMIC1SetIInputLimitSelect,
+	#[bits(8)]
+	pub pmic1_v_charge_limit_select: PMIC1SetVChargeLimit,
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[repr(u8)]
+pub enum PMIC0IChargeLimitSelect {
+    Limit256mA = 0b0000100,
+	Limit512mA = 0b0001000,
+    Limit1024mA = 0b0010000,
+    Limit1536mA = 0b0011000,
+    Limit2048mA = 0b0100000,
+	Undefined = 0xFF
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[repr(u8)]
+pub enum PMIC0SetIInputLimitSelect {
+    Limit400mA = 0b001000,
+	Limit800mA = 0b010000,
+    Limit1400mA = 0b011100,
+    Limit2000mA = 0b101000,
+    Limit2400mA = 0b110000,
+    Limit2800mA = 0b111000,
+    Limit3250mA = 0b111111,
+	Undefined = 0xFF
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[repr(u8)]
+pub enum PMIC0SetVChargeLimit {
+    Limit3V840 = 0b000000,
+	Limit3V904 = 0b000100,
+    Limit4V032 = 0b001100,
+    Limit4V128 = 0b010010,
+    Limit4V208 = 0b010111,
+    Limit4V352 = 0b100000,
+    Limit4V416 = 0b100100,
+    Limit4V511 = 0b101010,
+    Limit4V608 = 0b110000,
+	Undefined = 0xFF
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[repr(u8)]
+pub enum PMIC1IChargeLimitSelect {
+    Limit256mA = 0b0000100,
+	Limit512mA = 0b0001000,
+    Limit1024mA = 0b0010000,
+    Limit1536mA = 0b0011000,
+    Limit2048mA = 0b0100000,
+	Undefined = 0xFF
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[repr(u8)]
+pub enum PMIC1SetIInputLimitSelect {
+    Limit400mA = 0b001000,
+	Limit800mA = 0b010000,
+    Limit1400mA = 0b011100,
+    Limit2000mA = 0b101000,
+    Limit2400mA = 0b110000,
+    Limit2800mA = 0b111000,
+    Limit3250mA = 0b111111,
+	Undefined = 0xFF
+}
+
+#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[repr(u8)]
+pub enum PMIC1SetVChargeLimit {
+    Limit3V840 = 0b000000,
+	Limit3V904 = 0b000100,
+    Limit4V032 = 0b001100,
+    Limit4V128 = 0b010010,
+    Limit4V208 = 0b010111,
+    Limit4V352 = 0b100000,
+    Limit4V416 = 0b100100,
+    Limit4V511 = 0b101010,
+    Limit4V608 = 0b110000,
+	Undefined = 0xFF
 }
 
 #[derive(ServiceTelemetry, BitStruct, Debug)]

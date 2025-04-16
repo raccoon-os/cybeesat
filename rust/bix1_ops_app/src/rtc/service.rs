@@ -36,7 +36,7 @@ impl RtcService {
     }
 
     fn set_single_register(&mut self, register: u8, value: u8) -> Result<(), LinuxI2CError> {
-        match self.i2cdev.smbus_write_byte_data(register, value){
+        match self.i2cdev.smbus_write_i2c_block_data(register, &[value]){
             Ok(_) => {
                 return Ok(())
             }
@@ -66,10 +66,10 @@ impl RtcService {
     }
 
     fn read_single_register(&mut self, register: u8) -> Result<u8, LinuxI2CError> {
-        match self.i2cdev.smbus_read_byte_data(register){
+        match self.i2cdev.smbus_read_i2c_block_data(register, 1){
             Ok(data) => {
-                debug!("Read from Register: {} Value: {}", register, data);
-                return Ok(data)
+                debug!("Read from Register: {} Value: {}", register, data[0]);
+                return Ok(data[0])
             },
             Err(e) => {
                 warn!{"Error while reading from register {} \n {:?}", register, e};

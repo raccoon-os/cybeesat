@@ -11,43 +11,43 @@ See https://github.com/yamcs/pymdb
       <ParameterTypeSet>
         <IntegerParameterType name="ALX_SOL0" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ALX_SOL1" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ALX_SOL2" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ALX_SOL3" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ALX_SOL4" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ALX_SOL5" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="ALX_SOL6" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">light intensity 0 - 255</Unit>
+            <Unit form="calibrated">light intensity</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -235,6 +235,30 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC0_I_Charge_Limit_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="4" label="Limit_256mA"/>
+            <Enumeration value="8" label="Limit_512mA"/>
+            <Enumeration value="16" label="Limit_1024mA"/>
+            <Enumeration value="24" label="Limit_1536mA"/>
+            <Enumeration value="32" label="Limit_2048mA"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <EnumeratedParameterType name="PMIC0_I_Input_Limit_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="8" label="Limit_400mA"/>
+            <Enumeration value="16" label="Limit_800mA"/>
+            <Enumeration value="28" label="Limit_1400mA"/>
+            <Enumeration value="40" label="Limit_2000mA"/>
+            <Enumeration value="48" label="Limit_2400mA"/>
+            <Enumeration value="56" label="Limit_2800mA"/>
+            <Enumeration value="63" label="Limit_3250mA"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
         <EnumeratedParameterType name="PMIC0_STAT">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
@@ -257,12 +281,51 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC0_V_Charge_Limit_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="0" label="Limit_3V840"/>
+            <Enumeration value="4" label="Limit_3V904"/>
+            <Enumeration value="12" label="Limit_4V032"/>
+            <Enumeration value="18" label="Limit_4V128"/>
+            <Enumeration value="23" label="Limit_4V208"/>
+            <Enumeration value="32" label="Limit_4V352"/>
+            <Enumeration value="36" label="Limit_4V416"/>
+            <Enumeration value="42" label="Limit_4V511"/>
+            <Enumeration value="48" label="Limit_4V608"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
         <IntegerParameterType name="PMIC1_ICHG" signed="true" sizeInBits="32">
           <UnitSet>
             <Unit form="calibrated">mA</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC1_I_Charge_Limit_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="4" label="Limit_256mA"/>
+            <Enumeration value="8" label="Limit_512mA"/>
+            <Enumeration value="16" label="Limit_1024mA"/>
+            <Enumeration value="24" label="Limit_1536mA"/>
+            <Enumeration value="32" label="Limit_2048mA"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
+        <EnumeratedParameterType name="PMIC1_I_Input_Limit_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="8" label="Limit_400mA"/>
+            <Enumeration value="16" label="Limit_800mA"/>
+            <Enumeration value="28" label="Limit_1400mA"/>
+            <Enumeration value="40" label="Limit_2000mA"/>
+            <Enumeration value="48" label="Limit_2400mA"/>
+            <Enumeration value="56" label="Limit_2800mA"/>
+            <Enumeration value="63" label="Limit_3250mA"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
         <EnumeratedParameterType name="PMIC1_STAT">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
@@ -285,6 +348,21 @@ See https://github.com/yamcs/pymdb
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
+        <EnumeratedParameterType name="PMIC1_V_Charge_Limit_Select">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="255" label="Undefined"/>
+            <Enumeration value="0" label="Limit_3V840"/>
+            <Enumeration value="4" label="Limit_3V904"/>
+            <Enumeration value="12" label="Limit_4V032"/>
+            <Enumeration value="18" label="Limit_4V128"/>
+            <Enumeration value="23" label="Limit_4V208"/>
+            <Enumeration value="32" label="Limit_4V352"/>
+            <Enumeration value="36" label="Limit_4V416"/>
+            <Enumeration value="42" label="Limit_4V511"/>
+            <Enumeration value="48" label="Limit_4V608"/>
+          </EnumerationList>
+        </EnumeratedParameterType>
         <IntegerParameterType name="PMIC_Register" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerParameterType>
@@ -563,6 +641,12 @@ See https://github.com/yamcs/pymdb
         <Parameter name="PMIC0_ICHG" parameterTypeRef="PMIC0_ICHG" shortDescription="Battery charger 0 charge/discharge current">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="PMIC0_I_Charge_Limit_Select" parameterTypeRef="PMIC0_I_Charge_Limit_Select" shortDescription="PMIC0 Selected Charge Current">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC0_I_Input_Limit_Select" parameterTypeRef="PMIC0_I_Input_Limit_Select" shortDescription="PMIC0 Selected Input Limit">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="PMIC0_STAT" parameterTypeRef="PMIC0_STAT" shortDescription="Battery charger 0 status">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
@@ -572,7 +656,16 @@ See https://github.com/yamcs/pymdb
         <Parameter name="PMIC0_VBUS" parameterTypeRef="PMIC0_VBUS" shortDescription="EPS digital PCB temperature">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
+        <Parameter name="PMIC0_V_Charge_Limit_Select" parameterTypeRef="PMIC0_V_Charge_Limit_Select" shortDescription="PMIC0 Selected Charge Voltage">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
         <Parameter name="PMIC1_ICHG" parameterTypeRef="PMIC1_ICHG" shortDescription="Battery charger 1 charge/discharge current">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_I_Charge_Limit_Select" parameterTypeRef="PMIC1_I_Charge_Limit_Select" shortDescription="PMIC1 Selected Charge Current">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_I_Input_Limit_Select" parameterTypeRef="PMIC1_I_Input_Limit_Select" shortDescription="PMIC1 Selected Input Limit">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="PMIC1_STAT" parameterTypeRef="PMIC1_STAT" shortDescription="Battery charger 1 status">
@@ -582,6 +675,9 @@ See https://github.com/yamcs/pymdb
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="PMIC1_VBUS" parameterTypeRef="PMIC1_VBUS" shortDescription="EPS digital PCB temperature">
+          <ParameterProperties dataSource="telemetered" persistence="true"/>
+        </Parameter>
+        <Parameter name="PMIC1_V_Charge_Limit_Select" parameterTypeRef="PMIC1_V_Charge_Limit_Select" shortDescription="PMIC1 Selected Charge Voltage">
           <ParameterProperties dataSource="telemetered" persistence="true"/>
         </Parameter>
         <Parameter name="PMIC_Register" parameterTypeRef="PMIC_Register" shortDescription="PMIC Register">
@@ -691,6 +787,36 @@ See https://github.com/yamcs/pymdb
               </LocationInContainerInBits>
             </ParameterRefEntry>
             <ParameterRefEntry parameterRef="PASS_SW1_Persitant">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC0_I_Charge_Limit_Select">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC0_I_Input_Limit_Select">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC0_V_Charge_Limit_Select">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_I_Charge_Limit_Select">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_I_Input_Limit_Select">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ParameterRefEntry>
+            <ParameterRefEntry parameterRef="PMIC1_V_Charge_Limit_Select">
               <LocationInContainerInBits referenceLocation="previousEntry">
                 <FixedValue>0</FixedValue>
               </LocationInContainerInBits>
@@ -1309,9 +1435,16 @@ See https://github.com/yamcs/pymdb
             <Enumeration value="1" label="PMIC1"/>
           </EnumerationList>
         </EnumeratedArgumentType>
-        <IntegerArgumentType name="PMIC_Set_I_Charge_Limit__IChargeLimit" signed="true" sizeInBits="32">
+        <EnumeratedArgumentType name="PMIC_Set_I_Charge_Limit__I_Charge_Limit_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerArgumentType>
+          <EnumerationList>
+            <Enumeration value="4" label="Limit_256mA"/>
+            <Enumeration value="8" label="Limit_512mA"/>
+            <Enumeration value="16" label="Limit_1024mA"/>
+            <Enumeration value="24" label="Limit_1536mA"/>
+            <Enumeration value="32" label="Limit_2048mA"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <EnumeratedArgumentType name="PMIC_Set_I_Input_Limit__PMIC_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
@@ -1319,9 +1452,18 @@ See https://github.com/yamcs/pymdb
             <Enumeration value="1" label="PMIC1"/>
           </EnumerationList>
         </EnumeratedArgumentType>
-        <IntegerArgumentType name="PMIC_Set_I_Input_Limit__InputLimit" signed="true" sizeInBits="32">
+        <EnumeratedArgumentType name="PMIC_Set_I_Input_Limit__I_Input_Limit_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerArgumentType>
+          <EnumerationList>
+            <Enumeration value="8" label="Limit_400mA"/>
+            <Enumeration value="16" label="Limit_800mA"/>
+            <Enumeration value="28" label="Limit_1400mA"/>
+            <Enumeration value="40" label="Limit_2000mA"/>
+            <Enumeration value="48" label="Limit_2400mA"/>
+            <Enumeration value="56" label="Limit_2800mA"/>
+            <Enumeration value="63" label="Limit_3250mA"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <EnumeratedArgumentType name="PMIC_Set_V_Charge_Limit__PMIC_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
@@ -1329,9 +1471,20 @@ See https://github.com/yamcs/pymdb
             <Enumeration value="1" label="PMIC1"/>
           </EnumerationList>
         </EnumeratedArgumentType>
-        <IntegerArgumentType name="PMIC_Set_V_Charge_Limit__VChargeLimit" signed="true" sizeInBits="32">
+        <EnumeratedArgumentType name="PMIC_Set_V_Charge_Limit__V_Charge_Limit_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
-        </IntegerArgumentType>
+          <EnumerationList>
+            <Enumeration value="0" label="Limit_3V840"/>
+            <Enumeration value="4" label="Limit_3V904"/>
+            <Enumeration value="12" label="Limit_4V032"/>
+            <Enumeration value="18" label="Limit_4V128"/>
+            <Enumeration value="23" label="Limit_4V208"/>
+            <Enumeration value="32" label="Limit_4V352"/>
+            <Enumeration value="36" label="Limit_4V416"/>
+            <Enumeration value="42" label="Limit_4V511"/>
+            <Enumeration value="48" label="Limit_4V608"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
         <EnumeratedArgumentType name="PMIT_Set_Register__PMIC_Select">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <EnumerationList>
@@ -1585,7 +1738,7 @@ See https://github.com/yamcs/pymdb
           </BaseMetaCommand>
           <ArgumentList>
             <Argument name="PMIC_Select" argumentTypeRef="PMIC_Set_I_Charge_Limit__PMIC_Select"/>
-            <Argument name="IChargeLimit" argumentTypeRef="PMIC_Set_I_Charge_Limit__IChargeLimit"/>
+            <Argument name="I_Charge_Limit_Select" argumentTypeRef="PMIC_Set_I_Charge_Limit__I_Charge_Limit_Select"/>
           </ArgumentList>
           <CommandContainer name="PMIC_Set_I_Charge_Limit">
             <EntryList>
@@ -1594,7 +1747,7 @@ See https://github.com/yamcs/pymdb
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
               </ArgumentRefEntry>
-              <ArgumentRefEntry argumentRef="IChargeLimit">
+              <ArgumentRefEntry argumentRef="I_Charge_Limit_Select">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
@@ -1614,7 +1767,7 @@ See https://github.com/yamcs/pymdb
           </BaseMetaCommand>
           <ArgumentList>
             <Argument name="PMIC_Select" argumentTypeRef="PMIC_Set_I_Input_Limit__PMIC_Select"/>
-            <Argument name="InputLimit" argumentTypeRef="PMIC_Set_I_Input_Limit__InputLimit"/>
+            <Argument name="I_Input_Limit_Select" argumentTypeRef="PMIC_Set_I_Input_Limit__I_Input_Limit_Select"/>
           </ArgumentList>
           <CommandContainer name="PMIC_Set_I_Input_Limit">
             <EntryList>
@@ -1623,7 +1776,7 @@ See https://github.com/yamcs/pymdb
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
               </ArgumentRefEntry>
-              <ArgumentRefEntry argumentRef="InputLimit">
+              <ArgumentRefEntry argumentRef="I_Input_Limit_Select">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
@@ -1643,7 +1796,7 @@ See https://github.com/yamcs/pymdb
           </BaseMetaCommand>
           <ArgumentList>
             <Argument name="PMIC_Select" argumentTypeRef="PMIC_Set_V_Charge_Limit__PMIC_Select"/>
-            <Argument name="VChargeLimit" argumentTypeRef="PMIC_Set_V_Charge_Limit__VChargeLimit"/>
+            <Argument name="V_Charge_Limit_Select" argumentTypeRef="PMIC_Set_V_Charge_Limit__V_Charge_Limit_Select"/>
           </ArgumentList>
           <CommandContainer name="PMIC_Set_V_Charge_Limit">
             <EntryList>
@@ -1652,7 +1805,7 @@ See https://github.com/yamcs/pymdb
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>
               </ArgumentRefEntry>
-              <ArgumentRefEntry argumentRef="VChargeLimit">
+              <ArgumentRefEntry argumentRef="V_Charge_Limit_Select">
                 <LocationInContainerInBits referenceLocation="previousEntry">
                   <FixedValue>0</FixedValue>
                 </LocationInContainerInBits>

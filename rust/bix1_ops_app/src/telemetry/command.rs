@@ -9,7 +9,7 @@ pub enum Command {
     RqOptEpsRtc,
     #[subservice(8)]
     RqCom,
-    #[subservice(5)]
+    #[subservice(9)]
     RqImu,
     #[subservice(6)]
     RqObcInfo,

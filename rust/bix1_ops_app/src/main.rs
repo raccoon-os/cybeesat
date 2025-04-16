@@ -75,10 +75,10 @@ async fn monitor_task(){
 
     let mut chip = Chip::new("/dev/gpiochip0").unwrap();
     let gpioPC17_handle = chip.get_line(81).unwrap();
-    let linePC17_handle = gpioPC17_handle.request(LineRequestFlags::OUTPUT, 0, "Whatchdog trigger").unwrap();
-    // let gpioPC24_handle = chip.get_line(81).unwrap();
-    // let linePC24_handle = gpioPC24_handle.request(LineRequestFlags::OUTPUT, 0, "Whatchdog trigger").unwrap();
-    // linePC24_handle.set_value(1);
+    let linePC17_handle = gpioPC17_handle.request(LineRequestFlags::OUTPUT, 0, "Watchdog trigger").unwrap();
+    let gpioPC24_handle = chip.get_line(88).unwrap();
+    let linePC24_handle = gpioPC24_handle.request(LineRequestFlags::OUTPUT, 0, "Watchdog set high").unwrap();
+    linePC24_handle.set_value(1);
     
     info!("Before spawning Monitor Task.");
     tokio::spawn(async move{
@@ -95,40 +95,40 @@ async fn monitor_task(){
 
             // Activate ADC
             let mut pmic0_reg02 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            debug!("pmic0_reg02: {:?}", pmic0_reg02);
+            // debug!("pmic0_reg02: {:?}", pmic0_reg02);
             pmic0_reg02[0] |= 0xc0;
             let mut write_val= [0u8];
             write_val[0] = pmic0_reg02[0];
             dev_pmic.smbus_write_i2c_block_data(0x02, &write_val).unwrap();
             
             let mut pmic0_reg02_test2 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            debug!("pmic0_reg02: {:?}", pmic0_reg02_test2);
+            // debug!("pmic0_reg02: {:?}", pmic0_reg02_test2);
 
             // read Values
             let pmic0_vbat_vec = dev_pmic.smbus_read_i2c_block_data(0x0e, 1).unwrap(); 
-            debug!("pmic0_vbat_vec: {:X?}", pmic0_vbat_vec);
+            // debug!("pmic0_vbat_vec: {:X?}", pmic0_vbat_vec);
 
             let pmic0_vbat = convert_battery_voltage(pmic0_vbat_vec[0] as u32);
 
-            debug!("pmic_vbat0: {:?}", pmic0_vbat);
+            // debug!("pmic_vbat0: {:?}", pmic0_vbat);
 
             let pmic0_vsys_vec = dev_pmic.smbus_read_i2c_block_data(0x11, 1).unwrap(); 
-            debug!("pmic0_vsys_vec: {:X?}", pmic0_vsys_vec);
+            // debug!("pmic0_vsys_vec: {:X?}", pmic0_vsys_vec);
 
             let pmic0_vsys = convert_bus_voltage(pmic0_vsys_vec[0] as u32);
 
-            debug!("pmic_vsys: {:?}", pmic0_vsys);
+            // debug!("pmic_vsys: {:?}", pmic0_vsys);
 
             let pmic0_ichg_vec = dev_pmic.smbus_read_i2c_block_data(0x12, 1).unwrap(); 
-            debug!("pmic0_ichg_vec: {:X?}", pmic0_ichg_vec);
+            // debug!("pmic0_ichg_vec: {:X?}", pmic0_ichg_vec);
 
             let pmic0_ichg = convert_battery_charge_current(pmic0_ichg_vec[0] as u32);
 
-            debug!("pmic0_ichg: {:?}", pmic0_ichg);
+            // debug!("pmic0_ichg: {:?}", pmic0_ichg);
 
             let pmic0_status_vec = dev_pmic.smbus_read_i2c_block_data(0x0b, 1).unwrap(); 
-            debug!("pmic0_status_vec: {:X?}", pmic0_status_vec);
-            debug!("pmic1_status_conv: {:?}", (pmic0_status_vec[0] >> 3) & 0b11);
+            // debug!("pmic0_status_vec: {:X?}", pmic0_status_vec);
+            // debug!("pmic1_status_conv: {:?}", (pmic0_status_vec[0] >> 3) & 0b11);
 
             // Switch i2c Bus
             match write_i2c_ina_device_block(&mut dev_i2c_switch, 0x00, 0x04){ //0x05 for other i2c
@@ -138,40 +138,40 @@ async fn monitor_task(){
 
             // Activate ADC
             let mut pmic1_reg02 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            debug!("pmic1_reg02: {:?}", pmic1_reg02);
+            // debug!("pmic1_reg02: {:?}", pmic1_reg02);
             pmic1_reg02[0] |= 0xc0;
             let mut write_val1= [0u8];
             write_val1[0] = pmic1_reg02[0];
             dev_pmic.smbus_write_i2c_block_data(0x02, &write_val1).unwrap();
             
             let mut pmic1_reg02_test2 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            debug!("pmic1_reg02: {:?}", pmic1_reg02_test2);
+            // debug!("pmic1_reg02: {:?}", pmic1_reg02_test2);
 
             // read Values
             let pmic1_vbat_vec = dev_pmic.smbus_read_i2c_block_data(0x0e, 1).unwrap(); 
-            debug!("pmic1_vbat_vec: {:X?}", pmic1_vbat_vec);
+            // debug!("pmic1_vbat_vec: {:X?}", pmic1_vbat_vec);
 
             let pmic1_vbat = convert_battery_voltage(pmic1_vbat_vec[0] as u32);
 
-            debug!("pmic1_vbat0: {:?}", pmic1_vbat);
+            // debug!("pmic1_vbat0: {:?}", pmic1_vbat);
 
             let pmic1_vsys_vec = dev_pmic.smbus_read_i2c_block_data(0x11, 1).unwrap(); 
-            debug!("pmic1_vsys_vec: {:X?}", pmic1_vsys_vec);
+            // debug!("pmic1_vsys_vec: {:X?}", pmic1_vsys_vec);
 
             let pmic1_vsys = convert_bus_voltage(pmic1_vsys_vec[0] as u32);
 
-            debug!("pmic1_vsys: {:?}", pmic1_vsys);
+            // debug!("pmic1_vsys: {:?}", pmic1_vsys);
 
             let pmic1_ichg_vec = dev_pmic.smbus_read_i2c_block_data(0x12, 1).unwrap(); 
-            debug!("pmic1_ichg_vec: {:X?}", pmic1_ichg_vec);
+            // debug!("pmic1_ichg_vec: {:X?}", pmic1_ichg_vec);
 
             let pmic1_ichg = convert_battery_charge_current(pmic1_ichg_vec[0] as u32);
 
-            debug!("pmic1_ichg: {:?}", pmic1_ichg);
+            // debug!("pmic1_ichg: {:?}", pmic1_ichg);
 
             let pmic1_status_vec = dev_pmic.smbus_read_i2c_block_data(0x0b, 1).unwrap(); 
-            debug!("pmic1_status_vec: {:X?}", pmic1_status_vec);
-            debug!("pmic1_status_conv: {:?}", (pmic1_status_vec[0] >> 3) & 0b11);
+            // debug!("pmic1_status_vec: {:X?}", pmic1_status_vec);
+            // debug!("pmic1_status_conv: {:?}", (pmic1_status_vec[0] >> 3) & 0b11);
 
 
             if (pmic0_vbat > 3000) && (pmic1_vbat > 3000){
@@ -182,8 +182,7 @@ async fn monitor_task(){
                 // PC 24 on high
             }
 
-
-            // linePC24_handle.set_value(1).unwrap();
+            linePC24_handle.set_value(1).unwrap();
         }
 
     });
