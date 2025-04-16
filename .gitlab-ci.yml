@@ -1,9 +1,11 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: "true"
+
 stages:
   - build
 
 build-job:
   stage: build
   script:
-    - git submodule init
-    - git submodule update
     - make deploy
