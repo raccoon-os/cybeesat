@@ -1,8 +1,5 @@
 use std::{
-    path::Path,
-    sync::{mpsc::Receiver, Arc, Mutex},
-    thread::{self, sleep, JoinHandle},
-    time::Duration,
+    path::Path, str, sync::{mpsc::Receiver, Arc, Mutex}, thread::{self, sleep, JoinHandle}, time::Duration
 };
 
 use regex::Regex;

@@ -490,10 +490,13 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "binary_serde",
+ "bitflags 2.9.0",
+ "chrono",
  "crossbeam-channel",
  "env_logger 0.11.8",
  "futures",
  "i2cdev",
+ "linux-embedded-hal",
  "log",
  "machine-info",
  "num-derive",
@@ -1708,8 +1711,7 @@ dependencies = [
 [[package]]
 name = "horust"
 version = "0.1.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b0f7cecc8f19445bdb5bfd2df0be83db2f92ccb7ec23565771f31fc12bffbac"
+source = "git+https://github.com/raccoon-os/Horust/?branch=rccn_dev#b8f7a37cca78b804467fa50ca0500ef3570f9b6d"
 dependencies = [
  "anyhow",
  "bytefmt",
