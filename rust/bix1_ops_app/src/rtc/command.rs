@@ -18,6 +18,15 @@ pub enum Command {
     RtcSetRegister(SetRegisterArgs),
     #[subservice(5)]
     ReadRegister(ReadRegisterArgs),
+    #[subservice(6)]
+    GoToSleep(GoToSleepArgs),
+    #[subservice(7)]
+    SetResetInterval(SetResetIntervalArgs),
+    #[subservice(8)]
+    SatReset(SatResetArgs),
+    #[subservice(9)]
+    SwitchObc(SwitchObcArgs)
+    
 }
 
 #[derive(BitStruct, Debug)]
@@ -64,4 +73,53 @@ pub struct SetRegisterArgs {
 pub struct ReadRegisterArgs {
     #[bits(8)]
     pub register: u8,
+}
+
+#[derive(BitStruct, Debug)]
+pub struct GoToSleepArgs {
+    #[bits(8)]
+    pub unit: GoToSleepUnit,
+    #[bits(8)]
+    pub number: u32,
+}
+
+
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[repr(u8)]
+pub enum GoToSleepUnit {
+    Seconds = 0,
+    Minutes = 1,
+    Hours = 2
+}
+
+
+#[derive(BitStruct, Debug)]
+pub struct SetResetIntervalArgs {
+    #[bits(8)]
+    pub unit: ResetUnit,
+    #[bits(8)]
+    pub number: u32,
+    #[bits(8)]
+    pub restart_interval: bool,
+}
+
+
+#[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
+#[repr(u8)]
+pub enum ResetUnit {
+    Hours = 0,
+    Days = 1,
+    Weeks = 2,
+}
+
+#[derive(BitStruct, Debug)]
+pub struct SatResetArgs {
+    #[bits(8)]
+    pub confirm: bool
+}
+
+#[derive(BitStruct, Debug)]
+pub struct SwitchObcArgs {
+    #[bits(8)]
+    pub confirm: bool
 }

@@ -24,7 +24,7 @@ pub struct RtcTime {
     pub year: u8
 }
 
-#[derive(FromPrimitive, ToPrimitive, Debug)]
+#[derive(FromPrimitive, ToPrimitive, Debug, Clone)]
 pub enum WeekDayEnum {
     sunday = 0b000,
 	monday = 0b001,

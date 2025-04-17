@@ -1078,8 +1078,75 @@ Container(
     ]
 )
 
+RCCNCommand(
+    system=RTC_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 6},
+    name="GO_TO_SLEEP",
+    short_description="Go To Sleep Command. Times bigger than ?? Hours are not accepted.",
+    arguments=[
+        EnumeratedArgument(
+            name="Unit",
+            choices=  [[0, "Seconds"], [1, "Minutes"], [2, "Hours"]],
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Number",
+            encoding=uint32_t,
+        ),
+    ],
+)
 
+RCCNCommand(
+    system=RTC_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 7},
+    name="Set_Reset_Interval",
+    short_description="Set the Reset Interval.",
+    arguments=[
+        EnumeratedArgument(
+            name="Unit",
+            choices=  [[0, "Hours"], [1, "Days"], [2, "Weeks"]],
+            encoding=uint8_t,
+        ),
+        IntegerArgument(
+            name="Number",
+            encoding=uint32_t,
+        ),
+         BooleanArgument(
+            name="RestartInterval",
+            encoding=bool_t,
+        ),
+    ],
+)
 
+RCCNCommand(
+    system=RTC_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 8},
+    name="SAT_Reset",
+    short_description="Reset Satellite",
+    arguments=[
+         BooleanArgument(
+            name="Confirm",
+            encoding=bool_t,
+        ),
+    ],
+)
+
+RCCNCommand(
+    system=RTC_service,
+    base=eps_base_cmd,
+    assignments={"subtype": 9},
+    name="Switch_OBC",
+    short_description="Switch OBC",
+    arguments=[
+         BooleanArgument(
+            name="Confirm",
+            encoding=bool_t,
+        ),
+    ],
+)
 
 # app.generate_rccn_code()
 with open("bix1_tmtc.xml", "wt") as f:

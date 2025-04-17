@@ -4,7 +4,7 @@ use rtc::service::RtcService;
 
 use anyhow::Result;
 use rccn_usr::pus::app::PusApp;
-
+use std::sync::{Arc, Mutex, mpsc};
 
 mod telemetry;
 mod controll;
@@ -24,13 +24,15 @@ fn main() -> Result<()> {
         .unwrap();
 
 
+    let (switch_obc_sender, switch_obc_receiver) = mpsc::channel();
+
     let service77 = GetHealthService::new();
     app.register_service(service77);
 
     let eps_service78 = EpsCtrlService::new();
     app.register_service(eps_service78);
 
-    let service79 = RtcService::new();
+    let service79 = RtcService::new(switch_obc_sender);
     app.register_service(service79);
     
 
@@ -38,7 +40,7 @@ fn main() -> Result<()> {
 
     /////
     //monitor_task().await;
-    battery_monitor::spawn();
+    battery_monitor::spawn(switch_obc_receiver);
     sleep_monitor::spawn(app.session().clone());
 
     app.run();

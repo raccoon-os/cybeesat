@@ -5,12 +5,17 @@ use crate::controll::service::{write_i2c_ina_device_block, convert_battery_volta
 
 use std::thread::{self, sleep};
 use std::time::Duration;
+use std::sync::mpsc;
 
 use linux_embedded_hal::{
     gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags}, spidev::SpidevOptions, CdevPin, Delay, SpidevDevice
 };
 
-pub fn spawn() {
+use crate::rtc::service::{load_config, reset_obc, save_config, BixConfig};
+
+use chrono::{DateTime, Datelike, NaiveDateTime, TimeZone, Timelike, Weekday, NaiveDate, NaiveTime, Utc};
+
+pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
     let mut dev_pmic = match LinuxI2CDevice::new("/dev/i2c-0", 0x6b) {
         Err(e) => {
             panic!("error creating i2c dev {e:?}")
@@ -29,6 +34,14 @@ pub fn spawn() {
     let gpioPC17_handle = chip.get_line(81).unwrap();
     let linePC17_handle = gpioPC17_handle.request(LineRequestFlags::OUTPUT, 0, "Watchdog trigger").unwrap();
     
+    let mut switch_obc = false; 
+
+    let mut reset_timestamp = BixConfig{
+        current_time: 0,
+        next_reset: -1,
+        reset_interval: 0
+    };
+
     info!("Before spawning Monitor Task.");
     thread::spawn(move || {
         info!("Spawned Monitor Task.");
@@ -122,8 +135,30 @@ pub fn spawn() {
             // debug!("pmic1_status_vec: {:X?}", pmic1_status_vec);
             // debug!("pmic1_status_conv: {:?}", (pmic1_status_vec[0] >> 3) & 0b11);
 
+            match switch_obc_receiver.try_recv(){
+                Ok(val ) => switch_obc = val,
+                Err(_) => { }
+            }
 
-            if (pmic0_vbat > 3000) && (pmic1_vbat > 3000){
+            let (time_config, read_error) = match load_config(){
+                Ok(conf) => {(conf, false)},
+                Err(_) => {(BixConfig{current_time: 0, next_reset: 0, reset_interval: 0}, true)}
+            };
+
+            if (read_error != true){
+                let time_config_time = chrono::DateTime::from_timestamp(time_config.current_time, 0).unwrap().to_utc();
+
+                let now = Utc::now();
+
+                if now > time_config_time{
+                    match reset_obc(){
+                        Ok(_) => {},
+                        Err(_)=> {}
+                    };
+                }
+            }
+
+            if ((pmic0_vbat > 3000) && (pmic1_vbat > 3000)) && !switch_obc{
                 linePC17_handle.set_value(1).unwrap();
                 sleep(Duration::from_millis(100)); // todo configure
                 linePC17_handle.set_value(0).unwrap();

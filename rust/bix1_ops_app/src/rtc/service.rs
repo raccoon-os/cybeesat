@@ -1,7 +1,8 @@
-use std::process::Command;
+use std::{any, process::Command, sync::{Arc, Mutex, mpsc}};
 use linux_embedded_hal::I2CError;
 use num_traits::FromPrimitive;
 use rccn_usr::service::{AcceptanceResult, AcceptedTc, PusService};
+use ron::de::SpannedError;
 use super::{command, telemetry::WeekDayEnum};
 use anyhow::{Result};
 use std::result::Result::Ok;
@@ -16,15 +17,67 @@ use i2cdev::linux::LinuxI2CError;
 // use libc::{timeval, timezone, settimeofday};
 // use std::mem::zeroed;
 
+use chrono::{DateTime, Datelike, NaiveDateTime, TimeZone, Timelike, Weekday, NaiveDate, NaiveTime};
+
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Config {
+    username: String,
+    volume: u8,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub(crate) struct BixConfig {
+    pub current_time: i64,
+    pub next_reset: i64,
+    pub reset_interval: i64
+}
+
+pub(crate) fn save_config(config: &BixConfig) -> Result<(), std::io::Error>{
+    let s = ron::to_string(config).unwrap();
+    fs::write("/temp/bix1_config.ron", s)
+}
+
+pub(crate) fn load_config() -> Result<BixConfig, SpannedError> {
+    let s = fs::read_to_string("/temp/bix1_config.ron").unwrap();
+    ron::from_str(&s)
+}
+
+// I2C-0 Adresse: 0x45
+
+pub(crate) fn reset_obc() -> Result<(),()>{
+    let mut dev = match LinuxI2CDevice::new("/dev/i2c-0", 0x45) {
+        Err(e) => {
+            panic!("error creating i2c dev {e:?}")
+        },
+        Ok(dev) => {dev}
+    };
+
+    let val = 0x6060;
+
+    let values: [u8; 2] = [(val >> 8) as u8, (val & 0xFF) as u8];
+
+    match dev.smbus_write_i2c_block_data(0x14, &values){
+        Ok(_) => Ok(()),
+        Err(e) => {
+            warn!("Error during writing to VCOM INA: {:?}", e);
+            Err(())
+        }
+    }
+}
+
 use log::{warn, info, debug};
 pub struct RtcService{
     addr: u8,
-    i2cdev: LinuxI2CDevice
+    i2cdev: LinuxI2CDevice,
+    switch_obc_sender: mpsc::Sender<bool>
+
 }
 
 
 impl RtcService {
-    pub fn new() -> Self {
+    pub fn new(switch_obc_sender: mpsc::Sender<bool>) -> Self {
         let addr = 0x53;
         let mut dev = match LinuxI2CDevice::new("/dev/i2c-0", addr.into()) {
             Err(e) => {
@@ -35,7 +88,8 @@ impl RtcService {
               
         let mut ret = Self { 
             addr: addr,
-            i2cdev: dev
+            i2cdev: dev, 
+            switch_obc_sender: switch_obc_sender
         };
 
         let (s100th, s, mi, h, d, wd, mo, y) = match ret.get_rtc_time(){
@@ -43,9 +97,33 @@ impl RtcService {
             Err(_) => (0u8,0u8,0u8,0u8,1u8, WeekDayEnum::sunday, 6u8,25u8) 
         };
 
-       ret.set_system_time(y, mo, d, h, mi, s, s100th);
+        // let mut rtc_time = chrono::Utc;
+        // rtc_time.with_ymd_and_hms(y as i32 + 2000, mo as u32, d as u32, h as u32, mi as u32, s as u32);
+        
+        let date = NaiveDate::from_ymd_opt(y as i32 + 2000, mo as u32, d as u32).expect("Invalid date");
+        let time = NaiveTime::from_hms_opt(h as u32, mi as u32, s as u32).expect("Invalid time");
 
-  
+        // 2. Combine to NaiveDateTime
+        let naive_datetime = NaiveDateTime::new(date, time);
+
+        // 3. Convert to DateTime<Utc>
+        let rtc_datetime_utc: DateTime<chrono::Utc> = DateTime::from_naive_utc_and_offset(naive_datetime, chrono::Utc);
+
+        // let mut rtc_date_time = DateTime::from_naive_utc_and_offset(rtc_time, std::ptr::null());
+
+        let time_config = match load_config(){
+            Ok(conf) => conf,
+            Err(_) => BixConfig { current_time: 0, next_reset: 0, reset_interval: 7*24*60*60 } 
+        };
+
+        let time_config_time = chrono::DateTime::from_timestamp(time_config.current_time, 0).unwrap().to_utc();
+
+        if (rtc_datetime_utc > time_config_time){
+            ret.set_system_time(y, mo, d, h, mi, s, s100th);
+        }
+        else {
+            ret.set_system_time((time_config_time.year() - 2000) as u8, time_config_time.month() as u8, time_config_time.day() as u8, time_config_time.hour() as u8, time_config_time.minute() as u8, time_config_time.second() as u8, 0);
+        }
 
         ret
     }
@@ -157,10 +235,84 @@ impl RtcService {
                 .arg(format!("date -s '20{:02}-{:02}-{:02} {:02}:{:02}:{:02}'", y, mo, d, h, mi, s))
                 .output()
                 .expect("failed to execute process");
+
+        // let res = parse_time_from_string(o.stdout);
         // Todo Confirm time
         debug!("Set Time Result: {:?}", o);
     }
 
+
+}
+
+fn weekday_abbrev_to_enum(abbrev: &str) -> Option<telemetry::WeekDayEnum> {
+    match abbrev {
+        // German
+        "So" => Some(telemetry::WeekDayEnum::sunday),
+        "Mo" => Some(telemetry::WeekDayEnum::monday),
+        "Di" => Some(telemetry::WeekDayEnum::tuesday),
+        "Mi" => Some(telemetry::WeekDayEnum::wednesday),
+        "Do" => Some(telemetry::WeekDayEnum::thursday),
+        "Fr" => Some(telemetry::WeekDayEnum::friday),
+        "Sa" => Some(telemetry::WeekDayEnum::saturday),
+        // English
+        "Sun" => Some(telemetry::WeekDayEnum::sunday),
+        "Mon" => Some(telemetry::WeekDayEnum::monday),
+        "Tue" => Some(telemetry::WeekDayEnum::tuesday),
+        "Wed" => Some(telemetry::WeekDayEnum::wednesday),
+        "ThuWeekday" => Some(telemetry::WeekDayEnum::thursday),
+        "Fri" => Some(telemetry::WeekDayEnum::friday),
+        "Sat" => Some(telemetry::WeekDayEnum::saturday),
+        _ => None,
+    }
+}
+
+fn weekday_to_u8(weekday: telemetry::WeekDayEnum) -> u8 {
+    match weekday {
+        telemetry::WeekDayEnum::sunday => 0,
+        telemetry::WeekDayEnum::monday => 1,
+        telemetry::WeekDayEnum::tuesday => 2,
+        telemetry::WeekDayEnum::wednesday => 3,
+        telemetry::WeekDayEnum::thursday => 4,
+        telemetry::WeekDayEnum::friday => 5,
+        telemetry::WeekDayEnum::saturday => 6,
+    }
+}
+
+fn parse_time_from_string(input: &str) -> Result<(u8, u8, u8, telemetry::WeekDayEnum, u8, u8, u8), ()>{
+    // Weekday abbrev could be 2 or 3 letters
+    let weekday_abbrev = &input[..3].trim(); // get up to 3 chars, then trim any whitespace
+    let weekday_enum = weekday_abbrev_to_enum(weekday_abbrev).expect("Invalid weekday abbrev");
+    let weekday = weekday_to_u8(weekday_enum.clone());
+    // Trim the weekday from the front and timezone/year from the end
+    let trimmed = &input[weekday_abbrev.len() + 1..input.len() - 10]; // "17. Apr 11:19:49"
+    let year = &input[input.len() - 4..]; // "2025"
+    let datetime_str = format!("{} {}", trimmed, year); // "17. Apr 11:19:49 2025"
+
+    let format = "%d. %b %H:%M:%S %Y";
+
+    match NaiveDateTime::parse_from_str(&datetime_str, format) {
+        Ok(dt) => {
+            let seconds = dt.second() as u8;
+            let minutes = dt.minute() as u8;
+            let hours = dt.hour() as u8;
+            let day = dt.day() as u8;
+            let month = dt.month() as u8;
+            let year_since_2000 = (dt.year() - 2000) as u8;
+
+            println!("Seconds: {}", seconds);
+            println!("Minutes: {}", minutes);
+            println!("Hours: {}", hours);
+            println!("Day: {}", day);
+            println!("Month: {}", month);
+            println!("Year since 2000: {}", year_since_2000);
+            println!("Weekday (0=Sun): {}", weekday);
+            Ok((year_since_2000, month, day, weekday_enum, hours, minutes, seconds))
+        }
+        Err(e) => {
+            println!("Error parsing datetime: {}", e);
+            Err(())
+        }
+    }
 }
 
 
@@ -385,7 +537,90 @@ impl PusService for RtcService {
                 //         return Err(())  
                 //     }
                 // }             
-            })            
+            }),
+            command::Command::GoToSleep(args) => tc.handle(||{
+                match args.unit {
+                    command::GoToSleepUnit::Hours => {
+                        match Command::new("sh")
+                        .arg("-c")
+                        .arg(format!("sleep {}h", args.number))
+                        .output(){
+                            Ok(_) => return true,
+                            Err(e) => {warn!("Error while setting sleep: {:?}", e); return false}
+                        }
+                    }
+                    command::GoToSleepUnit::Minutes => {
+                        match Command::new("sh")
+                        .arg("-c")
+                        .arg(format!("sleep {}m", args.number))
+                        .output(){
+                            Ok(_) => return true,
+                            Err(e) => {warn!("Error while setting sleep: {:?}", e); return false}
+                        }
+                    }
+                    command::GoToSleepUnit::Seconds => {
+                        match Command::new("sh")
+                        .arg("-c")
+                        .arg(format!("sleep {}s", args.number))
+                        .output(){
+                            Ok(_) => return true,
+                            Err(e) => {warn!("Error while setting sleep: {:?}", e); return false}
+                        }
+                    }
+                }
+                
+            }),
+            command::Command::SetResetInterval(args) => tc.handle(||{
+                let mut reset_config = match load_config(){
+                    Ok(conf) => conf,
+                    Err(_) => return false
+                };
+                reset_config.reset_interval = match args.unit{
+                    command::ResetUnit::Weeks => {7*24*60*60*(args.number as i64)}
+                    command::ResetUnit::Days => {24*60*60*(args.number as i64)}
+                    command::ResetUnit::Hours => {60*60*(args.number as i64)}
+                } as i64;
+
+                match args.restart_interval{
+                    true => {
+                        let now = chrono::Utc::now();
+                        let durr = chrono::TimeDelta::seconds(reset_config.reset_interval);
+                        reset_config.next_reset = (now + durr).timestamp();
+                    }
+                    _ => {}
+                }
+
+                match save_config(&reset_config) {
+                    Ok(_) => return true,
+                    Err(_) => return false
+                }
+            }),
+            command::Command::SatReset(args) => tc.handle(||{
+                match args.confirm{
+                    true => {   
+                        match reset_obc(){
+                            Ok(_) => return true,
+                            Err(_) => return false
+                        }
+                    }
+                    false => {return true}
+                }
+            }),
+            command::Command::SwitchObc(args) => tc.handle(||{
+                match args.confirm{
+                    true => {
+                        match self.switch_obc_sender.send(true){
+                            Ok(_) => return true,
+                            Err(_) => return false
+
+                        }
+                        
+                    }
+                    false =>{
+                        return true;
+                    }
+                }
+            })
         }
             
     }
