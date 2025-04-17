@@ -225,74 +225,39 @@ impl EpsCtrlService {
 }
 
 fn init_i2c_device(path: &str, address: u16) -> Result<LinuxI2CDevice, LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new(path, address) {
-        Err(e) => {
-            return Err(e)
-        },
-        Ok(dev) => {dev}
-    };
-    write_i2c_ina_device_block(&mut dev_ina, InaRegisters::Config as u8,      0x1FFF).unwrap();
-    write_i2c_ina_device_block(&mut dev_ina, InaRegisters::Calibration as u8, 0x2000).unwrap();
+    let mut dev_ina = LinuxI2CDevice::new(path, address)?;
+    write_i2c_ina_device_block(&mut dev_ina, InaRegisters::Config as u8,      0x1FFF)?;
+    write_i2c_ina_device_block(&mut dev_ina, InaRegisters::Calibration as u8, 0x2000)?;
     return Ok(dev_ina)
 }
 
 fn write_i2c_device_register_block(address: u16, register: u8, value: u16) -> Result<(), LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
-        Err(e) => {
-            return Err(e)
-        },
-        Ok(dev) => {dev}
-    };
+    let mut dev_ina = LinuxI2CDevice::new("/dev/i2c-0", address)?;
 
     let values: [u8; 2] = [(value >> 8) as u8, (value & 0xFF) as u8];
-    let res = dev_ina.smbus_write_i2c_block_data(register as u8, &values);
+    dev_ina.smbus_write_i2c_block_data(register as u8, &values)?;
     thread::sleep(time::Duration::from_micros(INA209DelayMicroSeconds));
     Ok(())
 }
 
 fn write_i2c_device_register_block_vec(bus: u8, address: u16, register: u8, values: Vec<u8>) -> Result<(), LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new(format!("/dev/i2c-{bus}"), address) {
-        Err(e) => {
-            return Err(e)
-        },
-        Ok(dev) => {dev}
-    };
+    let mut dev_ina = LinuxI2CDevice::new(format!("/dev/i2c-{bus}"), address)?;
 
-    let res = dev_ina.smbus_write_i2c_block_data(register as u8, &values);
+    dev_ina.smbus_write_i2c_block_data(register as u8, &values)?;
     Ok(())
 }
 
 fn read_i2c_device_register_block(address: u16, register: u8) -> Result<u16, LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new("/dev/i2c-0", address) {
-        Err(e) => {
-            return Err(e)
-        },
-        Ok(dev) => {dev}
-    };
+    let mut dev_ina = LinuxI2CDevice::new("/dev/i2c-0", address)?;
 
-    let res = match dev_ina.smbus_read_i2c_block_data(register as u8, 2){
-        Ok(values) => {return Ok((values[0] as u16)<<8 | values[1] as u16)},
-        Err(e) => Err(e)
-
-    };
+    let values = dev_ina.smbus_read_i2c_block_data(register as u8, 2)?;
     thread::sleep(time::Duration::from_micros(INA209DelayMicroSeconds));
-    res
+    Ok((values[0] as u16)<<8 | values[1] as u16)
 }
 
 fn read_i2c_device_register_block_vec(bus: u8, address: u16, register: u8, len: u8) -> Result<Vec<u8>, LinuxI2CError>{
-    let mut dev_ina = match LinuxI2CDevice::new(format!("/dev/i2c-{bus}"), address) {
-        Err(e) => {
-            return Err(e)
-        },
-        Ok(dev) => {dev}
-    };
-
-    let res = match dev_ina.smbus_read_i2c_block_data(register as u8, len){
-        Ok(values) => {return Ok(values)},
-        Err(e) => Err(e)
-
-    };
-    res
+    let mut dev_ina = LinuxI2CDevice::new(format!("/dev/i2c-{bus}"), address)?;
+    dev_ina.smbus_read_i2c_block_data(register as u8, len)
 }
 
 fn read_i2c_ina_device_block(dev: &mut LinuxI2CDevice, register: u8) -> Result<Vec<u8>, LinuxI2CError>{
