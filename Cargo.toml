@@ -20,7 +20,7 @@ members = [
 , "rust/aprs_app"]
 
 [workspace.dependencies]
-rccn_usr = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
-rccn_usr_bitstruct_derive = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
-rccn_usr_pus_macros = { git = "https://gitlab.com/rccn/rccn-userspace-ws", branch = "branch_realignment", version = "0.1.0" }
+rccn_usr = { path = "rust/rccn-usr/src/rccn_usr" }
+rccn_usr_bitstruct_derive = { path = "rust/rccn-usr/src/rccn_usr_bitstruct_derive" }
+rccn_usr_pus_macros = { path = "rust/rccn-usr/src/rccn_usr_pus_macros" }
 zenoh = { version = "1.0.3" }
