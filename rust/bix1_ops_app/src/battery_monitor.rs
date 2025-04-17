@@ -28,9 +28,6 @@ pub fn spawn() {
     let mut chip = Chip::new("/dev/gpiochip0").unwrap();
     let gpioPC17_handle = chip.get_line(81).unwrap();
     let linePC17_handle = gpioPC17_handle.request(LineRequestFlags::OUTPUT, 0, "Watchdog trigger").unwrap();
-    let gpioPC24_handle = chip.get_line(88).unwrap();
-    let linePC24_handle = gpioPC24_handle.request(LineRequestFlags::OUTPUT, 0, "Watchdog set high").unwrap();
-    linePC24_handle.set_value(1);
     
     info!("Before spawning Monitor Task.");
     thread::spawn(move || {
@@ -133,8 +130,6 @@ pub fn spawn() {
                 // PC17 Trigger Line 81
                 // PC 24 on high
             }
-
-            linePC24_handle.set_value(1).unwrap();
         }
     });
 

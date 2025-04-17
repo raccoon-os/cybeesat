@@ -10,6 +10,7 @@ mod telemetry;
 mod controll;
 mod rtc;
 mod battery_monitor;
+mod sleep_monitor;
 
 const APID: u16 = 77;
 const VCID: u8 = 0;
@@ -38,6 +39,7 @@ fn main() -> Result<()> {
     /////
     //monitor_task().await;
     battery_monitor::spawn();
+    sleep_monitor::spawn(app.session().clone());
 
     app.run();
     Ok(())
