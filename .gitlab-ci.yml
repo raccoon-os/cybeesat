@@ -8,4 +8,8 @@ stages:
 build-job:
   stage: build
   script:
+    - rm -rf install/usr/bin/*
     - make deploy
+  artifacts:
+    paths:
+      - install
