@@ -3,7 +3,7 @@ use linux_embedded_hal::I2CError;
 use num_traits::FromPrimitive;
 use rccn_usr::service::{AcceptanceResult, AcceptedTc, PusService};
 use ron::de::SpannedError;
-use super::{command, telemetry::WeekDayEnum};
+use super::{command, config::BixConfig, telemetry::WeekDayEnum};
 use anyhow::{Result};
 use std::result::Result::Ok;
 use std::error::Error;
@@ -25,23 +25,6 @@ use serde::{Serialize, Deserialize};
 struct Config {
     username: String,
     volume: u8,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub(crate) struct BixConfig {
-    pub current_time: i64,
-    pub next_reset: i64,
-    pub reset_interval: i64
-}
-
-pub(crate) fn save_config(config: &BixConfig) -> Result<(), std::io::Error>{
-    let s = ron::to_string(config).unwrap();
-    fs::write("/temp/bix1_config.ron", s)
-}
-
-pub(crate) fn load_config() -> Result<BixConfig, SpannedError> {
-    let s = fs::read_to_string("/temp/bix1_config.ron").unwrap();
-    ron::from_str(&s)
 }
 
 // I2C-0 Adresse: 0x45
@@ -111,10 +94,7 @@ impl RtcService {
 
         // let mut rtc_date_time = DateTime::from_naive_utc_and_offset(rtc_time, std::ptr::null());
 
-        let time_config = match load_config(){
-            Ok(conf) => conf,
-            Err(_) => BixConfig { current_time: 0, next_reset: 0, reset_interval: 7*24*60*60 } 
-        };
+        let time_config = BixConfig::load_or_default().unwrap();
 
         let time_config_time = chrono::DateTime::from_timestamp(time_config.current_time, 0).unwrap().to_utc();
 
@@ -571,7 +551,7 @@ impl PusService for RtcService {
                 
             }),
             command::Command::SetResetInterval(args) => tc.handle(||{
-                let mut reset_config = match load_config(){
+                let mut reset_config = match BixConfig::load_or_default() {
                     Ok(conf) => conf,
                     Err(_) => return false
                 };
@@ -590,10 +570,7 @@ impl PusService for RtcService {
                     _ => {}
                 }
 
-                match save_config(&reset_config) {
-                    Ok(_) => return true,
-                    Err(_) => return false
-                }
+                reset_config.save().is_ok()
             }),
             command::Command::SatReset(args) => tc.handle(||{
                 match args.confirm{

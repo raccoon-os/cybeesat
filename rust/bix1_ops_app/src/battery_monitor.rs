@@ -1,19 +1,20 @@
+use i2cdev::core::I2CDevice;
 use i2cdev::linux::LinuxI2CDevice;
-use i2cdev::core::{I2CDevice};
-use log::{debug, info, warn};
+use log::{error, info, warn};
 use crate::controll::service::{write_i2c_ina_device_block, convert_battery_voltage, convert_battery_charge_current, convert_bus_voltage};
+use crate::rtc::config::BixConfig;
 
 use std::thread::{self, sleep};
 use std::time::Duration;
 use std::sync::mpsc;
 
-use linux_embedded_hal::{
-    gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags}, spidev::SpidevOptions, CdevPin, Delay, SpidevDevice
-};
+use linux_embedded_hal::
+    gpio_cdev::{Chip, LineRequestFlags}
+;
 
-use crate::rtc::service::{load_config, reset_obc, save_config, BixConfig};
+use crate::rtc::service::reset_obc;
 
-use chrono::{DateTime, Datelike, NaiveDateTime, TimeZone, Timelike, Weekday, NaiveDate, NaiveTime, Utc};
+use chrono::Utc;
 
 pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
     let mut dev_pmic = match LinuxI2CDevice::new("/dev/i2c-0", 0x6b) {
@@ -35,12 +36,6 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
     let linePC17_handle = gpioPC17_handle.request(LineRequestFlags::OUTPUT, 0, "Watchdog trigger").unwrap();
     
     let mut switch_obc = false; 
-
-    let mut reset_timestamp = BixConfig{
-        current_time: 0,
-        next_reset: -1,
-        reset_interval: 0
-    };
 
     info!("Before spawning Monitor Task.");
     thread::spawn(move || {
@@ -140,22 +135,27 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
                 Err(_) => { }
             }
 
-            let (time_config, read_error) = match load_config(){
-                Ok(conf) => {(conf, false)},
-                Err(_) => {(BixConfig{current_time: 0, next_reset: 0, reset_interval: 0}, true)}
+
+            let dms_should_reset_satellite = match BixConfig::load_or_default() {
+                Ok(time_config) => {
+                    if time_config.next_reset != 0 {
+                        warn!("DMS: no next reset configured");
+                        false
+                    } else {
+                        let next_reset = chrono::DateTime::from_timestamp(time_config.next_reset, 0).unwrap().to_utc();
+
+                        Utc::now() > next_reset
+                    }
+                },
+                Err(e) => {
+                    error!("Error loading config, not doing DMS");
+                    false
+                }
             };
 
-            if (read_error != true){
-                let time_config_time = chrono::DateTime::from_timestamp(time_config.current_time, 0).unwrap().to_utc();
-
-                let now = Utc::now();
-
-                if now > time_config_time{
-                    match reset_obc(){
-                        Ok(_) => {},
-                        Err(_)=> {}
-                    };
-                }
+            if dms_should_reset_satellite {
+                info!("DMS will reset the satellite now.");
+                let _ = reset_obc();
             }
 
             if ((pmic0_vbat > 3000) && (pmic1_vbat > 3000)) && !switch_obc{
@@ -164,6 +164,8 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
                 linePC17_handle.set_value(0).unwrap();
                 // PC17 Trigger Line 81
                 // PC 24 on high
+            } else {
+                warn!("Not triggering watchdog");
             }
         }
     });
