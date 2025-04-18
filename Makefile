@@ -23,6 +23,7 @@ deploy:
 	# ./cross.sh cargo install --path rust/health_app health_app
 
 	cp python/antenna_control.py install/usr/bin
+	cp python/leop.py install/usr/bin
 
 commit: deploy 
 	ostree commit --repo=${OSTREE_REPO} --branch="${BRANCH_NAME}" --tree=dir=./install

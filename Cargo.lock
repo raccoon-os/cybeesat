@@ -504,7 +504,9 @@ dependencies = [
  "rccn_usr",
  "rccn_usr_bitstruct_derive",
  "rccn_usr_pus_macros",
+ "ron 0.10.1",
  "satrs",
+ "serde",
  "spacepackets 0.12.0",
  "thiserror 1.0.69",
  "tokio",
@@ -3660,6 +3662,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "ron"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "beceb6f7bf81c73e73aeef6dd1356d9a1b2b4909e1f0fc3e59b034f9572d7b7f"
+dependencies = [
+ "base64 0.22.1",
+ "bitflags 2.9.0",
+ "serde",
+ "serde_derive",
+ "unicode-ident",
+]
+
+[[package]]
 name = "roots"
 version = "0.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5920,7 +5935,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bf2ba23f9579eebf03a4c91d6013634e7c54899fc7d3d2387bc960d32a12fcad"
 dependencies = [
  "lazy_static",
- "ron",
+ "ron 0.8.1",
  "serde",
  "tokio",
  "tracing",

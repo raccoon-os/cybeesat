@@ -1,0 +1,5 @@
+name = "fec"
+command = "rccn_usr_fec"
+
+[environment]
+additional = { RUST_LOG = "info" }

@@ -2553,6 +2553,17 @@ See https://github.com/yamcs/pymdb
     </TelemetryMetaData>
     <CommandMetaData>
       <ArgumentTypeSet>
+        <EnumeratedArgumentType name="GO_TO_SLEEP__Unit">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="Seconds"/>
+            <Enumeration value="1" label="Minutes"/>
+            <Enumeration value="2" label="Hours"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
+        <IntegerArgumentType name="GO_TO_SLEEP__Number" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
         <IntegerArgumentType name="RTC_Read_Register__Register" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
@@ -2595,8 +2606,60 @@ See https://github.com/yamcs/pymdb
         <IntegerArgumentType name="RTC_Set_Time__Year" signed="true" sizeInBits="32">
           <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
         </IntegerArgumentType>
+        <BooleanArgumentType name="SAT_Reset__Confirm" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
+        <EnumeratedArgumentType name="Set_Reset_Interval__Unit">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+          <EnumerationList>
+            <Enumeration value="0" label="Hours"/>
+            <Enumeration value="1" label="Days"/>
+            <Enumeration value="2" label="Weeks"/>
+          </EnumerationList>
+        </EnumeratedArgumentType>
+        <IntegerArgumentType name="Set_Reset_Interval__Number" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <BooleanArgumentType name="Set_Reset_Interval__RestartInterval" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
+        <IntegerArgumentType name="Set_Sleep_Interval__Seconds" signed="true" sizeInBits="32">
+          <IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
+        </IntegerArgumentType>
+        <BooleanArgumentType name="Switch_OBC__Confirm" zeroStringValue="False" oneStringValue="True">
+          <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        </BooleanArgumentType>
       </ArgumentTypeSet>
       <MetaCommandSet>
+        <MetaCommand name="GO_TO_SLEEP" abstract="false" shortDescription="Go To Sleep Command. Times bigger than ?? Hours are not accepted.">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="6"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Unit" argumentTypeRef="GO_TO_SLEEP__Unit"/>
+            <Argument name="Number" argumentTypeRef="GO_TO_SLEEP__Number"/>
+          </ArgumentList>
+          <CommandContainer name="GO_TO_SLEEP">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Unit">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Number">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
         <MetaCommand name="RTC_Read_Register" abstract="false" shortDescription="Read RTC Register">
           <BaseMetaCommand metaCommandRef="base">
             <ArgumentAssignmentList>
@@ -2737,6 +2800,110 @@ See https://github.com/yamcs/pymdb
           </BaseMetaCommand>
           <CommandContainer name="RTC_Software_Reset">
             <EntryList/>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="SAT_Reset" abstract="false" shortDescription="Reset Satellite">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="8"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Confirm" argumentTypeRef="SAT_Reset__Confirm"/>
+          </ArgumentList>
+          <CommandContainer name="SAT_Reset">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Confirm">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="Set_Reset_Interval" abstract="false" shortDescription="Set the Reset Interval.">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="7"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Unit" argumentTypeRef="Set_Reset_Interval__Unit"/>
+            <Argument name="Number" argumentTypeRef="Set_Reset_Interval__Number"/>
+            <Argument name="RestartInterval" argumentTypeRef="Set_Reset_Interval__RestartInterval"/>
+          </ArgumentList>
+          <CommandContainer name="Set_Reset_Interval">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Unit">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="Number">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+              <ArgumentRefEntry argumentRef="RestartInterval">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="Set_Sleep_Interval" abstract="false" shortDescription="Set the number of seconds to wait before OBC sleep after radio inactivity.">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="10"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Seconds" argumentTypeRef="Set_Sleep_Interval__Seconds"/>
+          </ArgumentList>
+          <CommandContainer name="Set_Sleep_Interval">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Seconds">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
+            <BaseContainer containerRef="base"/>
+          </CommandContainer>
+          <DefaultSignificance consequenceLevel="normal"/>
+          <VerifierSet/>
+        </MetaCommand>
+        <MetaCommand name="Switch_OBC" abstract="false" shortDescription="Switch OBC">
+          <BaseMetaCommand metaCommandRef="base">
+            <ArgumentAssignmentList>
+              <ArgumentAssignment argumentName="subtype" argumentValue="9"/>
+              <ArgumentAssignment argumentName="apid" argumentValue="77"/>
+            </ArgumentAssignmentList>
+          </BaseMetaCommand>
+          <ArgumentList>
+            <Argument name="Confirm" argumentTypeRef="Switch_OBC__Confirm"/>
+          </ArgumentList>
+          <CommandContainer name="Switch_OBC">
+            <EntryList>
+              <ArgumentRefEntry argumentRef="Confirm">
+                <LocationInContainerInBits referenceLocation="previousEntry">
+                  <FixedValue>0</FixedValue>
+                </LocationInContainerInBits>
+              </ArgumentRefEntry>
+            </EntryList>
             <BaseContainer containerRef="base"/>
           </CommandContainer>
           <DefaultSignificance consequenceLevel="normal"/>
@@ -2920,19 +3087,19 @@ See https://github.com/yamcs/pymdb
         </IntegerParameterType>
         <IntegerParameterType name="GYRO0_X_SENS" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Deg/s</Unit>
+            <Unit form="calibrated">milli Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="GYRO0_Y_SENS" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Deg/s</Unit>
+            <Unit form="calibrated">milli Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="GYRO0_Z_SENS" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Deg/s</Unit>
+            <Unit form="calibrated">milli Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
@@ -2944,19 +3111,19 @@ See https://github.com/yamcs/pymdb
         </IntegerParameterType>
         <IntegerParameterType name="GYRO1_X_SENS" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Deg/s</Unit>
+            <Unit form="calibrated">milli Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="GYRO1_Y_SENS" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Deg/s</Unit>
+            <Unit form="calibrated">milli Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
         <IntegerParameterType name="GYRO1_Z_SENS" signed="true" sizeInBits="32">
           <UnitSet>
-            <Unit form="calibrated">Deg/s</Unit>
+            <Unit form="calibrated">milli Deg/s</Unit>
           </UnitSet>
           <IntegerDataEncoding sizeInBits="16" encoding="twosComplement" byteOrder="mostSignificantByteFirst"/>
         </IntegerParameterType>
