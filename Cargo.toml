@@ -24,3 +24,11 @@ rccn_usr = { path = "rust/rccn-usr/src/rccn_usr" }
 rccn_usr_bitstruct_derive = { path = "rust/rccn-usr/src/rccn_usr_bitstruct_derive" }
 rccn_usr_pus_macros = { path = "rust/rccn-usr/src/rccn_usr_pus_macros" }
 zenoh = { version = "1.0.3" }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "z"
+strip = true
+# https://github.com/meta-rust/meta-rust/issues/343
+panic = "abort"
