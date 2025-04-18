@@ -2,7 +2,7 @@
 use std::{sync::{mpsc::Sender, mpsc::Receiver, Arc, Mutex}, thread, time::Duration};
 
 use linux_embedded_hal::{
-    gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags}, spidev::SpidevOptions, CdevPin, Delay, SpidevDevice
+    gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags}, i2cdev::{core::I2CDevice, linux::LinuxI2CDevice}, spidev::SpidevOptions, CdevPin, Delay, SpidevDevice
 };
 use rf4463::Rf4463;
 
@@ -21,6 +21,11 @@ fn hex(data: &[u8]) -> String {
     .map(|byte| format!("{:02X}", byte))
     .collect::<Vec<String>>()
     .join(" ")
+}
+
+fn turn_on_pa() -> bool {
+    let mut i2c = LinuxI2CDevice::new("/dev/i2c-0", 0x4b).unwrap();
+    i2c.smbus_write_i2c_block_data(0x14, &[0x60, 0x60]).is_ok()
 }
 
 pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
@@ -147,9 +152,15 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
             }
         }
 
-        if !tx { 
+        if !tx && which_vcom == 0 /* tmp hack: only tx on vcom0 */ { 
             match bytes_tx.try_recv() {
                 Ok(msg) => {
+                    if turn_on_pa() {
+                        println!("Turn on PA successful");
+                    } else {
+                        println!("Turn on PA failed!");
+                    }
+                    
                     tx_buf.copy_from_slice(msg.as_slice());
                     radio.start_tx(&tx_buf).unwrap();
                     tx = true;
@@ -169,7 +180,7 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
             println!("receiving!");
         }
 
-        thread::sleep(Duration::from_millis(5));
+        thread::sleep(Duration::from_millis(50));
     }
 
     /*
