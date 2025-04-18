@@ -70,6 +70,9 @@ def main():
     # Set the corresponding IO pins to output
     i2c_bus.write_i2c_block_data(io_expander, 0x06, [0x00])
 
+    # clear all IO
+    i2c_bus.write_i2c_block_data(io_expander, 0x02, [0x00])
+
     if action == "deploy":
         if antenna_number == 1:
             write_gpio(0, 0, "high")
@@ -83,7 +86,7 @@ def main():
         elif antenna_number == 4:
             write_gpio(0, 6, "high")
             write_gpio(0, 7, "low")
-        sleep(3)
+        sleep(1)
         if antenna_number == 1:
             write_gpio(0, 0, "low")
             write_gpio(0, 1, "low")
@@ -109,7 +112,7 @@ def main():
         elif antenna_number == 4:
             write_gpio(0, 6, "high")
             write_gpio(0, 7, "high")
-        sleep(3)
+        sleep(1)
         if antenna_number == 1:
             write_gpio(0, 0, "low")
             write_gpio(0, 1, "low")
