@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 pub struct BixConfig {
     pub current_time: i64,
     pub next_reset: i64,
-    pub reset_interval: i64,
-    pub seconds_to_wait_before_sleeping: u32
+    pub reset_interval: u64,
+    pub seconds_to_wait_before_sleeping: u64
 }
 
 impl Default for BixConfig {

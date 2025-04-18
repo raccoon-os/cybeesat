@@ -6,10 +6,10 @@ use std::{
 };
 
 use linux_embedded_hal::gpio_cdev::{Chip, LineRequestFlags};
-use log::{error, info};
+use log::{debug, error, info};
 use rccn_usr::zenoh::{self, Wait};
 
-const SLEEP_AFTER: Duration = Duration::from_secs(60);
+use crate::rtc::config::BixConfig;
 
 pub fn spawn(session: zenoh::Session) {
     let mut chip = Chip::new("/dev/gpiochip0").unwrap();
@@ -32,8 +32,11 @@ pub fn spawn(session: zenoh::Session) {
             //   - Enter deep sleep (ULP1)
             //   - On resume from sleep:
             //     - Set SOM_EN high
+            // 
+            // The delay is configurable by writing the number of seconds to wait
+            // from last packet reception in /var/bix1_config.ron
 
-            println!("hello from sleep monitor!");
+            debug!("in sleep monitor loop!");
             sleep(Duration::from_millis(5000));
 
             if let Some(pkt) = sub
@@ -44,7 +47,9 @@ pub fn spawn(session: zenoh::Session) {
                 last_reception = Instant::now();
             }
 
-            if last_reception.elapsed() > SLEEP_AFTER {
+            let sleep_after = BixConfig::load_or_default().unwrap();
+
+            if last_reception.elapsed().as_secs() > sleep_after.seconds_to_wait_before_sleeping {
                 info!("Time since last packet exceeded, going to sleep");
 
                 som_enable.set_value(0).unwrap();

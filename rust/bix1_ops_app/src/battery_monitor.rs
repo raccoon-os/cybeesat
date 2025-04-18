@@ -137,14 +137,24 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
 
 
             let dms_should_reset_satellite = match BixConfig::load_or_default() {
-                Ok(time_config) => {
+                Ok(mut time_config) => {
                     if time_config.next_reset != 0 {
                         warn!("DMS: no next reset configured");
                         false
                     } else {
                         let next_reset = chrono::DateTime::from_timestamp(time_config.next_reset, 0).unwrap().to_utc();
+                        let now = Utc::now();
 
-                        Utc::now() > next_reset
+                        if now > next_reset {
+                            time_config.next_reset = (now + Duration::from_secs(time_config.reset_interval)).timestamp();
+                            info!("DMS next reset: {}, now: {}", time_config.next_reset, now);
+                            if let Err(e) = time_config.save() {
+                                error!("error saving config {e:?}");
+                            }
+                            true
+                        } else {
+                            false
+                        }
                     }
                 },
                 Err(e) => {
@@ -154,7 +164,8 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
             };
 
             if dms_should_reset_satellite {
-                info!("DMS will reset the satellite now.");
+                info!("DMS will reset the satellite now");
+
                 let _ = reset_obc();
             }
 

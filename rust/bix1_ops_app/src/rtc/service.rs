@@ -1,23 +1,14 @@
-use std::{any, process::Command, sync::{Arc, Mutex, mpsc}};
-use linux_embedded_hal::I2CError;
+use std::{process::Command, sync::mpsc, time::Duration};
 use num_traits::FromPrimitive;
 use rccn_usr::service::{AcceptanceResult, AcceptedTc, PusService};
-use ron::de::SpannedError;
 use super::{command, config::BixConfig, telemetry::WeekDayEnum};
-use anyhow::{Result};
 use std::result::Result::Ok;
-use std::error::Error;
-use std::fs;
 use crate::rtc::telemetry;
-use machine_info::Machine;
 use i2cdev::linux::LinuxI2CDevice;
 use i2cdev::core::I2CDevice;
 use i2cdev::linux::LinuxI2CError;
-// use chrono::{TimeZone, Utc};
-// use libc::{timeval, timezone, settimeofday};
-// use std::mem::zeroed;
 
-use chrono::{DateTime, Datelike, NaiveDateTime, TimeZone, Timelike, Weekday, NaiveDate, NaiveTime};
+use chrono::{DateTime, Datelike, NaiveDateTime, Timelike, NaiveDate, NaiveTime};
 
 use serde::{Serialize, Deserialize};
 
@@ -556,15 +547,15 @@ impl PusService for RtcService {
                     Err(_) => return false
                 };
                 reset_config.reset_interval = match args.unit{
-                    command::ResetUnit::Weeks => {7*24*60*60*(args.number as i64)}
-                    command::ResetUnit::Days => {24*60*60*(args.number as i64)}
-                    command::ResetUnit::Hours => {60*60*(args.number as i64)}
-                } as i64;
+                    command::ResetUnit::Weeks => {(7*24*60*60*args.number).into()}
+                    command::ResetUnit::Days => {(24*60*60*args.number).into()}
+                    command::ResetUnit::Hours => {(60*60*args.number).into()}
+                };
 
                 match args.restart_interval{
                     true => {
                         let now = chrono::Utc::now();
-                        let durr = chrono::TimeDelta::seconds(reset_config.reset_interval);
+                        let durr = Duration::from_secs(reset_config.reset_interval);
                         reset_config.next_reset = (now + durr).timestamp();
                     }
                     _ => {}
