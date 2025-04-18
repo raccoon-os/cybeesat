@@ -25,7 +25,9 @@ pub enum Command {
     #[subservice(8)]
     SatReset(SatResetArgs),
     #[subservice(9)]
-    SwitchObc(SwitchObcArgs)
+    SwitchObc(SwitchObcArgs),
+    #[subservice(10)]
+    SetSleepInterval(SetSleepIntervalArgs)
     
 }
 
@@ -79,7 +81,7 @@ pub struct ReadRegisterArgs {
 pub struct GoToSleepArgs {
     #[bits(8)]
     pub unit: GoToSleepUnit,
-    #[bits(8)]
+    #[bits(32)]
     pub number: u32,
 }
 
@@ -97,12 +99,17 @@ pub enum GoToSleepUnit {
 pub struct SetResetIntervalArgs {
     #[bits(8)]
     pub unit: ResetUnit,
-    #[bits(8)]
+    #[bits(32)]
     pub number: u32,
     #[bits(8)]
     pub restart_interval: bool,
 }
 
+#[derive(BitStruct, Debug)]
+pub struct SetSleepIntervalArgs {
+    #[bits(32)]
+    pub seconds: u32,
+}
 
 #[derive(Debug, BinarySerde, PartialEq, ToPrimitive, FromPrimitive)]
 #[repr(u8)]

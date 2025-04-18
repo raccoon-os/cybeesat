@@ -563,6 +563,15 @@ impl PusService for RtcService {
 
                 reset_config.save().is_ok()
             }),
+            command::Command::SetSleepInterval(args) => tc.handle(|| {
+                let mut config = match BixConfig::load_or_default() {
+                    Ok(config) => config,
+                    Err(_) => return false
+                };
+
+                config.seconds_to_wait_before_sleeping = args.seconds;
+                config.save().is_ok()
+            }),
             command::Command::SatReset(args) => tc.handle(||{
                 match args.confirm{
                     true => {   

@@ -32,7 +32,7 @@ pub fn spawn(session: zenoh::Session) {
             //   - Enter deep sleep (ULP1)
             //   - On resume from sleep:
             //     - Set SOM_EN high
-            // 
+            //
             // The delay is configurable by writing the number of seconds to wait
             // from last packet reception in /var/bix1_config.ron
 
@@ -49,7 +49,9 @@ pub fn spawn(session: zenoh::Session) {
 
             let sleep_after = BixConfig::load_or_default().unwrap();
 
-            if last_reception.elapsed().as_secs() > sleep_after.seconds_to_wait_before_sleeping {
+            if last_reception.elapsed().as_secs()
+                > sleep_after.seconds_to_wait_before_sleeping.into()
+            {
                 info!("Time since last packet exceeded, going to sleep");
 
                 som_enable.set_value(0).unwrap();

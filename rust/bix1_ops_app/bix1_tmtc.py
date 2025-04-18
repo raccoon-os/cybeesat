@@ -11,9 +11,8 @@ from rccn_gen import *
 root_system = System("BiX1")
 app = Application(system=root_system, name="BiX1_Cntrl_App", apid=77)
 
-service = Service(name="Telemetry", system=app)
 service_type_id = 77
-service.service_id = service_type_id
+service = Service(name="Telemetry", system=app, service_id=service_type_id)
 
 base_cmd = Command(
     system=service,
@@ -369,9 +368,8 @@ Container(
     ]   
 )
 
-eps_service = Service(name="EPS_Controll", system=app)
 eps_service_type_id = 78
-eps_service.service_id = eps_service_type_id
+eps_service = Service(name="EPS_Controll", system=app, service_id=eps_service_type_id)
 
 eps_base_cmd = Command(
     system=eps_service,
@@ -940,9 +938,8 @@ Container(
     ]
 )
 
-RTC_service = Service(name="RTC", system=app)
 RTC_service_type_id = 79
-RTC_service.service_id = RTC_service_type_id
+RTC_service = Service(name="RTC", system=app, service_id=RTC_service_type_id)
 
 rtc_base_cmd = Command(
     system=RTC_service,
@@ -1080,7 +1077,7 @@ Container(
 
 RCCNCommand(
     system=RTC_service,
-    base=eps_base_cmd,
+    base=rtc_base_cmd,
     assignments={"subtype": 6},
     name="GO_TO_SLEEP",
     short_description="Go To Sleep Command. Times bigger than ?? Hours are not accepted.",
@@ -1099,7 +1096,7 @@ RCCNCommand(
 
 RCCNCommand(
     system=RTC_service,
-    base=eps_base_cmd,
+    base=rtc_base_cmd,
     assignments={"subtype": 7},
     name="Set_Reset_Interval",
     short_description="Set the Reset Interval.",
@@ -1122,7 +1119,7 @@ RCCNCommand(
 
 RCCNCommand(
     system=RTC_service,
-    base=eps_base_cmd,
+    base=rtc_base_cmd,
     assignments={"subtype": 8},
     name="SAT_Reset",
     short_description="Reset Satellite",
@@ -1136,7 +1133,7 @@ RCCNCommand(
 
 RCCNCommand(
     system=RTC_service,
-    base=eps_base_cmd,
+    base=rtc_base_cmd,
     assignments={"subtype": 9},
     name="Switch_OBC",
     short_description="Switch OBC",
@@ -1144,6 +1141,20 @@ RCCNCommand(
          BooleanArgument(
             name="Confirm",
             encoding=bool_t,
+        ),
+    ],
+)
+
+RCCNCommand(
+    system=RTC_service,
+    base=rtc_base_cmd,
+    assignments={"subtype": 10},
+    name="Set_Sleep_Interval",
+    short_description="Set the number of seconds to wait before OBC sleep after radio inactivity.",
+    arguments=[
+        IntegerArgument(
+            name="Seconds",
+            encoding=uint32_t,
         ),
     ],
 )
