@@ -20,6 +20,7 @@ deploy:
 	./cross.sh cargo install --path rust/deploy_app deploy_app
 	./cross.sh cargo install --path rust/diagnosis_app diagnosis_app
 	./cross.sh cargo install --path rust/aprs_app aprs_app
+	./cross.sh cargo install --path rust/bix1_ops_app bix1_ops_app
 	# ./cross.sh cargo install --path rust/health_app health_app
 
 	cp python/antenna_control.py install/usr/bin

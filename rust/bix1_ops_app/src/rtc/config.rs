@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, io::ErrorKind::NotFound};
 
 use ron::de::SpannedError;
 use serde::{Deserialize, Serialize};
@@ -24,10 +24,16 @@ impl Default for BixConfig {
 
 impl BixConfig {
     pub fn load_or_default() -> Result<Self, SpannedError> {
-        if let Ok(s) = fs::read_to_string("/var/bix1_config.ron") {
-            ron::from_str(&s)
-        } else {
-            Ok(Self::default())
+        match fs::read_to_string("/var/bix1_config.ron") {
+            Ok(s) => ron::from_str(&s),
+            Err(e) if e.kind() == NotFound => {
+                let ret = Self::default();
+                ret.save().unwrap();
+                Ok(ret)
+            },
+            Err(e) => {
+                panic!("unexpected error reading config {e:?}");
+            }
         }
     }
 
