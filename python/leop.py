@@ -9,12 +9,12 @@ from dataclasses import dataclass
 
 MAX_ATTEMPTS = 5
 WAIT_TIME_SECONDS = 10
-#ANTENNA_CONTROL_SCRIPT = "/usr/bin/antenna_control.py"
-ANTENNA_CONTROL_SCRIPT = "/usr/bin/echo"
+ANTENNA_CONTROL_SCRIPT = "/usr/bin/antenna_control.py"
+#ANTENNA_CONTROL_SCRIPT = "/usr/bin/echo"
 
 @dataclass
 class LEOPState:
-    FILE = "/tmp/leop.json"
+    FILE = "/var/leop.json"
 
     wait_passed: bool
     attempts: int

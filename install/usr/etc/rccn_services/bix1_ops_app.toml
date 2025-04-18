@@ -1,0 +1,5 @@
+name = "bix1_ops_app"
+command = "bix1_ops_app"
+
+[environment]
+additional = { RUST_LOG = "info" }
