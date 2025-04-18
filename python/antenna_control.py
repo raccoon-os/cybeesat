@@ -49,6 +49,15 @@ def write_gpio(port, pin, level):
         i2c_bus.write_i2c_block_data(io_expander, 0x02, [new_port0output])
 
 def main():
+    # ina_user_3v3 0x4a
+    # send to reg 0x14
+    # value 0x6060
+    # power off 0x4040
+
+    # power on antenna deployment mechanism
+    i2c_bus.write_i2c_block_data(0x4a, 0x14, [0x60, 0x60])
+
+
     if len(sys.argv) != 3:
         print("Usage: python deploy_antenna.py <deploy|retract> <antenna_number>")
         sys.exit(1)
@@ -125,6 +134,10 @@ def main():
         elif antenna_number == 4:
             write_gpio(0, 6, "low")
             write_gpio(0, 7, "low")
+
+    # power off antenna deployment mechanism
+    i2c_bus.write_i2c_block_data(0x4a, 0x14, [0x40, 0x40])
+
 
 if __name__ == "__main__":
     main()

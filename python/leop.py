@@ -38,15 +38,15 @@ class LEOPState:
         open(self.FILE, "w").write(j)
 
 def deploy_antennas():
-    for antenna in range(4):
+    for antenna in [1, 3, 2, 4]:
         antenna_arg = str(antenna + 1)
 
-        print("retract", antenna_arg)
-        subprocess.run([ANTENNA_CONTROL_SCRIPT, "retract", antenna_arg])
-        time.sleep(1)
-
         print("deploy", antenna_arg)
-        subprocess.run([ANTENNA_CONTROL_SCRIPT, "deploy", antenna_arg])
+        subprocess.run(["python3", ANTENNA_CONTROL_SCRIPT, "deploy", antenna_arg])
+        time.sleep(3)
+
+        print("retract", antenna_arg)
+        subprocess.run(["python3", ANTENNA_CONTROL_SCRIPT, "retract", antenna_arg])
         time.sleep(1)
 
 if __name__ == '__main__':
