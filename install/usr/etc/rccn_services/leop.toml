@@ -2,4 +2,4 @@ name = "toml"
 command = "python3 /usr/bin/leop.py"
 
 [restart]
-strategy = "failure"
+strategy = "on-failure"

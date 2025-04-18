@@ -23,9 +23,24 @@ fn hex(data: &[u8]) -> String {
     .join(" ")
 }
 
-pub fn run(bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
+pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
     let mut chip = Chip::new("/dev/gpiochip0").unwrap();
-    let irq = chip.get_line(73).unwrap(); // PC9
+
+    let (irq, mut spi_dev) = match which_vcom {
+        0 => {
+            println!("Operating VCOM0");
+            // line 72 = PC8
+            (chip.get_line(72).unwrap(), SpidevDevice::open("/dev/spidev1.0").unwrap())
+        },
+        1 => {
+            println!("Operating VCOM1");
+            // line 73 = PC9
+            (chip.get_line(73).unwrap(), SpidevDevice::open("/dev/spidev0.0").unwrap())
+        },
+        _ => {
+            panic!("invalid VCOM {}", which_vcom);
+        }
+    };
 
     let irq_occurred = Arc::new(Mutex::new(false));
     let irq_occurred_clone = irq_occurred.clone();
@@ -34,7 +49,6 @@ pub fn run(bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
         irq_handler(irq, irq_occurred_clone);
     });
 
-    let mut spi_dev = SpidevDevice::open("/dev/spidev1.0").unwrap();
     spi_dev.configure(&SpidevOptions::new().max_speed_hz(500_000).build()).unwrap();
 
     let mut config = [
