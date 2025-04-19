@@ -17,7 +17,7 @@ impl Default for BixConfig {
             current_time: 0,
             next_reset: 0, 
             reset_interval: 7*24*60*60, 
-            seconds_to_wait_before_sleeping: 60,
+            seconds_to_wait_before_sleeping: 60*10,
         }
     }
 }

@@ -714,7 +714,8 @@ impl PusService for EpsCtrlService {
                     _                                       => {warn!("Value {:?} not allowed!", args.input_limit); return false},
                 };
 
-                let set_val = (read_val & 0b1100_0000) | target_val;
+                //let set_val = (read_val & 0b1000_0000) | target_val;
+                let set_val = target_val;
 
                 match self.dev_pmic.smbus_write_i2c_block_data(0x00, &[set_val]){
                     Ok(_) => {},
@@ -878,7 +879,7 @@ impl PusService for EpsCtrlService {
             command::Command::SetPassivationSwState(args) => tc.handle(||{
 
                 let passivation_value = match args.switch_passivation_state{
-                        false => [0x00],
+                        false => [0x01],
                         true =>  [0x3F],
                     };
 

@@ -170,7 +170,7 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
                 let _ = reset_obc();
             }
 
-            if ((pmic0_vbat > 3000) && (pmic1_vbat > 3000)) && !switch_obc{
+            if ((pmic0_vbat > 3000) || (pmic1_vbat > 3000)) && !switch_obc{
                 linePC17_handle.set_value(1).unwrap();
                 sleep(Duration::from_millis(100)); // todo configure
                 linePC17_handle.set_value(0).unwrap();
