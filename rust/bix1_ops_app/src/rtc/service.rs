@@ -89,12 +89,14 @@ impl RtcService {
 
         let time_config_time = chrono::DateTime::from_timestamp(time_config.current_time, 0).unwrap().to_utc();
 
+        /*
         if (rtc_datetime_utc > time_config_time){
             ret.set_system_time(y, mo, d, h, mi, s, s100th);
         }
         else {
             ret.set_system_time((time_config_time.year() - 2000) as u8, time_config_time.month() as u8, time_config_time.day() as u8, time_config_time.hour() as u8, time_config_time.minute() as u8, time_config_time.second() as u8, 0);
         }
+        */
 
         ret
     }
