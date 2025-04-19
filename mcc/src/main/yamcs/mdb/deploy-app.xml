@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<!--
+This file was automatically generated with Yamcs PyMDB.
+See https://github.com/yamcs/pymdb
+-->
+<SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" name="DeployService">
+  <TelemetryMetaData/>
+  <CommandMetaData>
+    <ArgumentTypeSet>
+      <IntegerArgumentType name="DeployAntenna__antenna_number" signed="true" sizeInBits="32">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        <ValidRangeSet validRangeAppliesToCalibrated="true">
+          <ValidRange minInclusive="1" maxInclusive="4"/>
+        </ValidRangeSet>
+      </IntegerArgumentType>
+      <IntegerArgumentType name="RetractAntenna__antenna_number" signed="true" sizeInBits="32">
+        <IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
+        <ValidRangeSet validRangeAppliesToCalibrated="true">
+          <ValidRange minInclusive="1" maxInclusive="4"/>
+        </ValidRangeSet>
+      </IntegerArgumentType>
+    </ArgumentTypeSet>
+    <MetaCommandSet>
+      <MetaCommand name="DeployAntenna" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="1"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="antenna_number" argumentTypeRef="DeployAntenna__antenna_number"/>
+        </ArgumentList>
+        <CommandContainer name="DeployAntenna">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="antenna_number">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="RetractAntenna" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="2"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="antenna_number" argumentTypeRef="RetractAntenna__antenna_number"/>
+        </ArgumentList>
+        <CommandContainer name="RetractAntenna">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="antenna_number">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+      <MetaCommand name="base" abstract="true">
+        <BaseMetaCommand metaCommandRef="/PUS/pus-tc">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="type" argumentValue="136"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <CommandContainer name="base">
+          <EntryList/>
+          <BaseContainer containerRef="/PUS/pus-tc"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
+    </MetaCommandSet>
+  </CommandMetaData>
+</SpaceSystem>
+
