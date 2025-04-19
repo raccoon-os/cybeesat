@@ -24,7 +24,7 @@ fn hex(data: &[u8]) -> String {
 }
 
 fn turn_on_pa() -> bool {
-    let mut i2c = LinuxI2CDevice::new("/dev/i2c-0", 0x4b).unwrap();
+    let mut i2c = LinuxI2CDevice::new("/dev/i2c-0", 0x44).unwrap();
     i2c.smbus_write_i2c_block_data(0x14, &[0x60, 0x60]).is_ok()
 }
 
