@@ -8,3 +8,4 @@ install/**.json
 install/usr/.crates.toml
 install/usr/.crates2.json
 delta.tar.gz
+debug/

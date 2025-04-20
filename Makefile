@@ -1,4 +1,4 @@
-.PHONY: deploy install commit
+.PHONY: deploy install commit debug-symbols
 
 DEPLOY_DIR ?= deploy
 INSTALL_DIR ?= install
@@ -45,6 +45,13 @@ delta: commit
 	tar -czvf delta.tar.gz --transform "s,.*/,," ${OSTREE_REPO}/deltas/**/*
 	rm -rf ${OSTREE_REPO}/deltas
 
+debug-symbols:
+	mkdir -p debug
+	find install/usr/bin -type f -executable | while read FILE; do \
+		arm-none-eabi-objcopy --only-keep-debug $${FILE} debug/$$(basename $${FILE}).dbg; \
+		arm-none-eabi-strip $${FILE}; \
+	done
+
 clean:
 	rm -rf ${DEPLOY_DIR}
-
+	rm -rf debug

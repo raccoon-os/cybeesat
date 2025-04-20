@@ -9,7 +9,10 @@ build-job:
   stage: build
   script:
     - rm -rf install/usr/bin/*
+    - rm -rf debug/
     - make deploy
+    - make debug-symbols
   artifacts:
     paths:
       - install
+      - debug

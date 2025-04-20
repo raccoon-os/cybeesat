@@ -29,6 +29,6 @@ zenoh = { version = "1.0.3" }
 lto = true
 codegen-units = 1
 opt-level = "z"
-strip = true
+#strip = true
 # https://github.com/meta-rust/meta-rust/issues/343
 panic = "abort"
