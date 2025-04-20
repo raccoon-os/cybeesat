@@ -7,4 +7,5 @@ backoff = "5s"
 attempts = 3 
 
 [environment]
-keep-env = false
+#keep-env = false
+additional = { RUST_LOG = "info" , ZENOH_CONFIG = "/usr/etc/rccn_zenoh_config.json5" }

@@ -1,0 +1,9 @@
+{
+    mode: "peer",
+    listen: {
+        endpoints: {
+            router: ["tcp/localhost:0#iface=lo"],
+            peer: ["tcp/localhost:0#iface=lo"]
+        }
+    }
+}
