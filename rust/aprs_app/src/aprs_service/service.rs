@@ -55,30 +55,30 @@ impl PusService for APRSService {
                 let mut ok = true;
                 ok &= self
                     .send_cmd(format!(
-                        "AT+PWR={}\n",
+                        "AT+PWR={}\r\n",
                         if args.high_power_mode { "H" } else { "L" }
                     ));
                 ok &= self
                     .send_cmd(format!(
-                        "AT+DIGI1={}\n",
+                        "AT+DIGI1={}\r\n",
                         if args.digi1_enable { "ON" } else { "OFF" }
                     ));
                 ok &= self
                     .send_cmd(format!(
-                        "AT+DIGI2={}\n",
+                        "AT+DIGI2={}\r\n",
                         if args.digi2_enable { "ON" } else { "OFF" }
                     ));
 
                 ok
             }),
             SetBeaconInterval(args) => tc.handle(|| {
-                self.send_cmd(format!("AT+BTIME={}\n", args.beacon_interval))
+                self.send_cmd(format!("AT+BTIME={}\r\n", args.beacon_interval))
             }),
             SetBeaconMessage(args) => tc.handle(|| {
-                self.send_cmd(format!("AT+BEACON={}\n", args.beacon_message))
+                self.send_cmd(format!("AT+BEACON={}\r\n", args.beacon_message))
             }),
             SetCallsign(args) => tc.handle(|| {
-                self.send_cmd(format!("AT+CALL={}\n", args.callsign))
+                self.send_cmd(format!("AT+CALL={}\r\n", args.callsign))
             }),
             command::Command::GetTelemetry => tc.handle_with_tm(|| {
                 if false {
