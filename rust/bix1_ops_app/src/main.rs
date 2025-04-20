@@ -1,10 +1,11 @@
+use env_logger::Target;
 use telemetry::service::GetHealthService;
 use controll::service::EpsCtrlService;
 use rtc::service::RtcService;
 
 use anyhow::Result;
 use rccn_usr::pus::app::PusApp;
-use std::sync::{Arc, Mutex, mpsc};
+use std::sync::mpsc;
 
 mod telemetry;
 mod controll;
@@ -16,7 +17,10 @@ const APID: u16 = 77;
 const VCID: u8 = 0;
 
 fn main() -> Result<()> {
-    env_logger::init();
+    env_logger::Builder::from_default_env()
+        .target(Target::Stdout)
+        .init();
+
     let mut app = PusApp::new(APID);
 
     app

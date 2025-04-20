@@ -1,15 +1,16 @@
 use anyhow::Result;
 use clap::Parser;
+use env_logger::Target;
 use tokio::{io::{AsyncReadExt, AsyncWriteExt}, select};
 use tokio_serial::{SerialPortBuilderExt};
 
 #[derive(Parser)]
 #[command(version, about)]
 struct Args {
-    #[arg(long, default_value = "zenoh/serial/out")]
+    #[arg(long, default_value = "radio_tx")]
     subscribe_topic: String,
 
-    #[arg(long, default_value = "zenoh/serial/in")]
+    #[arg(long, default_value = "radio_rx")]
     publish_topic: String,
 
     #[arg(short, long)]
@@ -21,7 +22,9 @@ struct Args {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    env_logger::init();
+    env_logger::Builder::from_default_env()
+        .target(Target::Stdout)
+        .init();
     let args = Args::parse();
 
     let zenoh = zenoh::open(zenoh::config::Config::default()).await.unwrap();

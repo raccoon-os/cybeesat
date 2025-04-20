@@ -2,14 +2,16 @@ mod deploy_service;
 
 use anyhow::Result;
 use deploy_service::service::DeployService;
+use env_logger::Target;
 use rccn_usr::pus::app::PusApp;
-use rccn_usr::zenoh::key_expr::OwnedKeyExpr;
 
 const APID: u16 = 45;
 const VCID: u8 = 0;
 
 fn main() -> Result<()> {
-    env_logger::init();
+    env_logger::Builder::from_default_env()
+        .target(Target::Stdout)
+        .init();
 
     let mut app = PusApp::new(APID);
 
