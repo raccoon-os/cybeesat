@@ -7,8 +7,8 @@ import time
 import subprocess
 from dataclasses import dataclass
 
-MAX_ATTEMPTS = 5
-WAIT_TIME_SECONDS = 10
+MAX_ATTEMPTS = 10
+WAIT_TIME_SECONDS = 180
 ANTENNA_CONTROL_SCRIPT = "/usr/bin/antenna_control.py"
 #ANTENNA_CONTROL_SCRIPT = "/usr/bin/echo"
 
