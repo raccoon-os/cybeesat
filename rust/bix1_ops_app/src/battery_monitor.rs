@@ -17,7 +17,7 @@ use crate::rtc::service::reset_obc;
 use chrono::Utc;
 
 pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
-    let mut dev_pmic = match LinuxI2CDevice::new("/dev/i2c-0", 0x6b) {
+    let mut dev_fuel_gauge = match LinuxI2CDevice::new("/dev/i2c-0", 0x36) {
         Err(e) => {
             panic!("error creating i2c dev {e:?}")
         },
@@ -50,42 +50,8 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
                 Err(e) => {warn!("Error while setting INA device to PMIC0");}
             } 
 
-            // Activate ADC
-            let mut pmic0_reg02 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            // debug!("pmic0_reg02: {:?}", pmic0_reg02);
-            pmic0_reg02[0] |= 0xc0;
-            let mut write_val= [0u8];
-            write_val[0] = pmic0_reg02[0];
-            dev_pmic.smbus_write_i2c_block_data(0x02, &write_val).unwrap();
-            
-            let mut pmic0_reg02_test2 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            // debug!("pmic0_reg02: {:?}", pmic0_reg02_test2);
-
-            // read Values
-            let pmic0_vbat_vec = dev_pmic.smbus_read_i2c_block_data(0x0e, 1).unwrap(); 
-            // debug!("pmic0_vbat_vec: {:X?}", pmic0_vbat_vec);
-
-            let pmic0_vbat = convert_battery_voltage(pmic0_vbat_vec[0] as u32);
-
-            // debug!("pmic_vbat0: {:?}", pmic0_vbat);
-
-            let pmic0_vsys_vec = dev_pmic.smbus_read_i2c_block_data(0x11, 1).unwrap(); 
-            // debug!("pmic0_vsys_vec: {:X?}", pmic0_vsys_vec);
-
-            let pmic0_vsys = convert_bus_voltage(pmic0_vsys_vec[0] as u32);
-
-            // debug!("pmic_vsys: {:?}", pmic0_vsys);
-
-            let pmic0_ichg_vec = dev_pmic.smbus_read_i2c_block_data(0x12, 1).unwrap(); 
-            // debug!("pmic0_ichg_vec: {:X?}", pmic0_ichg_vec);
-
-            let pmic0_ichg = convert_battery_charge_current(pmic0_ichg_vec[0] as u32);
-
-            // debug!("pmic0_ichg: {:?}", pmic0_ichg);
-
-            let pmic0_status_vec = dev_pmic.smbus_read_i2c_block_data(0x0b, 1).unwrap(); 
-            // debug!("pmic0_status_vec: {:X?}", pmic0_status_vec);
-            // debug!("pmic1_status_conv: {:?}", (pmic0_status_vec[0] >> 3) & 0b11);
+            let vbat0_raw = dev_fuel_gauge.smbus_read_i2c_block_data(0x09, 2).map(|data| (((data[1] as u16) << 8) | (data[0] & 0xff) as u16)).unwrap_or(0);
+            let vbat0 = (vbat0_raw as f32) * 78.125e-3;
 
             // Switch i2c Bus
             match write_i2c_ina_device_block(&mut dev_i2c_switch, 0x00, 0x04){ //0x05 for other i2c
@@ -93,42 +59,10 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
                 Err(e) => {warn!("Error while setting INA device to PMIC0");}
             } 
 
-            // Activate ADC
-            let mut pmic1_reg02 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            // debug!("pmic1_reg02: {:?}", pmic1_reg02);
-            pmic1_reg02[0] |= 0xc0;
-            let mut write_val1= [0u8];
-            write_val1[0] = pmic1_reg02[0];
-            dev_pmic.smbus_write_i2c_block_data(0x02, &write_val1).unwrap();
-            
-            let mut pmic1_reg02_test2 =  dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
-            // debug!("pmic1_reg02: {:?}", pmic1_reg02_test2);
+            let vbat1_raw = dev_fuel_gauge.smbus_read_i2c_block_data(0x09, 2).map(|data| (((data[1] as u16) << 8) | (data[0] & 0xff) as u16)).unwrap_or(0);
+            let vbat1 = (vbat1_raw as f32) * 78.125e-3;
 
-            // read Values
-            let pmic1_vbat_vec = dev_pmic.smbus_read_i2c_block_data(0x0e, 1).unwrap(); 
-            // debug!("pmic1_vbat_vec: {:X?}", pmic1_vbat_vec);
-
-            let pmic1_vbat = convert_battery_voltage(pmic1_vbat_vec[0] as u32);
-
-            // debug!("pmic1_vbat0: {:?}", pmic1_vbat);
-
-            let pmic1_vsys_vec = dev_pmic.smbus_read_i2c_block_data(0x11, 1).unwrap(); 
-            // debug!("pmic1_vsys_vec: {:X?}", pmic1_vsys_vec);
-
-            let pmic1_vsys = convert_bus_voltage(pmic1_vsys_vec[0] as u32);
-
-            // debug!("pmic1_vsys: {:?}", pmic1_vsys);
-
-            let pmic1_ichg_vec = dev_pmic.smbus_read_i2c_block_data(0x12, 1).unwrap(); 
-            // debug!("pmic1_ichg_vec: {:X?}", pmic1_ichg_vec);
-
-            let pmic1_ichg = convert_battery_charge_current(pmic1_ichg_vec[0] as u32);
-
-            // debug!("pmic1_ichg: {:?}", pmic1_ichg);
-
-            let pmic1_status_vec = dev_pmic.smbus_read_i2c_block_data(0x0b, 1).unwrap(); 
-            // debug!("pmic1_status_vec: {:X?}", pmic1_status_vec);
-            // debug!("pmic1_status_conv: {:?}", (pmic1_status_vec[0] >> 3) & 0b11);
+            info!("vbat0: {vbat0}, vbat1: {vbat1}");
 
             match switch_obc_receiver.try_recv(){
                 Ok(val ) => switch_obc = val,
@@ -170,7 +104,7 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
                 let _ = reset_obc();
             }
 
-            if ((pmic0_vbat > 3000) || (pmic1_vbat > 3000)) && !switch_obc{
+            if ((vbat0 > 3000.0) || (vbat1 > 3000.0)) && !switch_obc{
                 linePC17_handle.set_value(1).unwrap();
                 sleep(Duration::from_millis(100)); // todo configure
                 linePC17_handle.set_value(0).unwrap();
