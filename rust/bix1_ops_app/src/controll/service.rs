@@ -1,5 +1,6 @@
 use std::io::Read;
 use std::process::Command;
+use log::error;
 use num_traits::{FromPrimitive, ToPrimitive};
 use rccn_usr::service::{AcceptanceResult, AcceptedTc, PusService};
 use super::command;
@@ -194,9 +195,14 @@ impl EpsCtrlService {
 
         // Turning off watchdogs of PMICs
         res.switch_pmic_fg_i2c_bus(PMICSelect::PMIC0);
-        res.dev_pmic.smbus_write_i2c_block_data(0x07, &[0b10001101]).unwrap();
+        if let Err(e) = res.dev_pmic.smbus_write_i2c_block_data(0x07, &[0b10001101]) {
+            error!("could not turn off pmic0 watchdog");
+        }
+
         res.switch_pmic_fg_i2c_bus(PMICSelect::PMIC1);
-        res.dev_pmic.smbus_write_i2c_block_data(0x07, &[0b10001101]).unwrap();
+        if let Err(e) = res.dev_pmic.smbus_write_i2c_block_data(0x07, &[0b10001101]) {
+            error!("could not turn off pmic1 watchdog");
+        }
 
 
         return res
