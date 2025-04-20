@@ -6,13 +6,14 @@ from yamcs.pymdb import *
 
 service = System("BootService")
 service_type_id = 135
+apid = 44
 
 base_cmd = Command(
     system=service,
     name="base",
     abstract=True,
     base="/PUS/pus-tc",
-    assignments={"type": service_type_id},
+    assignments={"type": service_type_id, "apid": apid},
 )
 
 Command(

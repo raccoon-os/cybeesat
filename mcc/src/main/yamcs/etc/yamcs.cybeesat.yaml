@@ -163,6 +163,11 @@ mdb:
   - type: "xtce"
     spec: "mdb/deploy-app.xml"
 
+  - type: "xtce"
+    spec: "mdb/diagnosis-app.xml"
+
+  - type: "xtce"
+    spec: "mdb/boot-app.xml"
 
 #Configuration for streams created at server startup
 streamConfig:
