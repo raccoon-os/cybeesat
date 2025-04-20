@@ -1,4 +1,4 @@
-use std::{sync::{mpsc::{self, Receiver, Sender}, Arc}, thread::{self, JoinHandle}};
+use std::{sync::mpsc::{Receiver, Sender}, thread::{self, JoinHandle}};
 
 use zenoh::Wait;
 
@@ -13,8 +13,8 @@ pub fn run(session: &zenoh::Session, bytes_rx: Receiver<Vec<u8>>, bytes_tx: Send
                 match subscriber.recv() {
                     Ok(msg) => {
                         let vec = msg.payload().to_bytes().to_vec();
-                        println!("got TX message from zenoh {vec:?}");
-                        bytes_tx.send(vec);
+                        println!("got TX message, forwarding to radio thread");
+                        bytes_tx.send(vec).expect("failed to send bytes, restarting driver");
                     },
                     Err(e) => {
                         println!("sub error {e:?}, exiting");
@@ -24,12 +24,10 @@ pub fn run(session: &zenoh::Session, bytes_rx: Receiver<Vec<u8>>, bytes_tx: Send
             }
         }),
         thread::spawn(move || {
-            //let publisher = pub_session.declare_publisher("radio_rx").wait().unwrap();
             loop {
                 match bytes_rx.recv() {
                     Ok(msg) => {
-                        println!("got RX message from radio {msg:?}");
-                        //publisher.put(msg).wait().unwrap();
+                        println!("got RX message from radio, forwarding to Zenoh");
                         pub_session.put("radio_rx", msg).wait().unwrap();
                     }
                     Err(e) => {

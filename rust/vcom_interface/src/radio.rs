@@ -1,5 +1,5 @@
 
-use std::{sync::{mpsc::Sender, mpsc::Receiver, Arc, Mutex}, thread, time::Duration};
+use std::{str, sync::{mpsc::{Receiver, Sender}, Arc, Mutex}, thread, time::Duration};
 
 use linux_embedded_hal::{
     gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags}, i2cdev::{core::I2CDevice, linux::LinuxI2CDevice}, spidev::SpidevOptions, CdevPin, Delay, SpidevDevice
@@ -7,7 +7,6 @@ use linux_embedded_hal::{
 use rf4463::Rf4463;
 
 use crate::constants;
-use crate::constants::RANDOM_DATA;
 
 fn irq_handler(irq: Line, irq_occurred: Arc<Mutex<bool>>) {
     for ev in irq.events(LineRequestFlags::INPUT, EventRequestFlags::RISING_EDGE, "vcom-irq").unwrap() {
@@ -56,13 +55,13 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
 
     spi_dev.configure(&SpidevOptions::new().max_speed_hz(500_000).build()).unwrap();
 
-    let mut config = [
+    let config = [
         constants::GPIO_PIN_CFG_DIV,
         constants::SET_PROPERTY_00,
         constants::SET_PROPERTY_01,
         constants::SET_PROPERTY_10,
         constants::SET_PROPERTY_11,
-        constants::SET_PROPERTY_22,
+        constants::TX_POWER_25dBm,
         constants::SET_PROPERTY_23,
         constants::SET_PROPERTY_30,
         constants::SET_FREQ,
@@ -109,15 +108,11 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
     println!("chip info: {:?}", out);
 
     radio.start_rx(Some(255), false).unwrap();
-    //radio.radio.send_command::<0>(&mut [0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]).unwrap();
     println!("receiving");
 
     let mut rx_buf = [0u8; 255];
-    let mut tx_buf = [0u8; 255]; //.iter().map(|x| x ^ 13).collect::<Vec<u8>>();
-
-    //radio.start_tx(tx_buf).unwrap();
-
-    let mut tx = false;
+    let mut tx_buf = [0u8; 255];
+    let mut should_tx = false;
 
     loop {
         {
@@ -134,65 +129,66 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
                 } 
             }
             */
+
+            // TODO(JD): for some reason we don't get "fifo almost full" interrupts
+            // so just unconditionally do the interrupt handler
             radio.interrupt(Some(&mut rx_buf), Some(&tx_buf)).unwrap();
-            //radio.interrupt(Some(&mut rx_buf), Some(&tx_buf)).unwrap();
         }
 
-        match radio.finish_rx(&mut rx_buf).unwrap() {
-            Some(pkt) => {
-                let len = pkt.data().len(); 
-                println!("pkt {:?}, {}", hex(&rx_buf[0..20]), len);
-                bytes_rx.send(rx_buf.to_vec()).unwrap();
-                rx_buf = [0u8; 255];
-                //radio.start_rx(Some(100), false).unwrap();
-                //radio.start_tx(&tx_buf).unwrap();
+        if let Some(_) = radio.finish_rx(&mut rx_buf).unwrap() {
+            // We have received a packet from the VCOM.
+
+            println!("pkt {:?}", hex(&rx_buf[0..20]));
+
+            if let Ok(callsign) = str::from_utf8(&rx_buf[0..6]) {
+                println!("callsign {callsign}");
             }
-            None => {
-                //println!("buf {}", hex(&rx_buf[0..20]));
+            let tx_vcom = rx_buf[6];
+            let rx_vcom = rx_buf[7];
+
+            println!("rx {rx_vcom} tx {tx_vcom}");
+
+            // Only forward the packet if we're the target VCOM
+            if rx_vcom == which_vcom {
+                bytes_rx.send(rx_buf[8..].to_vec()).unwrap();
             }
+
+            should_tx = tx_vcom == which_vcom;
+
+            rx_buf = [0u8; 255];
+
+            let modem_status = radio.get_modem_status();
+            println!("Modem status: {:?}", modem_status);
+
         }
 
-        if !tx && which_vcom == 0 /* tmp hack: only tx on vcom0 */ { 
-            match bytes_tx.try_recv() {
-                Ok(msg) => {
-                    if turn_on_pa() {
-                        println!("Turn on PA successful");
-                    } else {
-                        println!("Turn on PA failed!");
-                    }
-                    
-                    tx_buf.copy_from_slice(msg.as_slice());
-                    radio.start_tx(&tx_buf).unwrap();
-                    tx = true;
-                    println!("transmitting!");
-                },
-                Err(e) => {
-                    // No TX message queued
+        if let Ok(msg) = bytes_tx.try_recv() {
+            // Message received from Zenoh
+
+            let radio_is_busy_txing = radio.is_busy_txing();
+            if should_tx && !radio_is_busy_txing  {
+                if turn_on_pa() {
+                    println!("Turn on PA successful");
+                } else {
+                    println!("Turn on PA failed!");
                 }
+                
+                tx_buf.copy_from_slice(msg.as_slice());
+                radio.start_tx(&tx_buf).unwrap();
+                println!("transmitting!");
+            } else {
+                println!("not transmitting, should tx: {should_tx}, busy txing {radio_is_busy_txing}");
             }
         }
 
         if radio.is_idle() {
-            thread::sleep(Duration::from_millis(1000));
-            //radio.start_tx(tx_buf).unwrap();
+            // Transmit finished, enter RX mode
+
+            thread::sleep(Duration::from_millis(100));
             radio.start_rx(Some(255), false).unwrap();
-            tx = false;
             println!("receiving!");
         }
 
         thread::sleep(Duration::from_millis(50));
     }
-
-    /*
-    loop {
-        //radio.sleep().unwrap();
-        //println!("sleeping...");
-        //println!("radio state {:?}", radio.get_radio_state());
-        //thread::sleep(Duration::from_secs(10));
-        radio.start_rx(None, true).unwrap();
-        println!("receiving");
-        println!("radio state {:?}", radio.get_radio_state());
-        thread::sleep(Duration::from_secs(10));
-    }
-    */
 }

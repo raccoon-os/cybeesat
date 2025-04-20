@@ -3620,7 +3620,7 @@ dependencies = [
 [[package]]
 name = "rf4463"
 version = "0.1.0"
-source = "git+https://gitlab.com/rccn/forks/rf4463#26ffdd82a618639a8968fbb791a2fbc51f1411b9"
+source = "git+https://gitlab.com/rccn/forks/rf4463#d744a0c23c66d9825f187cc525014ab07404424a"
 dependencies = [
  "embedded-hal",
 ]
