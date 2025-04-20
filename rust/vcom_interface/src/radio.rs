@@ -17,7 +17,7 @@ use linux_embedded_hal::{
 };
 use rf4463::Rf4463;
 
-use crate::constants::{self, GPIO_PIN_CFG_DIV, GPIO_PIN_CFG_TXANT1, GPIO_PIN_CFG_TXANT2};
+use crate::{config::VcomConfig, constants::{self, TX_POWER_21dBm, TX_POWER_25dBm, TX_POWER_27dBm, GPIO_PIN_CFG_DIV, GPIO_PIN_CFG_TXANT1, GPIO_PIN_CFG_TXANT2}};
 
 fn irq_handler(irq: Line, irq_occurred: Arc<Mutex<bool>>) {
     for ev in irq
@@ -54,6 +54,22 @@ where
 {
     let mut cfg = cmd.to_vec(); // yes this is incredibly ugly
     radio.radio.send_command::<0>(&mut cfg).unwrap();
+}
+
+fn setup_tx_power<Spi, Sdn, Delay>(radio: &mut Rf4463<Spi, Sdn, Delay>, config: &VcomConfig) 
+where
+    Delay: DelayNs,
+    Sdn: OutputPin,
+    Spi: ErrorType,
+    Spi: SpiDevice,
+{
+    let cmd = match config.tx_power {
+        0 => TX_POWER_21dBm,
+        1 => TX_POWER_25dBm,
+        2 => TX_POWER_27dBm,
+        _ => TX_POWER_25dBm
+    };
+    send_config_cmd(radio, cmd);
 }
 
 pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>>) {
@@ -98,7 +114,6 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
         constants::SET_PROPERTY_01,
         constants::SET_PROPERTY_10,
         constants::SET_PROPERTY_11,
-        constants::TX_POWER_25dBm,
         constants::SET_PROPERTY_23,
         constants::SET_PROPERTY_30,
         constants::SET_FREQ,
@@ -141,12 +156,15 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
     let out = radio.radio.send_command::<9>(&mut [0x01]).unwrap();
     println!("chip info: {:?}", out);
 
-    radio.start_rx(Some(255), false).unwrap();
+    radio.start_rx(Some(300), false).unwrap();
     println!("receiving");
 
-    let mut rx_buf = [0u8; 255];
-    let mut tx_buf = [0u8; 255];
+    let mut rx_buf = [0u8; 300];
+    let mut tx_buf = [0u8; 255+6];
     let mut should_tx = false;
+
+    let mut config = VcomConfig::load_or_default(which_vcom).unwrap();
+    setup_tx_power(&mut radio, &config);
 
     loop {
         {
@@ -198,31 +216,45 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
                     send_config_cmd(&mut radio, GPIO_PIN_CFG_TXANT2);
                 }
 
+
+                // Re-setup TX power (might have changed since we last read it) 
+                config = VcomConfig::load_or_default(which_vcom).unwrap();
+                setup_tx_power(&mut radio, &config);
+
                 should_tx = true;
+
+                // Drain downlink channel packets
+                while let Ok(_) = bytes_tx.try_recv() {
+                    print!("Dropped packet");
+                }
             }
 
             // Reset RX buffer
-            rx_buf = [0u8; 255];
+            rx_buf = [0u8; 300];
         }
 
-        if let Ok(msg) = bytes_tx.try_recv() {
-            // Message received from Zenoh
+        let radio_is_busy_txing = radio.is_busy_txing();
+        if should_tx && !radio_is_busy_txing {
+            if let Ok(msg) = bytes_tx.try_recv() {
+                // Message received from Zenoh
 
-            let radio_is_busy_txing = radio.is_busy_txing();
-            if should_tx && !radio_is_busy_txing {
                 if turn_on_pa() {
                     println!("Turn on PA successful");
                 } else {
                     println!("Turn on PA failed!");
                 }
 
-                tx_buf.copy_from_slice(msg.as_slice());
+                // Copy callsign to transmit buffer
+                tx_buf[..6].copy_from_slice(&config.callsign);
+
+                // Copy payload to transmit buffer
+                let max_len = tx_buf.len() - 6;
+                let payload = &msg[..max_len];
+                tx_buf[6..].copy_from_slice(payload);
+
+                // Send to radio
                 radio.start_tx(&tx_buf).unwrap();
                 println!("transmitting!");
-            } else {
-                println!(
-                    "not transmitting, should tx: {should_tx}, busy txing {radio_is_busy_txing}"
-                );
             }
         }
 
@@ -234,7 +266,7 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
 
             // Enter RX mode
             thread::sleep(Duration::from_millis(100));
-            radio.start_rx(Some(255), false).unwrap();
+            radio.start_rx(Some(300), false).unwrap();
             println!("receiving!");
         }
 

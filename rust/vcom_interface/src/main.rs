@@ -1,10 +1,11 @@
-use std::{env, sync::{mpsc::channel, Arc}};
+use std::{env, sync::mpsc::channel};
 
 use zenoh::Wait;
 
 mod constants;
 mod radio;
 mod zenoh_transport;
+mod config;
 
 
 fn main() {
