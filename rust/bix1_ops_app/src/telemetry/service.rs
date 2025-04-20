@@ -81,7 +81,7 @@ impl PusService for GetHealthService {
                 println!("{:?}", stat.cpu);
                 Ok(telemetry::OBC_INFO{
                     active_obc: false,
-                    obc_uptime: 0,
+                    obc_uptime: uptime_lib::get().map(|d| d.as_secs()).unwrap_or(0) as i32,
                     obc_sysmem: (stat.memory / 1000) as i8,
                     obc_usermem: (a.disks[0].available / 1000000000) as i8,
                     obc_cpu_util: stat.cpu as i8,

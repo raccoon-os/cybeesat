@@ -1,6 +1,6 @@
 use i2cdev::core::I2CDevice;
 use i2cdev::linux::LinuxI2CDevice;
-use log::{error, info, warn};
+use log::{debug, error, info, warn};
 use crate::controll::service::{write_i2c_ina_device_block, convert_battery_voltage, convert_battery_charge_current, convert_bus_voltage};
 use crate::rtc::config::BixConfig;
 
@@ -62,7 +62,7 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
             let vbat1_raw = dev_fuel_gauge.smbus_read_i2c_block_data(0x09, 2).map(|data| (((data[1] as u16) << 8) | (data[0] & 0xff) as u16)).unwrap_or(0);
             let vbat1 = (vbat1_raw as f32) * 78.125e-3;
 
-            info!("vbat0: {vbat0}, vbat1: {vbat1}");
+            debug!("vbat0: {vbat0}, vbat1: {vbat1}");
 
             match switch_obc_receiver.try_recv(){
                 Ok(val ) => switch_obc = val,
@@ -73,7 +73,7 @@ pub fn spawn(switch_obc_receiver: mpsc::Receiver<bool>) {
             let dms_should_reset_satellite = match BixConfig::load_or_default() {
                 Ok(mut time_config) => {
                     if time_config.next_reset == 0 {
-                        warn!("DMS: no next reset configured");
+                        debug!("DMS: no next reset configured");
                         false
                     } else {
                         let next_reset = chrono::DateTime::from_timestamp(time_config.next_reset, 0).unwrap().to_utc();

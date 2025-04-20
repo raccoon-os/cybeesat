@@ -411,6 +411,27 @@ impl PusService for EpsCtrlService {
                 // Set i2c bus to pmic0
                 if !self.switch_pmic_fg_i2c_bus(command::PMICSelect::PMIC0){return Err(())}
                 // write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x04).unwrap();
+
+
+                let vbat0_raw = self
+                    .dev_fuel_gauge
+                    .smbus_read_i2c_block_data(0x09, 2)
+                    .map(|data| (((data[1] as u16) << 8) | (data[0] & 0xff) as u16))
+                    .unwrap_or(0);
+                let fg0_vbat = (vbat0_raw as f32) * 78.125e-3;
+
+                let vcurr0_raw = self
+                    .dev_fuel_gauge
+                    .smbus_read_i2c_block_data(0x0a, 2)
+                    .map(|data| i16::from_le_bytes([data[0], data[1]]))
+                    .unwrap_or(0);
+                let fg0_vcurr = (vcurr0_raw as f32) * 0.15625;
+
+                let fg0_vpwr = self
+                    .dev_fuel_gauge
+                    .smbus_read_i2c_block_data(0xb3, 2)
+                    .map(|data| i16::from_le_bytes([data[0], data[1]]))
+                    .unwrap_or(0);
                 
                 // Activate ADC
                 let mut pmic0_reg02 =  self.dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
@@ -460,6 +481,26 @@ impl PusService for EpsCtrlService {
                 // Set i2c bus to pmic1
                 if !self.switch_pmic_fg_i2c_bus(command::PMICSelect::PMIC1){return Err(())}
                 // write_i2c_ina_device_block(&mut self.dev_i2c_switch, 0x00, 0x05).unwrap();
+
+                let vbat1_raw = self
+                    .dev_fuel_gauge
+                    .smbus_read_i2c_block_data(0x09, 2)
+                    .map(|data| (((data[1] as u16) << 8) | (data[0] & 0xff) as u16))
+                    .unwrap_or(0);
+                let fg1_vbat = (vbat1_raw as f32) * 78.125e-3;
+
+                let vcurr1_raw = self
+                    .dev_fuel_gauge
+                    .smbus_read_i2c_block_data(0x0a, 2)
+                    .map(|data| i16::from_le_bytes([data[0], data[1]]))
+                    .unwrap_or(0);
+                let fg1_vcurr = (vcurr1_raw as f32) * 0.15625;
+
+                let fg1_vpwr = self
+                    .dev_fuel_gauge
+                    .smbus_read_i2c_block_data(0xb3, 2)
+                    .map(|data| i16::from_le_bytes([data[0], data[1]]))
+                    .unwrap_or(0);
 
                 // Activate ADC
                 let mut pmic1_reg02 =  self.dev_pmic.smbus_read_i2c_block_data(0x02, 1).unwrap();
@@ -515,16 +556,16 @@ impl PusService for EpsCtrlService {
                     pmic0_ichg: pmic0_ichg as i16,
                     pmic0_vbat: pmic0_vbat as i16,
                     PMIC0_STAT: pmic0_stat,
-                    fg0_vbat: 0,
-                    fg0_current: 0,
-                    fg0_pwr: 0,
+                    fg0_vbat: fg0_vbat as i16,
+                    fg0_current: fg0_vcurr as i16,
+                    fg0_pwr: fg0_vpwr,
                     pmic1_vbus: pmic1_vsys as i16,
                     pmic1_ichg: pmic1_ichg as i16,
                     pmic1_vbat: pmic1_vbat as i16,
                     PMIC1_STAT: pmic1_stat,
-                    fg1_vbat: 0,
-                    fg1_current: 0,
-                    fg1_pwr: 0
+                    fg1_vbat: fg1_vbat as i16,
+                    fg1_current: fg1_vcurr as i16,
+                    fg1_pwr: fg1_vpwr 
                 })
             }),
             command::Command::RqEpsBusPowerStatus => tc.handle_with_tm(|| {
