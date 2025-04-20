@@ -12,7 +12,9 @@ pub enum Command {
     #[subservice(4)]
     SetCallsign(SetCallsign),
     #[subservice(5)]
-    GetTelemetry
+    GetTelemetry,
+    #[subservice(6)]
+    DangerSetArbitraryCommand(DangerSetArbitraryCommandArgs)
 }
 
 #[derive(BitStruct, Debug)]
@@ -41,4 +43,10 @@ pub struct SetBeaconMessage {
 pub struct SetCallsign {
     #[null_terminated]
     pub callsign: String
+}
+
+#[derive(BitStruct, Debug)]
+pub struct DangerSetArbitraryCommandArgs {
+    #[null_terminated]
+    pub command: String
 }

@@ -95,7 +95,7 @@ fn parse(line: &str, telemetry: &mut APRSTelemetry) -> bool {
                 telemetry.DIGI2_ENABLED = value == "ON";
             }
             _ => {
-                //println!("Unknown parameter '{param}'");
+                println!("Unknown parameter '{param}', value '{value}'");
                 return false;
             }
         }

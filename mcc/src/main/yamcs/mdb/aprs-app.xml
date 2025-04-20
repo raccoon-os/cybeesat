@@ -108,6 +108,16 @@ See https://github.com/yamcs/pymdb
   </TelemetryMetaData>
   <CommandMetaData>
     <ArgumentTypeSet>
+      <StringArgumentType name="DANGER_SendArbitraryCommand__COMMAND">
+        <StringDataEncoding encoding="US-ASCII">
+          <Variable maxSizeInBits="8388608">
+            <DynamicValue>
+              <ParameterInstanceRef parameterRef="_yamcs_ignore"/>
+            </DynamicValue>
+            <TerminationChar>00</TerminationChar>
+          </Variable>
+        </StringDataEncoding>
+      </StringArgumentType>
       <IntegerArgumentType name="SetBeaconInterval__Interval" signed="true" sizeInBits="32">
         <IntegerDataEncoding sizeInBits="16" encoding="unsigned" byteOrder="mostSignificantByteFirst"/>
       </IntegerArgumentType>
@@ -142,6 +152,28 @@ See https://github.com/yamcs/pymdb
       </BooleanArgumentType>
     </ArgumentTypeSet>
     <MetaCommandSet>
+      <MetaCommand name="DANGER_SendArbitraryCommand" abstract="false">
+        <BaseMetaCommand metaCommandRef="base">
+          <ArgumentAssignmentList>
+            <ArgumentAssignment argumentName="subtype" argumentValue="6"/>
+          </ArgumentAssignmentList>
+        </BaseMetaCommand>
+        <ArgumentList>
+          <Argument name="COMMAND" argumentTypeRef="DANGER_SendArbitraryCommand__COMMAND"/>
+        </ArgumentList>
+        <CommandContainer name="DANGER_SendArbitraryCommand">
+          <EntryList>
+            <ArgumentRefEntry argumentRef="COMMAND">
+              <LocationInContainerInBits referenceLocation="previousEntry">
+                <FixedValue>0</FixedValue>
+              </LocationInContainerInBits>
+            </ArgumentRefEntry>
+          </EntryList>
+          <BaseContainer containerRef="base"/>
+        </CommandContainer>
+        <DefaultSignificance consequenceLevel="normal"/>
+        <VerifierSet/>
+      </MetaCommand>
       <MetaCommand name="GetTelemetry" abstract="false">
         <BaseMetaCommand metaCommandRef="base">
           <ArgumentAssignmentList>

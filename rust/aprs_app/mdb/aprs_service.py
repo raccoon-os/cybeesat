@@ -65,6 +65,16 @@ Command(
     arguments=[],
 )
 
+Command(
+    system=service,
+    base=base_cmd,
+    assignments={"subtype": 6},
+    name="DANGER_SendArbitraryCommand",
+    arguments=[
+        StringArgument("COMMAND", encoding=StringEncoding())
+    ],
+)
+
 def str_parameter(service, name, short_description=None):
     return ParameterEntry(
         StringParameter(

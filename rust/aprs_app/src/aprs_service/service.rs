@@ -12,7 +12,7 @@ use rccn_usr::service::PusService;
 use super::{
     command::{
         self,
-        Command::{SetBeaconInterval, SetBeaconMessage, SetCallsign, SetPowerMode},
+        Command::{DangerSetArbitraryCommand, GetTelemetry, SetBeaconInterval, SetBeaconMessage, SetCallsign, SetPowerMode},
     }, handler, telemetry::APRSTelemetry
 };
 
@@ -80,13 +80,16 @@ impl PusService for APRSService {
             SetCallsign(args) => tc.handle(|| {
                 self.send_cmd(format!("AT+CALL={}\r\n", args.callsign))
             }),
-            command::Command::GetTelemetry => tc.handle_with_tm(|| {
+            GetTelemetry => tc.handle_with_tm(|| {
                 if false {
                     return Err(());
                 }
 
                 let tm = self.telemetry.lock().unwrap();
                 Ok(tm.clone())
+            }),
+            DangerSetArbitraryCommand(args) => tc.handle(|| {
+                self.send_cmd(format!("{}\r\n", args.command))
             })
         }
     }
