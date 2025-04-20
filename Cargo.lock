@@ -4973,6 +4973,7 @@ name = "vcom_interface"
 version = "0.1.0"
 dependencies = [
  "atoi",
+ "embedded-hal",
  "linux-embedded-hal",
  "rf4463",
  "zenoh",
