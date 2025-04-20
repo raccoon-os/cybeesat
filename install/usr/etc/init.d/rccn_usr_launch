@@ -13,13 +13,14 @@ PATH=/sbin:/bin:/usr/bin:/usr/sbin
 
 case "$1" in 
     start) 
-        mkdir /var/log/rccn
+        mount -o remount,rw,noatime /dev/mmcblk0p2 /
+        mkdir -p /tmp/log/rccn
         
         # Enable multicast on lo
         ip link set lo multicast on
         ip route add 224.0.0.224 dev lo
 
-        nohup rccn_usr_launch -s /usr/etc/rccn_services -l /var/log/rccn 2>&1 >/var/log/rccn/launch.log &
+        nohup rccn_usr_launch -s /usr/etc/rccn_services -l /tmp/log/rccn 2>&1 >/dev/null &
         ;;
     *)
         echo "Usage: rccn_usr_launch { start }" >&2
