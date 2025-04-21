@@ -39,7 +39,7 @@ class LEOPState:
 
 def deploy_antennas():
     for antenna in [1, 3, 2, 4]:
-        antenna_arg = str(antenna + 1)
+        antenna_arg = str(antenna)
 
         print("deploy", antenna_arg)
         subprocess.run(["python3", ANTENNA_CONTROL_SCRIPT, "deploy", antenna_arg])

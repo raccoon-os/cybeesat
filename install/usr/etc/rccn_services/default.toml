@@ -8,4 +8,4 @@ attempts = 3
 
 [environment]
 #keep-env = false
-additional = { RUST_LOG = "info" , ZENOH_CONFIG = "/usr/etc/rccn_zenoh_config.json5" }
+additional = { RUST_LOG = "info,zenoh=off" , ZENOH_CONFIG = "/usr/etc/rccn_zenoh_config.json5" }
