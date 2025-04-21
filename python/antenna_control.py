@@ -55,7 +55,8 @@ def main():
     # power off 0x4040
 
     # power on antenna deployment mechanism
-    i2c_bus.write_i2c_block_data(0x4a, 0x14, [0x60, 0x60])
+    power_bus = SMBus(0)
+    power_bus.write_i2c_block_data(0x4a, 0x14, [0x60, 0x60])
 
 
     if len(sys.argv) != 3:
@@ -136,7 +137,7 @@ def main():
             write_gpio(0, 7, "low")
 
     # power off antenna deployment mechanism
-    i2c_bus.write_i2c_block_data(0x4a, 0x14, [0x40, 0x40])
+    power_bus.write_i2c_block_data(0x4a, 0x14, [0x40, 0x40])
 
 
 if __name__ == "__main__":
