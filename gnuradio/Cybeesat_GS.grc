@@ -90,6 +90,18 @@ blocks:
     coordinate: [568, 28.0]
     rotation: 0
     state: true
+- name: rx_tune_offset
+  id: variable
+  parameters:
+    comment: ''
+    value: '-125400'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [320, 392.0]
+    rotation: 0
+    state: enabled
 - name: samp_per_sym
   id: variable
   parameters:
@@ -142,7 +154,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '-125200'
+    value: '-125100'
   states:
     bus_sink: false
     bus_source: false
@@ -163,7 +175,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 560.0]
+    coordinate: [808, 544.0]
     rotation: 0
     state: enabled
 - name: band_pass_filter_0
@@ -233,7 +245,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    freq: tune_offset
+    freq: rx_tune_offset
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
@@ -446,7 +458,7 @@ blocks:
     bus_structure: null
     coordinate: [496, 672.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_gmsk_demod_0
   id: digital_gmsk_demod
   parameters:
@@ -499,7 +511,7 @@ blocks:
       in\"))\n        self.message_port_register_out(pmt.intern(\"out\"))\n      \
       \  self.set_msg_handler(pmt.intern(\"in\"), self.handle_pdu)\n\n        assert(len(callsign)\
       \ == 6)\n        assert(tx_vcom in [0, 1])\n        assert(rx_vcom in [0, 1])\n\
-      \n        self.preamble = bytes([0xaa]*11) + bytes([0x34, 0xd3]) + callsign\
+      \n        self.preamble = bytes([0x55]*11) + bytes([0x34, 0xd3]) + callsign\
       \ + bytes([tx_vcom, rx_vcom])\n\n    def handle_pdu(self, pdu):\n        meta\
       \ = pmt.car(pdu)\n        data = pmt.cdr(pdu)\n\n        payload = bytes(pmt.u8vector_elements(data))\n\
       \        full_payload = self.preamble + payload + bytes([0xaa])\n\n        out_pdu\
@@ -512,8 +524,8 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    rx_vcom: '1'
-    tx_vcom: '1'
+    rx_vcom: '0'
+    tx_vcom: '0'
   states:
     _io_cache: ('PDU Preamble', 'pdu_prepend_preamble', [('callsign', "b'DZ9XYZ'"),
       ('tx_vcom', '0'), ('rx_vcom', '0')], [('in', 'message', 1)], [('out', 'message',
@@ -1208,7 +1220,7 @@ blocks:
     dc_offs_enb9: default
     dev_addr: '""'
     dev_args: ''
-    gain0: '1'
+    gain0: '40'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -1496,14 +1508,16 @@ blocks:
 
 connections:
 - [analog_quadrature_demod_cf_0, '0', dc_blocker_xx_0, '0']
+- [band_pass_filter_0, '0', analog_quadrature_demod_cf_0, '0']
+- [band_pass_filter_0, '0', blocks_file_sink_2, '0']
 - [band_pass_filter_0, '0', digital_fll_band_edge_cc_0, '0']
+- [band_pass_filter_0, '0', qtgui_sink_x_1, '0']
 - [blocks_freqshift_cc_0, '0', band_pass_filter_0, '0']
 - [blocks_freqshift_cc_1, '0', uhd_usrp_sink_0, '0']
 - [blocks_throttle2_0, '0', blocks_freqshift_cc_0, '0']
 - [dc_blocker_xx_0, '0', digital_clock_recovery_mm_xx_0, '0']
 - [digital_binary_slicer_fb_0, '0', epy_block_1, '0']
 - [digital_clock_recovery_mm_xx_0, '0', digital_binary_slicer_fb_0, '0']
-- [digital_fll_band_edge_cc_0, '0', analog_quadrature_demod_cf_0, '0']
 - [digital_fll_band_edge_cc_0, '0', blocks_file_sink_2, '0']
 - [digital_fll_band_edge_cc_0, '0', digital_gmsk_demod_0, '0']
 - [digital_fll_band_edge_cc_0, '0', qtgui_sink_x_1, '0']
