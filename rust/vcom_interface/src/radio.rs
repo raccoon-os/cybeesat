@@ -8,7 +8,11 @@ use std::{
     time::Duration,
 };
 
-use embedded_hal::{delay::DelayNs, digital::OutputPin, spi::{ErrorType, SpiDevice}};
+use embedded_hal::{
+    delay::DelayNs,
+    digital::OutputPin,
+    spi::{ErrorType, SpiDevice},
+};
 use linux_embedded_hal::{
     CdevPin, Delay, SpidevDevice,
     gpio_cdev::{Chip, EventRequestFlags, Line, LineRequestFlags},
@@ -17,7 +21,13 @@ use linux_embedded_hal::{
 };
 use rf4463::Rf4463;
 
-use crate::{config::VcomConfig, constants::{self, TX_POWER_21dBm, TX_POWER_25dBm, TX_POWER_27dBm, GPIO_PIN_CFG_DIV, GPIO_PIN_CFG_TXANT1, GPIO_PIN_CFG_TXANT2}};
+use crate::{
+    config::VcomConfig,
+    constants::{
+        self, GPIO_PIN_CFG_DIV, GPIO_PIN_CFG_TXANT1, GPIO_PIN_CFG_TXANT2, TX_POWER_21dBm,
+        TX_POWER_25dBm, TX_POWER_27dBm,
+    },
+};
 
 fn irq_handler(irq: Line, irq_occurred: Arc<Mutex<bool>>) {
     for ev in irq
@@ -56,7 +66,7 @@ where
     radio.radio.send_command::<0>(&mut cfg).unwrap();
 }
 
-fn setup_tx_power<Spi, Sdn, Delay>(radio: &mut Rf4463<Spi, Sdn, Delay>, config: &VcomConfig) 
+fn setup_tx_power<Spi, Sdn, Delay>(radio: &mut Rf4463<Spi, Sdn, Delay>, config: &VcomConfig)
 where
     Delay: DelayNs,
     Sdn: OutputPin,
@@ -67,7 +77,7 @@ where
         0 => TX_POWER_21dBm,
         1 => TX_POWER_25dBm,
         2 => TX_POWER_27dBm,
-        _ => TX_POWER_25dBm
+        _ => TX_POWER_25dBm,
     };
     send_config_cmd(radio, cmd);
 }
@@ -135,7 +145,8 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
         constants::SET_SYNC_WORD,
         //constants::SET_FREQ,
         constants::CHANGE_STATE_READY,
-        //constants::GPIO_PIN_CFG_TXANT1
+        //constants::GPIO_PIN_CFG_TXANT1,
+        constants::ENABLE_MODEM_INTERRUPTS
     ];
 
     let mut init = [7, 0x02, 0x01, 0x01, 0x01, 0x8c, 0xba, 0x80];
@@ -160,7 +171,7 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
     println!("receiving");
 
     let mut rx_buf = [0u8; 300];
-    let mut tx_buf = [0u8; 255+6];
+    let mut tx_buf = [0u8; 255 + 6];
     let mut should_tx = false;
 
     let mut config = VcomConfig::load_or_default(which_vcom).unwrap();
@@ -216,8 +227,7 @@ pub fn run(which_vcom: u8, bytes_rx: Sender<Vec<u8>>, bytes_tx: Receiver<Vec<u8>
                     send_config_cmd(&mut radio, GPIO_PIN_CFG_TXANT2);
                 }
 
-
-                // Re-setup TX power (might have changed since we last read it) 
+                // Re-setup TX power (might have changed since we last read it)
                 config = VcomConfig::load_or_default(which_vcom).unwrap();
                 setup_tx_power(&mut radio, &config);
 
