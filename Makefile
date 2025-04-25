@@ -1,6 +1,5 @@
-.PHONY: deploy install commit debug-symbols
+.PHONY: build install commit debug-symbols
 
-DEPLOY_DIR ?= deploy
 INSTALL_DIR ?= install
 
 OSTREE_REPO ?= build/tmp/deploy/images/sama5d27-som1-ek-sd/ostree_repo
@@ -8,24 +7,39 @@ DELTA_FROM  ?= e7ddfddf9456988c57e725730aca412d041b9a67bea7bc2fa7c834d6a786fd01
 BRANCH_NAME ?= cybeesat
 DELTA_TO    ?= cybeesat
 
-deploy:
-	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_comm rccn_usr_comm
-	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_launch rccn_usr_launch
-	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_example_app rccn_usr_example_app
-	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_cfdp rccn_usr_cfdp
-	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_update rccn_usr_update
-	./cross.sh cargo install --path rust/rccn-usr/src/rccn_usr_fec rccn_usr_fec
-	./cross.sh cargo install --path rust/serial_bridge serial_bridge
-	./cross.sh cargo install --path rust/boot_app boot_app
-	./cross.sh cargo install --path rust/deploy_app deploy_app
-	./cross.sh cargo install --path rust/diagnosis_app diagnosis_app
-	./cross.sh cargo install --path rust/aprs_app aprs_app
-	./cross.sh cargo install --path rust/bix1_ops_app bix1_ops_app
-	./cross.sh cargo install --path rust/vcom_interface vcom_interface
-	# ./cross.sh cargo install --path rust/health_app health_app
+BINARIES := rccn_usr_comm \
+            rccn_usr_launch \
+            rccn_usr_cfdp \
+            rccn_usr_update \
+            rccn_usr_fec \
+            serial_bridge \
+            boot_app \
+            deploy_app \
+            diagnosis_app \
+            aprs_app \
+            bix1_ops_app \
+            vcom_interface
+
+build:
+	cross build \
+		$(foreach bin,$(BINARIES),--bin $(bin)) \
+		--target armv7-unknown-linux-musleabihf \
+		--release
+
+
+install: build
+	cp target/armv7-unknown-linux-musleabihf/release/{$(shell echo $(BINARIES) | tr ' ' ','} \
+		install/usr/bin
 
 	cp python/antenna_control.py install/usr/bin
 	cp python/leop.py install/usr/bin
+
+debug-symbols:
+	mkdir -p debug
+	$(foreach bin,$(BINARIES),\
+		arm-none-eabi-objcopy --only-keep-debug install/usr/bin/$(bin) debug/$(bin).dbg && \
+		arm-none-eabi-strip install/usr/bin/$(bin) ; \
+	)
 
 commit: deploy 
 	ostree commit --repo=${OSTREE_REPO} --branch="${BRANCH_NAME}" --tree=dir=./install
@@ -46,13 +60,6 @@ delta: commit
 	tar -czvf delta.tar.gz --transform "s,.*/,," ${OSTREE_REPO}/deltas/**/*
 	rm -rf ${OSTREE_REPO}/deltas
 
-debug-symbols:
-	mkdir -p debug
-	find install/usr/bin -type f -executable | while read FILE; do \
-		arm-none-eabi-objcopy --only-keep-debug $${FILE} debug/$$(basename $${FILE}).dbg; \
-		arm-none-eabi-strip $${FILE}; \
-	done
 
 clean:
-	rm -rf ${DEPLOY_DIR}
 	rm -rf debug

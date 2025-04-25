@@ -29,7 +29,8 @@ To build the base RACCOON OS image for CyBEEsat, run:
 
 To build the Rust applications for CyBEEsat, run:
 
-    make deploy
+    make build
+    make install
 
 This will install the binaries of the Rust applications in the `install/usr/bin` directory.
 The `install` directory is intended to be copied to the root filesystem of the CyBEEsat OBC.
