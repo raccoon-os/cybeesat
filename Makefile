@@ -28,8 +28,10 @@ build:
 
 
 install: build
-	cp target/armv7-unknown-linux-musleabihf/release/{$(shell echo $(BINARIES) | tr ' ' ',')} \
-		install/usr/bin
+	mkdir -p install/usr/bin
+	$(foreach bin,$(BINARIES),\
+		cp target/armv7-unknown-linux-musleabihf/release/$(bin) install/usr/bin; \
+	)
 
 	cp python/antenna_control.py install/usr/bin
 	cp python/leop.py install/usr/bin

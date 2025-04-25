@@ -10,7 +10,6 @@ build-job:
   script:
     - rm -rf install/usr/bin/*
     - rm -rf debug/
-    - make build
     - make install
     - make debug-symbols
   artifacts:
