@@ -28,7 +28,7 @@ build:
 
 
 install: build
-	cp target/armv7-unknown-linux-musleabihf/release/{$(shell echo $(BINARIES) | tr ' ' ','} \
+	cp target/armv7-unknown-linux-musleabihf/release/{$(shell echo $(BINARIES) | tr ' ' ',')} \
 		install/usr/bin
 
 	cp python/antenna_control.py install/usr/bin
