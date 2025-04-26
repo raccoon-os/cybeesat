@@ -2,6 +2,9 @@
 
 This repository contains the onboard software and ground segment for the CyBEEsat mission.
 
+Take a look at the [Repository Structure](doc/repository_structure.md) documentation to get an overview of the code included here.
+
+<!--
 It consists of:
 
 - A [configuration file](config.yaml) to build the RACCOON OS / Yocto Linux image
@@ -16,6 +19,7 @@ It consists of:
     - `rccn_usr_launch`: Starts all of the applications, handles logging and provides a TC/TM inteface to monitor/restart processes.
     - `rccn_usr_cfdp`: Enables file upload / download using the CCSDS File Delivery Protocol (CFDP).
     - `rccn_usr_update`: Manages software updates using OSTree.
+-->
 
 # Building
 
@@ -26,6 +30,9 @@ To build the base RACCOON OS image for CyBEEsat, run:
     kas build kas.yml
 
 ## Applications
+
+    git submodule init
+    git submodule update
 
 To build the Rust applications for CyBEEsat, run:
 
