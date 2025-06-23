@@ -33,6 +33,22 @@ options:
     state: enabled
 
 blocks:
+- name: Doppler
+  id: variable_qtgui_label
+  parameters:
+    comment: ''
+    formatter: None
+    gui_hint: ''
+    label: Doppler
+    type: int
+    value: doppler_shift
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1232, 848.0]
+    rotation: 0
+    state: enabled
 - name: baudrate
   id: variable
   parameters:
@@ -55,6 +71,30 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [296, 856.0]
+    rotation: 0
+    state: enabled
+- name: doppler_corrected_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: tctm_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [864, 64.0]
+    rotation: 0
+    state: enabled
+- name: doppler_shift
+  id: variable
+  parameters:
+    comment: ''
+    value: doppler_corrected_freq-tctm_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 160.0]
     rotation: 0
     state: enabled
 - name: fsk_deviation_hz
@@ -87,7 +127,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 28.0]
+    coordinate: [320, 8.0]
     rotation: 0
     state: true
 - name: rx_tune_offset
@@ -262,7 +302,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    freq: -tune_offset
+    freq: -tune_offset+doppler_shift
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
@@ -305,25 +345,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1304, 36.0]
-    rotation: 0
-    state: disabled
-- name: blocks_tag_debug_1
-  id: blocks_tag_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    display: 'True'
-    filter: '"packet_len"'
-    name: ''
-    num_inputs: '1'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [640, 140.0]
     rotation: 0
     state: disabled
 - name: blocks_tag_debug_1_0
@@ -579,6 +600,38 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1544, 568.0]
+    rotation: 0
+    state: enabled
+- name: gpredict_MsgPairToVar_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: doppler_corrected_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [592, 136.0]
+    rotation: 0
+    state: enabled
+- name: gpredict_doppler_0
+  id: gpredict_doppler
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gpredict_host: 127.0.0.1
+    gpredict_port: '4532'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    verbose: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 144.0]
     rotation: 0
     state: enabled
 - name: network_socket_pdu_0
@@ -1526,8 +1579,8 @@ connections:
 - [epy_block_0, out, pdu_pdu_to_tagged_stream_0, pdus]
 - [epy_block_1, out, blocks_message_debug_2, print]
 - [epy_block_1, out, network_socket_pdu_1, pdus]
+- [gpredict_doppler_0, freq, gpredict_MsgPairToVar_0, inpair]
 - [network_socket_pdu_0, pdus, epy_block_0, in]
-- [pdu_pdu_to_tagged_stream_0, '0', blocks_tag_debug_1, '0']
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gmsk_mod_0, '0']
 - [testhier_0, '0', blocks_file_sink_0, '0']
 - [testhier_0, '0', blocks_freqshift_cc_1, '0']
@@ -1541,4 +1594,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.12.0
+  grc_version: 3.10.9.2
