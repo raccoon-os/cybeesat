@@ -39,9 +39,9 @@ blocks:
     comment: ''
     formatter: None
     gui_hint: ''
-    label: Doppler
+    label: Doppler TX
     type: int
-    value: doppler_shift
+    value: doppler_shift_tx
   states:
     bus_sink: false
     bus_source: false
@@ -73,11 +73,11 @@ blocks:
     coordinate: [296, 856.0]
     rotation: 0
     state: enabled
-- name: doppler_corrected_freq
+- name: doppler_corrected_tx_freq
   id: variable
   parameters:
     comment: ''
-    value: tctm_freq
+    value: '145925380'
   states:
     bus_sink: false
     bus_source: false
@@ -85,11 +85,11 @@ blocks:
     coordinate: [864, 64.0]
     rotation: 0
     state: enabled
-- name: doppler_shift
+- name: doppler_shift_tx
   id: variable
   parameters:
     comment: ''
-    value: doppler_corrected_freq-tctm_freq
+    value: doppler_corrected_tx_freq-tctm_freq
   states:
     bus_sink: false
     bus_source: false
@@ -121,7 +121,7 @@ blocks:
     start: '0'
     step: '0.01'
     stop: '1'
-    value: '0.2'
+    value: '0.77'
     widget: counter_slider
   states:
     bus_sink: false
@@ -215,7 +215,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 544.0]
+    coordinate: [720, 540.0]
     rotation: 0
     state: enabled
 - name: band_pass_filter_0
@@ -260,7 +260,7 @@ blocks:
     bus_structure: null
     coordinate: [1464, 112.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_2
   id: blocks_file_sink
   parameters:
@@ -276,9 +276,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 832.0]
+    coordinate: [816, 828.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_freqshift_cc_0
   id: blocks_freqshift_cc
   parameters:
@@ -302,7 +302,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    freq: -tune_offset+doppler_shift
+    freq: -tune_offset+doppler_shift_tx
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
@@ -532,11 +532,11 @@ blocks:
       in\"))\n        self.message_port_register_out(pmt.intern(\"out\"))\n      \
       \  self.set_msg_handler(pmt.intern(\"in\"), self.handle_pdu)\n\n        assert(len(callsign)\
       \ == 6)\n        assert(tx_vcom in [0, 1])\n        assert(rx_vcom in [0, 1])\n\
-      \n        self.preamble = bytes([0x55]*11) + bytes([0x34, 0xd3]) + callsign\
+      \n        self.preamble = bytes([0x55]*16) + bytes([0x34, 0xd3]) + callsign\
       \ + bytes([tx_vcom, rx_vcom])\n\n    def handle_pdu(self, pdu):\n        meta\
       \ = pmt.car(pdu)\n        data = pmt.cdr(pdu)\n\n        payload = bytes(pmt.u8vector_elements(data))\n\
-      \        full_payload = self.preamble + payload + bytes([0xaa])\n\n        out_pdu\
-      \ = pmt.cons(meta, pmt.init_u8vector(len(full_payload), list(full_payload)))\n\
+      \        full_payload = self.preamble + payload + bytes([0xaa]*8)\n\n      \
+      \  out_pdu = pmt.cons(meta, pmt.init_u8vector(len(full_payload), list(full_payload)))\n\
       \        self.message_port_pub(pmt.intern(\"out\"), out_pdu)\n        print(\"\
       added preamble!\")\n\n\n"
     affinity: ''
@@ -608,12 +608,12 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    target: doppler_corrected_freq
+    target: doppler_corrected_tx_freq
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 136.0]
+    coordinate: [640, 164.0]
     rotation: 0
     state: enabled
 - name: gpredict_doppler_0
@@ -1531,7 +1531,7 @@ blocks:
     bus_structure: null
     coordinate: [8, 604.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: virtual_sink_0
   id: virtual_sink
   parameters:
@@ -1557,7 +1557,7 @@ blocks:
     bus_structure: null
     coordinate: [64, 540.0]
     rotation: 0
-    state: disabled
+    state: enabled
 
 connections:
 - [analog_quadrature_demod_cf_0, '0', dc_blocker_xx_0, '0']
@@ -1579,7 +1579,7 @@ connections:
 - [epy_block_0, out, pdu_pdu_to_tagged_stream_0, pdus]
 - [epy_block_1, out, blocks_message_debug_2, print]
 - [epy_block_1, out, network_socket_pdu_1, pdus]
-- [gpredict_doppler_0, freq, gpredict_MsgPairToVar_0, inpair]
+- [gpredict_doppler_0, tx_freq, gpredict_MsgPairToVar_0, inpair]
 - [network_socket_pdu_0, pdus, epy_block_0, in]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gmsk_mod_0, '0']
 - [testhier_0, '0', blocks_file_sink_0, '0']
@@ -1594,4 +1594,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.9.2
+  grc_version: 3.10.12.0
