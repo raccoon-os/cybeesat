@@ -1,29 +1,25 @@
 options:
   parameters:
+    alias: ''
     author: jdiez
     catch_exceptions: 'True'
-    category: '[GRC Hier Blocks]'
-    cmake_opt: ''
     comment: ''
     copyright: ''
     description: ''
-    gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
+    generator_class_name: PythonQtGuiGenerator
+    generator_module: gnuradio.grc.workflows.python_qt_gui
     hier_block_src_path: '.:'
     id: cybee_gs
     max_nouts: '0'
     output_language: python
-    placement: (0,0)
     qt_qss_theme: ''
     realtime_scheduling: ''
     run: 'True'
     run_command: '{python} -u {filename}'
-    run_options: prompt
-    sizing_mode: fixed
     thread_safe_setters: ''
     title: cybee_gs
-    window_size: ''
   states:
     bus_sink: false
     bus_source: false
@@ -46,7 +42,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1232, 848.0]
+    coordinate: [1096, 72.0]
+    rotation: 0
+    state: enabled
+- name: Doppler_RX
+  id: variable_qtgui_label
+  parameters:
+    comment: ''
+    formatter: None
+    gui_hint: ''
+    label: Doppler RX
+    type: int
+    value: doppler_shift_rx
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 184.0]
     rotation: 0
     state: enabled
 - name: baudrate
@@ -58,7 +70,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 856.0]
+    coordinate: [200, 832.0]
+    rotation: 0
+    state: enabled
+- name: current_timestamp
+  id: variable
+  parameters:
+    comment: ''
+    value: datetime.utcnow().strftime("%Y.%m.%d.%H.%M.%S") + "UTC"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 1368.0]
     rotation: 0
     state: enabled
 - name: demod_samp_rate
@@ -70,7 +94,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [296, 856.0]
+    coordinate: [64, 832.0]
+    rotation: 0
+    state: enabled
+- name: doppler_corrected_rx_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: '145925000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [768, 184.0]
     rotation: 0
     state: enabled
 - name: doppler_corrected_tx_freq
@@ -82,7 +118,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 64.0]
+    coordinate: [768, 96.0]
+    rotation: 0
+    state: enabled
+- name: doppler_shift_rx
+  id: variable
+  parameters:
+    comment: ''
+    value: doppler_corrected_rx_freq-tctm_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 184.0]
     rotation: 0
     state: enabled
 - name: doppler_shift_tx
@@ -94,19 +142,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 160.0]
+    coordinate: [944, 96.0]
     rotation: 0
     state: enabled
 - name: fsk_deviation_hz
   id: variable
   parameters:
     comment: ''
-    value: '1000'
+    value: '700'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 856.0]
+    coordinate: [64, 912.0]
     rotation: 0
     state: enabled
 - name: gain
@@ -130,18 +178,99 @@ blocks:
     coordinate: [320, 8.0]
     rotation: 0
     state: true
-- name: rx_tune_offset
+- name: high_bound
   id: variable
   parameters:
     comment: ''
-    value: '-125400'
+    value: '0.8'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 392.0]
+    coordinate: [688, 936.0]
     rotation: 0
     state: enabled
+- name: low_bound
+  id: variable
+  parameters:
+    comment: ''
+    value: '-0.45'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 984.0]
+    rotation: 0
+    state: enabled
+- name: mid
+  id: variable
+  parameters:
+    comment: ''
+    value: (low_bound+high_bound)/2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 1032.0]
+    rotation: 0
+    state: enabled
+- name: norm
+  id: variable
+  parameters:
+    comment: ''
+    value: (high_bound-low_bound)/2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 1016.0]
+    rotation: 0
+    state: enabled
+- name: preamble_bits
+  id: variable
+  parameters:
+    comment: ''
+    value: '''''.join(f"{b:08b}" for b in preamble_bytes)'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 1136.0]
+    rotation: 0
+    state: enabled
+- name: preamble_bytes
+  id: variable
+  parameters:
+    comment: ''
+    value: bytes([0x34, 0xd3]) + b"YH1SUP"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 1056.0]
+    rotation: 0
+    state: enabled
+- name: rx_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '100'
+    value: '60'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 8.0]
+    rotation: 0
+    state: true
 - name: samp_per_sym
   id: variable
   parameters:
@@ -151,7 +280,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 936.0]
+    coordinate: [184, 912.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -227,7 +356,32 @@ blocks:
     comment: ''
     decim: '100'
     gain: '1'
-    high_cutoff_freq: '6000'
+    high_cutoff_freq: '1000'
+    interp: '1'
+    low_cutoff_freq: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccf
+    width: '100'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [464, 628.0]
+    rotation: 0
+    state: enabled
+- name: band_pass_filter_1
+  id: band_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    decim: int(samp_rate/15000)
+    gain: '1'
+    high_cutoff_freq: '15000'
     interp: '1'
     low_cutoff_freq: '1'
     maxoutbuf: '0'
@@ -240,7 +394,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 660.0]
+    coordinate: [472, 1212.0]
+    rotation: 0
+    state: enabled
+- name: blocks_add_const_vxx_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: -mid
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 832.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -250,25 +422,25 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/jdiez/docs/quantum/recordings/tx_packetized4.cf32
-    type: complex
+    file: /tmp/pkt.raw
+    type: byte
     unbuffered: 'False'
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 112.0]
+    coordinate: [1600, 1056.0]
     rotation: 0
-    state: disabled
-- name: blocks_file_sink_2
+    state: enabled
+- name: blocks_file_sink_1
   id: blocks_file_sink
   parameters:
     affinity: ''
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/jdiez/docs/quantum/recordings/tx_vcom.cf32
+    file: '"/tmp/ground_station_rx_" + current_timestamp + ".15ksps.cf32"'
     type: complex
     unbuffered: 'False'
     vlen: '1'
@@ -276,16 +448,16 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 828.0]
+    coordinate: [728, 1256.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_freqshift_cc_0
   id: blocks_freqshift_cc
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    freq: rx_tune_offset
+    freq: tune_offset-doppler_shift_rx
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
@@ -293,9 +465,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 528.0]
+    coordinate: [240, 672.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_freqshift_cc_1
   id: blocks_freqshift_cc
   parameters:
@@ -312,7 +484,7 @@ blocks:
     bus_structure: null
     coordinate: [1368, 256.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_message_debug_2
   id: blocks_message_debug
   parameters:
@@ -327,64 +499,40 @@ blocks:
     bus_structure: null
     coordinate: [1880, 664.0]
     rotation: 0
+    state: disabled
+- name: blocks_message_debug_2_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    en_uvec: 'True'
+    log_level: info
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1960, 1096.0]
+    rotation: 0
     state: enabled
-- name: blocks_tag_debug_0
-  id: blocks_tag_debug
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    display: 'True'
-    filter: '"tx_time"'
-    name: ''
-    num_inputs: '1'
-    type: complex
+    const: 1/norm
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1304, 36.0]
+    coordinate: [1080, 832.0]
     rotation: 0
-    state: disabled
-- name: blocks_tag_debug_1_0
-  id: blocks_tag_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    display: 'True'
-    filter: '"packet_len"'
-    name: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1264, 424.0]
-    rotation: 0
-    state: disabled
-- name: blocks_tag_debug_2
-  id: blocks_tag_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    display: 'True'
-    filter: '"packet_len"'
-    name: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1096, 36.0]
-    rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_throttle2_0
   id: blocks_throttle2
   parameters:
@@ -403,9 +551,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 528.0]
+    coordinate: [240, 528.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: dc_blocker_xx_0
   id: dc_blocker_xx
   parameters:
@@ -423,7 +571,7 @@ blocks:
     bus_structure: null
     coordinate: [968, 552.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_binary_slicer_fb_0
   id: digital_binary_slicer_fb
   parameters:
@@ -437,6 +585,21 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1392, 568.0]
+    rotation: 0
+    state: disabled
+- name: digital_binary_slicer_fb_0_0
+  id: digital_binary_slicer_fb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1424, 976.0]
     rotation: 0
     state: enabled
 - name: digital_clock_recovery_mm_xx_0
@@ -459,48 +622,6 @@ blocks:
     bus_structure: null
     coordinate: [1136, 528.0]
     rotation: 0
-    state: enabled
-- name: digital_fll_band_edge_cc_0
-  id: digital_fll_band_edge_cc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    filter_size: int((demod_samp_rate// baudrate)*2+1)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    rolloff: '0.5'
-    samps_per_sym: '10'
-    type: cc
-    w: 2*math.pi/(demod_samp_rate/ baudrate)/100
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [496, 672.0]
-    rotation: 0
-    state: disabled
-- name: digital_gmsk_demod_0
-  id: digital_gmsk_demod
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    freq_error: '0.0'
-    gain_mu: '0.175'
-    log: 'False'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    mu: '0.5'
-    omega_relative_limit: '0.005'
-    samples_per_symbol: samp_per_sym
-    verbose: 'False'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [840, 664.0]
-    rotation: 0
     state: disabled
 - name: digital_gmsk_mod_0
   id: digital_gmsk_mod
@@ -522,6 +643,33 @@ blocks:
     coordinate: [816, 296.0]
     rotation: 0
     state: true
+- name: digital_symbol_sync_xx_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: digital.constellation_bpsk().base()
+    damping: '1.0'
+    loop_bw: '0.045'
+    max_dev: '0.001'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: '1'
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: demod_samp_rate/baudrate
+    ted_gain: '1.0'
+    ted_type: digital.TED_ZERO_CROSSING
+    type: ff
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1128, 956.0]
+    rotation: 0
+    state: enabled
 - name: epy_block_0
   id: epy_block
   parameters:
@@ -601,7 +749,7 @@ blocks:
     bus_structure: null
     coordinate: [1544, 568.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -613,7 +761,21 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [640, 164.0]
+    coordinate: [600, 192.0]
+    rotation: 0
+    state: enabled
+- name: gpredict_MsgPairToVar_1
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: doppler_corrected_rx_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 104.0]
     rotation: 0
     state: enabled
 - name: gpredict_doppler_0
@@ -632,6 +794,19 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [328, 144.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from datetime import datetime
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 1360.0]
     rotation: 0
     state: enabled
 - name: network_socket_pdu_0
@@ -673,7 +848,27 @@ blocks:
     bus_structure: null
     coordinate: [1864, 536.0]
     rotation: 0
-    state: enabled
+    state: disabled
+- name: network_socket_pdu_1_0
+  id: network_socket_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    host: 127.0.0.1
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mtu: '10000'
+    port: '10066'
+    tcp_no_delay: 'False'
+    type: UDP_CLIENT
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1952, 976.0]
+    rotation: 0
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -706,7 +901,7 @@ blocks:
     alpha7: '1.0'
     alpha8: '1.0'
     alpha9: '1.0'
-    autoscale: 'False'
+    autoscale: 'True'
     average: '1.0'
     axislabels: 'True'
     bw: '12000'
@@ -764,12 +959,12 @@ blocks:
     width9: '1'
     wintype: window.WIN_BLACKMAN_hARRIS
     ymax: '10'
-    ymin: '-140'
+    ymin: '-180'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1504, 424.0]
+    coordinate: [1352, 424.0]
     rotation: 0
     state: enabled
 - name: qtgui_sink_x_1
@@ -798,7 +993,86 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [720, 408.0]
+    coordinate: [704, 632.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: demod_samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.01'
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [696, 776.0]
+    rotation: 0
+    state: enabled
+- name: satellites_sync_to_pdu_packed_0
+  id: satellites_sync_to_pdu_packed
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    packlen: '10'
+    sync: preamble_bits
+    threshold: '15'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1592, 952.0]
     rotation: 0
     state: enabled
 - name: testhier_0
@@ -1093,9 +1367,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1648, 208.0]
+    coordinate: [1600, 264.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -1542,7 +1816,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1496, 356.0]
+    coordinate: [1360, 352.0]
     rotation: 0
     state: enabled
 - name: virtual_source_0
@@ -1555,43 +1829,46 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [64, 540.0]
+    coordinate: [272, 768.0]
     rotation: 0
     state: enabled
 
 connections:
+- [analog_quadrature_demod_cf_0, '0', blocks_add_const_vxx_0, '0']
 - [analog_quadrature_demod_cf_0, '0', dc_blocker_xx_0, '0']
 - [band_pass_filter_0, '0', analog_quadrature_demod_cf_0, '0']
-- [band_pass_filter_0, '0', blocks_file_sink_2, '0']
-- [band_pass_filter_0, '0', digital_fll_band_edge_cc_0, '0']
 - [band_pass_filter_0, '0', qtgui_sink_x_1, '0']
+- [band_pass_filter_0, '0', qtgui_waterfall_sink_x_0, '0']
+- [band_pass_filter_1, '0', blocks_file_sink_1, '0']
+- [blocks_add_const_vxx_0, '0', blocks_multiply_const_vxx_0, '0']
 - [blocks_freqshift_cc_0, '0', band_pass_filter_0, '0']
+- [blocks_freqshift_cc_0, '0', band_pass_filter_1, '0']
 - [blocks_freqshift_cc_1, '0', uhd_usrp_sink_0, '0']
+- [blocks_multiply_const_vxx_0, '0', digital_symbol_sync_xx_0, '0']
 - [blocks_throttle2_0, '0', blocks_freqshift_cc_0, '0']
 - [dc_blocker_xx_0, '0', digital_clock_recovery_mm_xx_0, '0']
 - [digital_binary_slicer_fb_0, '0', epy_block_1, '0']
+- [digital_binary_slicer_fb_0_0, '0', blocks_file_sink_0, '0']
+- [digital_binary_slicer_fb_0_0, '0', satellites_sync_to_pdu_packed_0, '0']
 - [digital_clock_recovery_mm_xx_0, '0', digital_binary_slicer_fb_0, '0']
-- [digital_fll_band_edge_cc_0, '0', blocks_file_sink_2, '0']
-- [digital_fll_band_edge_cc_0, '0', digital_gmsk_demod_0, '0']
-- [digital_fll_band_edge_cc_0, '0', qtgui_sink_x_1, '0']
-- [digital_gmsk_demod_0, '0', epy_block_1, '0']
 - [digital_gmsk_mod_0, '0', testhier_0, '0']
+- [digital_symbol_sync_xx_0, '0', digital_binary_slicer_fb_0_0, '0']
 - [epy_block_0, out, pdu_pdu_to_tagged_stream_0, pdus]
 - [epy_block_1, out, blocks_message_debug_2, print]
 - [epy_block_1, out, network_socket_pdu_1, pdus]
+- [gpredict_doppler_0, freq, gpredict_MsgPairToVar_1, inpair]
 - [gpredict_doppler_0, tx_freq, gpredict_MsgPairToVar_0, inpair]
 - [network_socket_pdu_0, pdus, epy_block_0, in]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gmsk_mod_0, '0']
-- [testhier_0, '0', blocks_file_sink_0, '0']
+- [satellites_sync_to_pdu_packed_0, out, blocks_message_debug_2_0, print]
+- [satellites_sync_to_pdu_packed_0, out, network_socket_pdu_1_0, pdus]
 - [testhier_0, '0', blocks_freqshift_cc_1, '0']
-- [testhier_0, '0', blocks_tag_debug_0, '0']
-- [testhier_0, '0', blocks_tag_debug_1_0, '0']
-- [testhier_0, '0', blocks_tag_debug_2, '0']
 - [testhier_0, '0', qtgui_freq_sink_x_0, '0']
 - [testhier_0, '0', virtual_sink_0, '0']
 - [uhd_usrp_source_0, '0', blocks_throttle2_0, '0']
-- [virtual_source_0, '0', blocks_throttle2_0, '0']
+- [virtual_source_0, '0', band_pass_filter_0, '0']
+- [virtual_source_0, '0', band_pass_filter_1, '0']
 
 metadata:
   file_format: 1
-  grc_version: 3.10.12.0
+  grc_version: v3.11.0.0git-978-g90d26cbb
